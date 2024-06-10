@@ -39,7 +39,10 @@ class RegisterRequest extends BaseRequest
             'education' => ['required', 'string', 'max:255'],
             'profession' => ['required', 'string', 'max:255'],
             'occupation' => ['required', 'string', 'max:255'],
-            'hobby' => ['nullable', 'string', 'max:255'],
+
+            'hobbies' => 'required|array',
+            'hobbies.*' => 'exists:hobbies,id',
+
             'religion' => ['required', 'string', 'max:255'],
             'candidate_community' => ['required', 'string', 'max:255'],
             'marital_status' => ['required', 'string', 'max:255'],
@@ -100,7 +103,10 @@ class RegisterRequest extends BaseRequest
             'partner_education' => ['required', 'string', 'max:255'],
             'partner_occupation' => ['required', 'string', 'max:255'],
             'partner_profession' => ['required', 'string', 'max:255'],
-            'partner_hobby' => ['nullable', 'string', 'max:255'],
+
+            'partner_hobbies' => 'required|array',
+            'partner_hobbies.*' => 'exists:hobbies,id',
+
             'partner_manglik' => 'required',
             'partner_marital_status' => ['required', 'string', 'max:255'],
             'astrology_matching' => ['required',],

@@ -48,9 +48,10 @@ return new class extends Migration
             $table->string('partner_state')->nullable();
             $table->string('partner_city')->nullable();
             $table->string('partner_education')->nullable();
+            $table->longText('partner_education_desc')->nullable();
             $table->string('partner_occupation')->nullable();
             $table->string('partner_profession')->nullable();
-            $table->string('partner_hobby')->nullable();
+            $table->longText('partner_hobbies')->nullable();
             $table->string('partner_manglik')->nullable();
             $table->string('partner_marital_status')->nullable();
             $table->string('astrology_matching')->nullable();

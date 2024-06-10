@@ -16,7 +16,6 @@ class hobbiesSeeder extends Seeder
         $hobbies = [
             ['name' => 'Reading'],
             ['name' => 'Traveling'],
-            ['name' => 'Cooking'],
             ['name' => 'Gardening'],
             ['name' => 'Photography'],
             ['name' => 'Painting'],

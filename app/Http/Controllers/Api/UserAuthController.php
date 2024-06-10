@@ -44,7 +44,7 @@ class UserAuthController extends Controller
             // user personal details
             $userPersonalDetails = $request->only([
                 'name', 'email', 'whatsapp_no', 'refrence_by', 'profile_created_by_type',
-                'password', 'gender', 'dob', 'age', 'birth_place', 'birth_time', 'height', 'weight', 'complexion', 'education', 'profession', 'occupation', 'religion', 'candidate_community', 'marital_status', 'physical_status', 'blood_group', 'candidate_income', 'candidates_address', 'id_proof', 'terms_and_conditions', 'hobby'
+                'password', 'gender', 'dob', 'age', 'birth_place', 'birth_time', 'height', 'weight', 'complexion', 'education', 'profession', 'occupation', 'religion', 'candidate_community', 'marital_status', 'physical_status', 'blood_group', 'candidate_income', 'candidates_address', 'id_proof', 'terms_and_conditions', 'hobbies'
             ]);
 
             //  USER UPLOAD PHOTO
@@ -95,7 +95,9 @@ class UserAuthController extends Controller
             $userId = $this->generateUniqueUserId();
             $userPersonalDetails["userId"] = $userId;
 
-            $userPersonalDetails["password"] = Hash::make($request->password);;
+            $userPersonalDetails["password"] = Hash::make($request->password);
+            $userPersonalDetails["hobbies"] = json_encode($request->hobbies);
+
 
             if ($request->has('user_id') && $request->user_id != null) {
                 $user = User::find($request->user_id);
@@ -137,11 +139,13 @@ class UserAuthController extends Controller
                 'partner_income', 'partner_country', 'partner_state', 'partner_city',
                 'partner_education', 'partner_occupation', 'partner_profession',
                 'partner_manglik', 'partner_marital_status', 'astrology_matching',
-                'expectation_partner_details', 'partner_hobby', 'photo',
+                'expectation_partner_details', 'partner_hobbies', 'photo',
             ]);
 
 
             $userOtherDetails["user_id"] = $userData->id;
+
+            $userOtherDetails["partner_hobbies"] = json_encode($request->partner_hobbies);
 
             $userInformations = UserDetail::create($userOtherDetails);
 

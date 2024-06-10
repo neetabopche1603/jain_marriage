@@ -32,9 +32,10 @@ return new class extends Migration
             $table->string('weight')->nullable();
             $table->string('complexion')->nullable();
             $table->string('education')->nullable();
+            $table->longText('education_desc')->nullable();
             $table->string('profession')->nullable();
             $table->string('occupation')->nullable();
-            $table->string('hobby')->nullable();
+            $table->longText('hobbies')->nullable();
             $table->string('religion')->nullable();
             $table->longText('candidate_community')->nullable();
             $table->string('marital_status')->nullable();

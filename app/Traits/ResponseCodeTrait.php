@@ -82,6 +82,13 @@ trait ResponseCodeTrait
 
             ],
 
+            '403' => [
+                'status' => false,
+                'message' => 'Forbidden',
+                'error_message' => $message,
+                'http_code' => 403
+            ],
+
             // Not Found
 
             '404' => [

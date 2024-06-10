@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\UserAuthController;
 use App\Http\Controllers\Api\UserProfileController;
 use App\Models\User;
@@ -27,6 +28,15 @@ Route::post('register', [UserAuthController::class, 'userRegister']);
 Route::post('login', [UserAuthController::class, 'userLogin']);
 Route::post('forgot-password', [UserAuthController::class, 'forgotPassword']);
 Route::post('reset-password', [UserAuthController::class, 'resetPassword']);
+
+
+Route::get('educations', [HomeController::class, 'educations']);
+Route::get('professions', [HomeController::class, 'professions']);
+Route::get('occupations', [HomeController::class, 'occupation']);
+Route::get('hobbies', [HomeController::class, 'hobbies']);
+
+
+
 
 Route::middleware('jwt:api')->group(function () {
 
