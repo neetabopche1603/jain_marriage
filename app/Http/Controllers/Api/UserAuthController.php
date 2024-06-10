@@ -8,6 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Models\UsersMedia;
 use App\Traits\ImageUploadTrait;
 use App\Traits\ResponseCodeTrait;
 use Carbon\Carbon;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -33,7 +35,6 @@ class UserAuthController extends Controller
     // User Basic & Personal Details (Save The data users table)
     public function userPersonalDetails(RegisterRequest $request)
     {
-
         try {
 
             // $prefix = 'JEP';
@@ -43,16 +44,31 @@ class UserAuthController extends Controller
             // user personal details
             $userPersonalDetails = $request->only([
                 'name', 'email', 'whatsapp_no', 'refrence_by', 'profile_created_by_type',
-                'password', 'gender', 'dob', 'age', 'birth_place', 'birth_time', 'height', 'weight', 'complexion', 'education', 'profession', 'occupation', 'religion', 'candidate_community', 'marital_status', 'physical_status', 'blood_group', 'candidate_income', 'candidates_address', 'photo', 'id_proof', 'terms_and_conditions'
+                'password', 'gender', 'dob', 'age', 'birth_place', 'birth_time', 'height', 'weight', 'complexion', 'education', 'profession', 'occupation', 'religion', 'candidate_community', 'marital_status', 'physical_status', 'blood_group', 'candidate_income', 'candidates_address', 'id_proof', 'terms_and_conditions', 'hobbies'
             ]);
 
             //  USER UPLOAD PHOTO
-            $users_image_link = "";
-            if ($request->has("photo")) {
-                $users_image_link = $this->uploadImage($request->file('photo'), '/userImage');
-                $userPersonalDetails['photo'] = $users_image_link;
-            }
 
+            // $users_image_link = "";
+            // if ($request->has("photo")) {
+            //     $users_image_link = $this->uploadImage($request->file('photo'), '/userImage');
+            //     $userPersonalDetails['photo'] = $users_image_link;
+            // }
+
+            // $users_image_link = "";
+            // if ($request->has("photo")) {
+            //     // Define the cropping data
+            //     $cropData = [
+            //         'photo_width' => 300,
+            //         'photo_height' => 300,
+            //         'photo_x' => 50,
+            //         'photo_y' => 50,
+            //     ];
+
+            //     // Call the uploadImage method with the cropping data
+            //     $users_image_link = $this->uploadImage($request->file('photo'), '/userImage', null, $cropData);
+            //     $userPersonalDetails['photo'] = $users_image_link;
+            // }
 
             // USER UPLOAD ID-PROOF
             $users_id_proof_link = "";
@@ -61,10 +77,27 @@ class UserAuthController extends Controller
                 $userPersonalDetails["id_proof"] = $users_id_proof_link;
             }
 
+            // $users_id_proof_link = "";
+            // if ($request->has("id_proof")) {
+            //     // Define the cropping data
+            //     $cropData = [
+            //         'id_proof_width' => 300,
+            //         'id_proof_height' => 300,
+            //         'id_proof_x' => 50,
+            //         'id_proof_y' => 50,
+            //     ];
+
+            //     // Call the uploadImage method with the cropping data
+            //     $users_id_proof_link = $this->uploadImage($request->file('id_proof'), '/userIdProof', null, $cropData);
+            //     $userPersonalDetails['id_proof'] = $users_id_proof_link;
+            // }
+
             $userId = $this->generateUniqueUserId();
             $userPersonalDetails["userId"] = $userId;
 
-            $userPersonalDetails["password"] = Hash::make($request->password);;
+            $userPersonalDetails["password"] = Hash::make($request->password);
+            $userPersonalDetails["hobbies"] = json_encode($request->hobbies);
+
 
             if ($request->has('user_id') && $request->user_id != null) {
                 $user = User::find($request->user_id);
@@ -106,13 +139,31 @@ class UserAuthController extends Controller
                 'partner_income', 'partner_country', 'partner_state', 'partner_city',
                 'partner_education', 'partner_occupation', 'partner_profession',
                 'partner_manglik', 'partner_marital_status', 'astrology_matching',
-                'expectation_partner_details'
+                'expectation_partner_details', 'partner_hobbies', 'photo',
             ]);
 
 
             $userOtherDetails["user_id"] = $userData->id;
 
+            $userOtherDetails["partner_hobbies"] = json_encode($request->partner_hobbies);
+
             $userInformations = UserDetail::create($userOtherDetails);
+
+            // Upload User Image (Multiple)
+            foreach ($request->file('photo') as $photo) {
+                // Upload the image
+                $imagePath = Storage::disk('public')->put('userImage', $photo);
+
+                // Concatenate the storage directory path with the image path
+                $fullImagePath = 'storage/' . $imagePath;
+
+                // Save the full image path to the user_media table
+                UsersMedia::create([
+                    'user_id' => $userData->id,
+                    'photo' => $fullImagePath,
+                ]);
+            }
+
 
             $token = JWTAuth::fromUser($userData);
 
@@ -134,6 +185,7 @@ class UserAuthController extends Controller
             return $this->getResponseCode(500, '', '', 'register failed. Please try again later.' . $e->getMessage());
         }
     }
+
 
     // User Login Function
     public function userLogin(Request $request)
@@ -160,6 +212,11 @@ class UserAuthController extends Controller
 
             if (!$user) {
                 return $this->getResponseCode(401, '', '', "Username wrong please fill the right username");
+            }
+
+            // Check if the user is a superadmin
+            if ($user->role_type == 1) {
+                return $this->getResponseCode(403, '', '', 'Access denied for this user.');
             }
 
             if (!Hash::check($request->password, $user->password)) {
