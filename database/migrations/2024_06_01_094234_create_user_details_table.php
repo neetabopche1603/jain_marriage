@@ -50,6 +50,7 @@ return new class extends Migration
             $table->string('partner_education')->nullable();
             $table->string('partner_occupation')->nullable();
             $table->string('partner_profession')->nullable();
+            $table->string('partner_hobby')->nullable();
             $table->string('partner_manglik')->nullable();
             $table->string('partner_marital_status')->nullable();
             $table->string('astrology_matching')->nullable();

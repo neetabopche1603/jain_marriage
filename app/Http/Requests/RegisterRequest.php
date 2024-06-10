@@ -13,7 +13,7 @@ class RegisterRequest extends BaseRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
 
-     
+
     public function rules(): array
     {
         return [
@@ -21,9 +21,9 @@ class RegisterRequest extends BaseRequest
             // Personal Details -
             'name' => ['required', 'string', 'max:255'],
 
-            'email' => $this->getMethod() == 'POST' ? 'required|string|max:60|unique:users' : 'required|string|max:60|unique:users,id'. $this->id,
+            'email' => $this->getMethod() == 'POST' ? 'required|string|max:60|unique:users' : 'required|string|max:60|unique:users,id' . $this->id,
 
-            'whatsapp_no' => $this->getMethod() == 'POST' ? 'required|string|max:60|unique:users' : 'required|string|max:60|unique:users,id'. $this->id,
+            'whatsapp_no' => $this->getMethod() == 'POST' ? 'required|string|max:60|unique:users' : 'required|string|max:60|unique:users,id' . $this->id,
 
             'refrence_by' => ['required', 'string', 'max:255'],
             'profile_created_by_type' => 'required|in:self,son,daughter,brother,sister,relative,other',
@@ -39,6 +39,7 @@ class RegisterRequest extends BaseRequest
             'education' => ['required', 'string', 'max:255'],
             'profession' => ['required', 'string', 'max:255'],
             'occupation' => ['required', 'string', 'max:255'],
+            'hobby' => ['nullable', 'string', 'max:255'],
             'religion' => ['required', 'string', 'max:255'],
             'candidate_community' => ['required', 'string', 'max:255'],
             'marital_status' => ['required', 'string', 'max:255'],
@@ -70,10 +71,24 @@ class RegisterRequest extends BaseRequest
             'sister' => ['required', 'integer', 'min:0'],
             'other_family_details' => ['nullable', 'string', 'max:500'],
             'calling_no' => ['required', 'string', 'max:15'],
-            'are_you_manglik' => 'required|in:yes,no',
+            'are_you_manglik' => 'required',
 
-            'photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'], // max 2MB
-            'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'], // max 2MB
+
+            'photo.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+            'photo' => ['required', 'array', 'max:5'],
+
+            // 'photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+            // 'photo_width' => 'required|integer',
+            // 'photo_height' => 'required|integer',
+            // 'photo_x' => 'required|integer',
+            // 'photo_y' => 'required|integer',
+
+            'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+
+            // 'id_proof_width' => 'required|integer',
+            // 'id_proof_height' => 'required|integer',
+            // 'id_proof_x' => 'required|integer',
+            // 'id_proof_y' => 'required|integer',
 
             // Partner Preference -
             'partner_age_group_from' => ['required', 'integer', 'min:18'],
@@ -85,14 +100,15 @@ class RegisterRequest extends BaseRequest
             'partner_education' => ['required', 'string', 'max:255'],
             'partner_occupation' => ['required', 'string', 'max:255'],
             'partner_profession' => ['required', 'string', 'max:255'],
-            'partner_manglik' => 'required|in:yes,no',
+            'partner_hobby' => ['nullable', 'string', 'max:255'],
+            'partner_manglik' => 'required',
             'partner_marital_status' => ['required', 'string', 'max:255'],
             'astrology_matching' => ['required',],
             'expectation_partner_details' => ['required', 'string', 'max:500'],
 
-            'profile_status'=>'nullable|in:pending,verified,rejected',
-            'profile_rejected_reason'=>'nullable',
-            'account_status'=>'nullable|in:active,inactive',
+            'profile_status' => 'nullable|in:pending,verified,rejected',
+            'profile_rejected_reason' => 'nullable',
+            'account_status' => 'nullable|in:active,inactive',
 
         ];
 
@@ -102,7 +118,4 @@ class RegisterRequest extends BaseRequest
         // }
         // return $rules;
     }
-
-
-
 }

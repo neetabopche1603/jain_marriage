@@ -34,15 +34,23 @@ return new class extends Migration
             $table->string('education')->nullable();
             $table->string('profession')->nullable();
             $table->string('occupation')->nullable();
+            $table->string('hobby')->nullable();
             $table->string('religion')->nullable();
             $table->longText('candidate_community')->nullable();
             $table->string('marital_status')->nullable();
             $table->string('physical_status')->nullable();
             $table->string('blood_group')->nullable();
+            $table->string('drinking')->nullable();
+            $table->string('smoking')->nullable();
+            $table->string('disability')->nullable();
+            $table->string('language')->nullable();
             $table->string('candidate_income')->nullable();
+            $table->longText('candidates_about')->nullable();
             $table->longText('candidates_address')->nullable();
 
             $table->longText('photo')->nullable();
+
+            $table->string('idProof_type')->comment("upload doc type")->nullable();
             $table->longText('id_proof')->nullable()->comment("Adhar Card, PAN Card, Voter Id, Driving Licence, COVID, Ayushman, Religion Id.");
 
             $table->boolean('terms_and_conditions')->nullable();
