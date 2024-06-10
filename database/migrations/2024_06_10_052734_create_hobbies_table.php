@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hobbies', function (Blueprint $table) {
             $table->id();
-            $table->longText('hobby_name')->unique();
+            $table->string('hobby_name')->unique();
             $table->enum('status',['active','block'])->default('active');
             $table->timestamps();
         });
