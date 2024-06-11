@@ -29,9 +29,6 @@
 <!-- password-addon init -->
 <script src="assets/js/pages/password-addon.init.js"></script>
 
-
-
-
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="assets/libs/simplebar/simplebar.min.js"></script>
 <script src="assets/libs/node-waves/waves.min.js"></script>
@@ -46,6 +43,19 @@
 <script src="{{asset('assets/libs/dropzone/dropzone-min.js')}}"></script>
 <!-- project-create init -->
 <script src="{{asset('assets/js/pages/project-create.init.js')}}"></script>
+
+<!-- Select 2 CDN -->
+{{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
+
+<script>
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
+
+@stack('script')
 
 </body>
 

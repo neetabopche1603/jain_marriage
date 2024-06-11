@@ -53,7 +53,11 @@
                     <div class="collapse menu-dropdown" id="sidebarTables">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('admin.users')}}" class="nav-link" data-key="t-basic-tables">Users</a>
+                                <a href="{{route('admin.users')}}" class="nav-link" data-key="t-basic-tables">Users List</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{route('admin.create')}}" class="nav-link" data-key="t-basic-tables">Add User</a>
                             </li>
 
                         </ul>
