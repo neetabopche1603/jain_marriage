@@ -34,8 +34,7 @@
                                 <div class="row g-4 mb-3">
                                     <div class="col-sm-auto">
                                         <div>
-                                            <a href="{{route('admin.create')}}" class="btn btn-success add-btn"><i class="fa fa-plus"></i> Add
-                                                User </a>
+                                            <a href="{{route('admin.generatePdf')}}" class="btn btn-success add-btn"><i class="fa fa-download"></i> </i>Download Pdf</a>
                                         </div>
                                     </div>
                                     <div class="col-sm">
@@ -58,11 +57,13 @@
                                                 <th scope="col">{{ 'Name' }}</th>
                                                 <th scope="col">{{ 'Email' }}</th>
                                                 <th scope="col">{{ 'Whatsapp No' }}</th>
-                                                <th scope="col">{{ 'Profession' }}</th>
+                                                <th scope="col">{{ 'Calling No' }}</th>
                                                 <th scope="col">{{ 'DOB/Age' }}</th>
-                                                <th scope="col">{{ 'Profile Status' }}</th>
-                                                <th scope="col">{{ 'Account Status' }}</th>
+                                                <th scope="col">{{ 'Photo' }}</th>
+                                                {{-- <th scope="col">{{ 'Profile Status' }}</th>
+                                                <th scope="col">{{ 'Account Status' }}</th> --}}
                                                 <th scope="col">Action</th>
+                                                <th scope="col">{{ 'Created at' }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -86,10 +87,11 @@
                                                     <td>{{ $user->name }}<br>({{ $user->userId }}) </td>
                                                     <td>{{ $user->email }}</td>
                                                     <td>{{ $user->whatsapp_no }}</td>
-                                                    <td>{{ $user->profession }}</td>
+                                                    <td>{{ $user->userDetail->calling_no }}</td>
                                                     <td> {{ \Carbon\Carbon::parse($user->dob)->format('d-M-Y') }}<br>Age: {{ $user->age }}
                                                     </td>
-                                                    <td>
+                                                    <td><a href="#" class="btn btn-secondary btn-sm">Upload Photo</a></td>
+                                                    {{-- <td>
 
                                                         @if ($user->profile_status == 'verified')
                                                             <a href="#" class="btn btn-primary btn-sm">Verified</a>
@@ -99,10 +101,9 @@
                                                             <a href="#" class="btn btn-danger btn-sm">Rejected</a>
                                                         @endif
 
-                                                    </td>
+                                                    </td> --}}
 
-
-                                                    <td>
+                                                    {{-- <td>
 
                                                         @if ($user->account_status == 'active')
                                                             <a href="#" class="btn btn-success btn-sm">Active</a>
@@ -110,7 +111,8 @@
                                                             <a href="#" class="btn btn-danger btn-sm">Inactive</a>
                                                         @endif
 
-                                                    </td>
+                                                    </td> --}}
+
                                                     <td>
                                                         <a href="" class="btn btn-primary btn-sm"><i
                                                                 class="fa fa-eye"></i></a>
@@ -119,6 +121,10 @@
                                                         <a href="" class="btn btn-danger btn-sm"><i
                                                                 class="fa fa-trash"></i></a>
                                                     </td>
+
+                                                    <td> {{ \Carbon\Carbon::parse($user->created_at)->format('d-M-Y') }}
+                                                    </td>
+
 
                                                 </tr>
                                             @endforeach

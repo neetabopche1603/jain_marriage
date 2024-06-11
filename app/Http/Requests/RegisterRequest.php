@@ -116,6 +116,10 @@ class RegisterRequest extends BaseRequest
             'profile_rejected_reason' => 'nullable',
             'account_status' => 'nullable|in:active,inactive',
 
+            'family_status' => 'required',
+            'family_type' => 'required',
+
+
         ];
 
         // if ($this->method() === 'PUT' || $this->method() === 'PATCH') {
@@ -124,4 +128,6 @@ class RegisterRequest extends BaseRequest
         // }
         // return $rules;
     }
+
+
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,7 +56,7 @@ Route::get('/admin-logout', function (Request $request) {
     Auth::guard('web')->logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-    return redirect()->route('admin.login');
+    return Redirect::route('admin.login');
 })->name('admin.logout');
 
 
@@ -63,10 +64,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'admin/'], function () {
 
         // dashboard
-
         Route::get('/dashboard', DashboardController::class)->name('admin.dashboard');
         // Users Controller
         Route::get('user-list', [UserController::class, 'usersList'])->name('admin.users');
+        Route::post('user-store', [UserController::class, 'store'])->name('admin.userStore');
         Route::get('user-create', [UserController::class, 'create'])->name('admin.create');
+        Route::get('user-edit', [UserController::class, 'edit'])->name('admin.edit');
+
+        Route::post('get-state', [UserController::class, 'getState'])->name('admin.getState');
+        Route::post('get-city', [UserController::class, 'getCity'])->name('admin.getCity');
+
+
+
+
     });
 });
+
+Route::get('user-pdf-view', [UserController::class, 'userPdfView'])->name('admin.userPdfView');
+Route::get('user-generatePdf', [UserController::class, 'generatePdf'])->name('admin.generatePdf');

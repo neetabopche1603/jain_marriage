@@ -20,13 +20,15 @@ return new class extends Migration
             $table->string('candidate_visa')->nullable();
             $table->string('address_nri_citizen')->nullable()->comment("NRI Citizen");
 
-
             // Family Details -
             $table->string('father_name')->nullable();
             $table->string('father_profession')->nullable();
             $table->string('mother_name')->nullable();
             $table->string('mother_profession')->nullable();
             $table->string('residence_type')->nullable();
+            $table->longText('gotra')->nullable();
+            $table->string('family_status')->nullable();
+            $table->string('family_type')->nullable();
             $table->longText('gotra')->nullable();
             $table->longText('family_community')->nullable();
             $table->longText('family_sub_community')->nullable();

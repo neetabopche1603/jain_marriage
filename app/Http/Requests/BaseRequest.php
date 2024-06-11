@@ -33,7 +33,7 @@ class BaseRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'status' => false,
             'message' => 'Validation error',
-            'error_message' => $validator->errors(),
+            'error_message' => $validator->errors()->first(),
             'http_code'=> 422
         ], 422));
 

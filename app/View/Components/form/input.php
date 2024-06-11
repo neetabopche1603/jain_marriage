@@ -12,7 +12,7 @@ class input extends Component
      * Create a new component instance.
      */
     public $name, $label, $value, $type,$disabled = false,$placeholder, $min,$required;
-    public function __construct($name, $label, $value=null, $type="text",$disabled = false,$placeholder=null ,$min=null,$required=true)
+    public function __construct($name, $label, $value=null, $type="text",$disabled = false,$placeholder=null ,$min=null,$required=false)
     {
         $this->name = $name;
         $this->label = $label;
