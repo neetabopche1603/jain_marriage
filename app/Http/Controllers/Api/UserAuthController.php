@@ -99,15 +99,16 @@ class UserAuthController extends Controller
             $userPersonalDetails["hobbies"] = json_encode($request->hobbies);
 
 
-            if ($request->has('user_id') && $request->user_id != null) {
-                $user = User::find($request->user_id);
-                if (!$user) {
-                    return null;
-                }
-                $user->update($userPersonalDetails);
-            } else {
+            // if ($request->has('user_id') && $request->user_id != null) {
+            //     $user = User::find($request->user_id);
+            //     if (!$user) {
+            //         return null;
+            //     }
+            //     $user->update($userPersonalDetails);
+            //     $user = User::find($request->user_id);
+            // } else {
                 $user = User::create($userPersonalDetails);
-            }
+            // }
 
             return $user;
         } catch (Exception $e) {
@@ -176,7 +177,7 @@ class UserAuthController extends Controller
             ];
 
             // Fire the UserRegistered event
-            event(new UserRegisteredEvent($userData));
+            // event(new UserRegisteredEvent($userData));
             DB::commit();
             return $this->getResponseCode(200,  $token, $response, 'Register Successfully Done!');
         } catch (Exception $e) {
