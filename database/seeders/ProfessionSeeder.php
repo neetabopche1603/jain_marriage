@@ -69,6 +69,9 @@ class ProfessionSeeder extends Seeder
             ['name' => 'Surveyor'],
             ['name' => 'UX/UI Designer'],
             ['name' => 'Zoologist'],
+            ['name' => 'Housewife'],
+            ['name' => 'Any'],
+
         ];
 
         foreach($professions as $pro){

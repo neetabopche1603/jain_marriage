@@ -64,6 +64,7 @@ class hobbiesSeeder extends Seeder
             ['name' => 'Learning Languages'],
             ['name' => 'Public Speaking'],
             ['name' => 'Acting'],
+            ['name' => 'Any'],
         ];
         foreach($hobbies as $hobby){
             Hobby::create([

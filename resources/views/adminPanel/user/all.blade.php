@@ -34,9 +34,12 @@
                             <div id="customerList">
                                 <div class="row g-4 mb-3">
                                     <div class="col-sm-auto">
-                                        {{-- <div>
-                                            <a href="{{route('admin.generatePdf')}}" class="btn btn-success add-btn"><i class="fa fa-download"></i> </i>Download Pdf</a>
-                                        </div> --}}
+                                        <div>
+                                            {{-- <a href="{{route('admin.generatePdf')}}" class="btn btn-success add-btn"><i class="fa fa-download"></i> </i>Download Pdf</a> --}}
+
+                                            <a href="{{route('admin.create')}}" class="btn btn-success add-btn"><i class="fa fa-user"></i> </i>Add New User</a>
+
+                                        </div>
                                     </div>
                                     <div class="col-sm">
                                         <div class="d-flex justify-content-sm-end">

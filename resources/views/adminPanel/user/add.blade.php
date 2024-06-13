@@ -54,7 +54,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <x-form.select name="profile_created_by_type" label="Profile For" :options="[
-                                            '' => '-Select Profile For-',
                                             'self' => 'Self',
                                             'son' => 'Son',
                                             'daughter' => 'Daughter',
@@ -62,13 +61,11 @@
                                             'sister' => 'Sister',
                                             'relative' => 'Relative',
                                             'other' => 'Other',
-                                        ]"
-                                            :required="true" />
+                                        ]" :required="true" />
                                     </div>
 
                                     <div class="col-md-6">
                                         <x-form.select name="refrence_by" label="Reference By*" :options="[
-                                            '' => '-Select-',
                                             'facebook' => 'Facebook',
                                             'instagram' => 'Instagram',
                                             'google' => 'Google',
@@ -213,7 +210,7 @@
                                             @foreach ($data['educations'] as $education)
                                                 <option value="{{ $education->education_name }}"
                                                     {{ collect(old('education'))->contains($education->education_name) ? 'selected' : '' }}>
-                                                    {{ $education->education_name }}
+                                                    {{ strtoupper($education->education_name)}}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -231,7 +228,7 @@
                                             @foreach ($data['professions'] as $profe)
                                                 <option value="{{ $profe->profession_name }}"
                                                     {{ old('profession') == $profe->profession_name ? 'selected' : '' }}>
-                                                    {{ $profe->profession_name }}
+                                                    {{ strtoupper($profe->profession_name)}}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -249,7 +246,8 @@
                                             @foreach ($data['occupations'] as $occu)
                                                 <option value="{{ $occu->occupation_name }}"
                                                     {{ old('occupation') == $occu->occupation_name ? 'selected' : '' }}>
-                                                    {{ $occu->occupation_name }}
+                                                    {{ strtoupper($occu->occupation_name)}}
+
                                                 </option>
                                             @endforeach
                                         </select>
@@ -284,7 +282,6 @@
 
                                     <div class="col-md-3 mt-2">
                                         <x-form.select name="candidate_community" label="Community" :options="[
-                                            '' => 'Select Community',
                                             'swetamber' => 'Swetamber',
                                             'digmber' => 'Digmber',
                                             'agrawal' => 'Agrawal',
@@ -322,6 +319,7 @@
                                                 '200 - 500 Cr' => '200 - 500 Cr',
                                                 '500 Cr - 1B' => '500 Cr - 1B',
                                                 '1B and above' => '1B and above',
+                                                'any' => 'Any',
                                             ]" />
                                     </div>
 
@@ -368,7 +366,6 @@
                                         <div class="col-md-4">
                                             <x-form.select name="marital_status" label="Marital Status"
                                                 :options="[
-                                                    '' => 'Select Marital Status',
                                                     'Single' => 'Single',
                                                     'Married' => 'Married',
                                                     'Divorced' => 'Divorced',
@@ -376,6 +373,7 @@
                                                     'Separated' => 'Separated',
                                                     'Engaged' => 'Engaged',
                                                     'In a Relationship' => 'In a Relationship',
+                                                    'any' => 'Any',
                                                 ]" />
                                         </div>
 
@@ -502,7 +500,7 @@
                                             @foreach ($data['professions'] as $profe)
                                                 <option value="{{ $profe->profession_name }}"
                                                     {{ old('father_profession') == $profe->profession_name ? 'selected' : '' }}>
-                                                    {{ $profe->profession_name }}
+                                                    {{ strtoupper($profe->profession_name)}}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -524,7 +522,7 @@
                                             @foreach ($data['professions'] as $profe)
                                                 <option value="{{ $profe->profession_name }}"
                                                     {{ old('mother_profession') == $profe->profession_name ? 'selected' : '' }}>
-                                                    {{ $profe->profession_name }}
+                                                    {{ strtoupper($profe->profession_name)}}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -686,7 +684,6 @@
 
                                         <x-form.select name="family_sub_community" label="Sub Community"
                                             :options="[
-                                                '' => 'Select Sub-Community',
                                                 'Digmber-Murtipojak' => 'Digmber-Murtipojak',
                                                 'Digmber-Gumanapati' => 'Digmber-Gumanapati',
                                                 'Digmber-Taranapati' => 'Digmber-Taranapati',
@@ -726,7 +723,7 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <x-form.textarea name="other_family_details" label="Other Family Details"
+                                        <x-form.textarea name="other_family_details" label="Family Business Details"
                                             placeholder="" />
                                     </div>
 
@@ -747,8 +744,8 @@
                                                 No
                                             </option>
 
-                                            <option value="don't know"
-                                                {{ old('are_you_manglik') == "don't know" ? 'selected' : '' }}>Don't Know
+                                            <option value="any"
+                                                {{ old('are_you_manglik') == "any" ? 'selected' : '' }}>Any
                                             </option>
                                         </select>
                                         @error('are_you_manglik')
@@ -831,13 +828,35 @@
 
                                     <strong>Age Group</strong>
                                     <div class="col-md-3">
-                                        <x-form.input name="partner_age_group_from" type="text" label="from"
-                                            placeholder="" />
+                                        <label for="partner_age_group_from" class="form-label">From</label>
+                                        <select name="partner_age_group_from" id="partner_age_group_from" class="form-select">
+                                            <option value="">Select Age</option>
+                                            @for ($age = 18; $age <= 75; $age++)
+                                                <option value="{{ $age }}" {{ old('partner_age_group_from') == $age ? 'selected' : '' }}>
+                                                    {{ $age }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                        @error('partner_age_group_from')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
+
                                     <div class="col-md-3">
-                                        <x-form.input name="partner_age_group_to" type="text" label="to"
-                                            placeholder="" />
+                                        <label for="partner_age_group_to" class="form-label">To</label>
+                                        <select name="partner_age_group_to" id="partner_age_group_to" class="form-select">
+                                            <option value="">Select Age</option>
+                                            @for ($age = 18; $age <= 75; $age++)
+                                                <option value="{{ $age }}" {{ old('partner_age_group_to') == $age ? 'selected' : '' }}>
+                                                    {{ $age }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                        @error('partner_age_group_to')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
+
 
                                     <div class="col-md-6">
                                         <x-form.select name="partner_income" label="Income" :options="[
@@ -864,6 +883,7 @@
                                             '200 - 500 Cr' => '200 - 500 Cr',
                                             '500 Cr - 1B' => '500 Cr - 1B',
                                             '1B and above' => '1B and above',
+                                            'any' => 'Any',
                                         ]" />
 
                                     </div>
@@ -919,7 +939,8 @@
                                             @foreach ($data['educations'] as $education)
                                                 <option value="{{ $education->education_name }}"
                                                     {{ in_array($education->education_name, old('partner_education', [])) ? 'selected' : '' }}>
-                                                    {{ $education->education_name }}
+                                                    {{ strtoupper($education->education_name)}}
+
                                                 </option>
                                             @endforeach
 
@@ -940,7 +961,8 @@
                                             @foreach ($data['occupations'] as $occupation)
                                                 <option value="{{ $occupation->occupation_name }}"
                                                     {{ in_array($occupation->occupation_name, old('partner_occupation', [])) ? 'selected' : '' }}>
-                                                    {{ $occupation->occupation_name }}
+                                                    {{ strtoupper( $occupation->occupation_name )}}
+
                                                 </option>
                                             @endforeach
                                         </select>
@@ -960,7 +982,8 @@
                                             @foreach ($data['professions'] as $profession)
                                                 <option value="{{ $profession->profession_name }}"
                                                     {{ in_array($profession->profession_name, old('partner_profession', [])) ? 'selected' : '' }}>
-                                                    {{ $profession->profession_name }}
+                                                    {{ strtoupper($profession->profession_name )}}
+
                                                 </option>
                                             @endforeach
                                         </select>
@@ -973,7 +996,7 @@
 
 
                                     <div class="col-md-4 mt-2">
-                                        <label for="partner_manglik" class="form-label">Are You Manglik</label>
+                                        <label for="partner_manglik" class="form-label">Manglik</label>
                                         <select name="partner_manglik" id="partner_manglik" class="form-select">
                                             <option value="">-Select Type-</option>
                                             <option value="yes"
@@ -983,8 +1006,8 @@
                                             <option value="no" {{ old('partner_manglik') == 'no' ? 'selected' : '' }}>
                                                 No
                                             </option>
-                                            <option value="don't know"
-                                                {{ old('partner_manglik') == "don't know" ? 'selected' : '' }}>Don't Know
+                                            <option value="any"
+                                                {{ old('partner_manglik') == "any" ? 'selected' : '' }}>Any
                                             </option>
 
                                         </select>
@@ -1005,6 +1028,11 @@
                                                 {{ old('astrology_matching') == 'no' ? 'selected' : '' }}>
                                                 No
                                             </option>
+
+                                            <option value="any"
+                                            {{ old('astrology_matching') == 'any' ? 'selected' : '' }}>
+                                            Any
+                                        </option>
                                         </select>
                                         @error('astrology_matching')
                                             <div class="text-danger">{{ $message }}</div>
@@ -1012,21 +1040,20 @@
                                     </div>
 
                                     <div class="col-md-4 mt-2">
-                                        <label for="partner_marital_status" class="form-label">Marital Status</label>
-                                        <select name="partner_marital_status" id="partner_marital_status"
-                                            class="form-select">
-                                            <option value="">Select Marital Status</option>
-                                            <option value="Single">Single</option>
-                                            <option value="Married">Married</option>
-                                            <option value="Divorced">Divorced</option>
-                                            <option value="Widowed">Widowed</option>
-                                            <option value="Separated">Separated</option>
-                                            <option value="Engaged">Engaged</option>
-                                            <option value="In a Relationship">In a Relationship</option>
-                                        </select>
-                                        @error('partner_marital_status')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                        <x-form.select name="partner_marital_status"
+                                        label="Marital Status"
+                                        :options="[
+                                            'single' => 'Single',
+                                            'married' => 'Married',
+                                            'divorced' => 'Divorced',
+                                            'widowed' => 'Widowed',
+                                            'separated' => 'Separated',
+                                            'engaged' => 'Engaged',
+                                            'in a Relationship' => 'In a Relationship',
+                                            'any' => 'Any'
+                                        ]" />
+
+
                                     </div>
 
 
@@ -1115,6 +1142,9 @@
 
             $('#weight').select2();
             $('#height').select2();
+
+            $('#partner_age_group_from').select2();
+            $('#partner_age_group_to').select2();
 
             $('#partner_education').select2();
             $('#partner_occupation').select2();

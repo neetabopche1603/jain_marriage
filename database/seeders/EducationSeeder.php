@@ -41,6 +41,7 @@ class EducationSeeder extends Seeder
             ['education_name' => 'Trade Certification'],
             ['education_name' => 'High School Diploma'],
             ['education_name' => 'Associate Degree'],
+            ['education_name' => 'Any'],
         ];
 
         foreach($educations as $edu){

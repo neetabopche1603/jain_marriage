@@ -69,6 +69,8 @@ class OccupationsSeeder extends Seeder
             ['occupation_name' => 'Surveyor'],
             ['occupation_name' => 'UX/UI Designer'],
             ['occupation_name' => 'Zoologist'],
+            ['occupation_name' => 'Any'],
+
         ];
 
         foreach($Occupations as $Occupation){
