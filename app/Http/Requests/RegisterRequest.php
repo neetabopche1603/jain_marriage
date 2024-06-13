@@ -77,8 +77,8 @@ class RegisterRequest extends BaseRequest
             'are_you_manglik' => 'required',
 
 
-            'photo.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
-            'photo' => ['required', 'array', 'max:5'],
+            // 'photo.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+            // 'photo' => ['nullable', 'array', 'max:5'],
 
             // 'photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
             // 'photo_width' => 'required|integer',

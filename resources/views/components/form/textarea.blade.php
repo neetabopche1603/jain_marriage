@@ -1,6 +1,4 @@
-@php
-    $rows = $rows ?? 3;
-@endphp
+@props(['name', 'label', 'rows' => 3, 'value' => null])
 
 <div class="mb-3">
     <label class="form-label" for="{{ $name }}">{{ $label }}</label>
