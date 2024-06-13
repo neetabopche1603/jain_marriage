@@ -757,7 +757,7 @@
                                     <div class="row mt-4">
 
                                         <div class="col-md-3">
-                                            <label for="idProof_type" class="form-label">IdProof Type</label>
+                                            <label for="idProof_type" class="form-label">ID Proof Type</label>
                                             <select name="idProof_type" id="idProof_type" class="form-select">
                                                 <option value="">-Select Type-</option>
                                                 <option value="adhar_card"
@@ -790,7 +790,7 @@
                                         </div>
 
                                         <div class="col-lg-6">
-                                            <label for="id_proof">Id Proof</label>
+                                            <label for="id_proof">ID Proof</label>
                                             <input type="file" accept="image/*" name="id_proof" id="id_proof"
                                                 onchange="loadFile(event, 'output3')" class="form-control">
 

@@ -61,7 +61,7 @@ class UserReq extends FormRequest
             'daughter_details' => ['nullable'],
 
             'physical_status' => ['required', 'string', 'max:255'],
-            'physical_status_desc' => ['required'],
+            'physical_status_desc' => ['nullable'],
 
 
             'blood_group' => ['required', 'string', 'max:3'],
