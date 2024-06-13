@@ -33,14 +33,14 @@ class RegisterRequest extends BaseRequest
             'age' => ['required', 'integer', 'min:0'],
             'birth_place' => ['required', 'string', 'max:255'],
             'birth_time' => ['required', 'string', 'max:255'],
-            'height' => ['required', 'numeric'],
-            'weight' => ['required', 'numeric'],
+            'height' => ['required'],
+            'weight' => ['required'],
             'complexion' => ['required', 'string', 'max:255'],
             'education' => ['required', 'string', 'max:255'],
             'profession' => ['required', 'string', 'max:255'],
             'occupation' => ['required', 'string', 'max:255'],
 
-            'hobbies' => 'required|array',
+            'hobbies' => 'nullable|array',
             'hobbies.*' => 'exists:hobbies,id',
 
             'religion' => ['required', 'string', 'max:255'],
@@ -54,7 +54,7 @@ class RegisterRequest extends BaseRequest
 
             //  If NRI-
 
-            'if_nri' => 'required|in:yes,no',
+            'if_nri' => 'required|in:Yes,No',
             'candidate_visa' => ['nullable', 'string', 'max:255'],
             'address_nri_citizen' => ['nullable', 'string', 'max:255'],
 
@@ -77,8 +77,8 @@ class RegisterRequest extends BaseRequest
             'are_you_manglik' => 'required',
 
 
-            'photo.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
-            'photo' => ['required', 'array', 'max:5'],
+            // 'photo.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+            // 'photo' => ['nullable', 'array', 'max:5'],
 
             // 'photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
             // 'photo_width' => 'required|integer',
@@ -104,7 +104,7 @@ class RegisterRequest extends BaseRequest
             'partner_occupation' => ['required', 'string', 'max:255'],
             'partner_profession' => ['required', 'string', 'max:255'],
 
-            'partner_hobbies' => 'required|array',
+            'partner_hobbies' => 'nullable|array',
             'partner_hobbies.*' => 'exists:hobbies,id',
 
             'partner_manglik' => 'required',
