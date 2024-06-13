@@ -27,22 +27,14 @@
             </div>
 
             <!-- end page title -->
-            <p class="text-danger"><i>All Filed is required</i></p>
+            {{-- <p class="text-danger"><i>All Filed is required</i></p> --}}
 
             @include('partial.flash-msg')
 
-            @if ($errors->any())
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-
-            <form action="{{ route('admin.userStore') }}" method="post" id="userRegForm" enctype="multipart/form-data">
+            <form action="{{ route('admin.userStore') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-lg-7">
+                    <div class="col-lg-12">
                         {{-- Basic Details --}}
                         <div class="card">
                             <div class="card-header">
@@ -52,28 +44,75 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <x-form.select name="profile_created_by_type" label="Profile For" :options="[
-                                            '' => '-Select Profile For-',
-                                            'self' => 'Self',
-                                            'son' => 'Son',
-                                            'daughter' => 'Daughter',
-                                            'brother' => 'Brother',
-                                            'sister' => 'Sister',
-                                            'relative' => 'Relative',
-                                            'other' => 'Other',
-                                        ]"
-                                            :required="true" />
+                                        <label for="profile_created_by_type" class="form-label">Profile For*</label>
+                                        <select class="form-select" data-choices data-choices-search-false
+                                            id="profile_created_by_type" name="profile_created_by_type">
+                                            <option value="">-Select-</option>
+
+                                            <option value="self"
+                                                {{ old('profile_created_by_type') == 'self' ? 'selected' : '' }}>
+                                                Self</option>
+
+                                            <option value="son"
+                                                {{ old('profile_created_by_type') == 'son' ? 'selected' : '' }}>
+                                                Son</option>
+
+                                            <option value="daughter"
+                                                {{ old('profile_created_by_type') == 'daughter' ? 'selected' : '' }}>
+                                                Daughter</option>
+                                            <option value="brother"
+                                                {{ old('profile_created_by_type') == 'brother' ? 'selected' : '' }}>
+                                                Brother</option>
+
+                                            <option value="sister"
+                                                {{ old('profile_created_by_type') == 'sister' ? 'selected' : '' }}>
+                                                Sister</option>
+
+                                            <option value="relative"
+                                                {{ old('profile_created_by_type') == 'relative' ? 'selected' : '' }}>
+                                                Relative</option>
+
+                                            <option value="other"
+                                                {{ old('profile_created_by_type') == 'other' ? 'selected' : '' }}>
+                                                Other</option>
+
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('profile_created_by_type')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </span>
+
                                     </div>
 
                                     <div class="col-md-6">
-                                        <x-form.select name="refrence_by" label="Reference By*" :options="[
-                                            '' => '-Select-',
-                                            'facebook' => 'Facebook',
-                                            'instagram' => 'Instagram',
-                                            'google' => 'Google',
-                                            'youTube' => 'YouTube',
-                                        ]"
-                                            :required="true" />
+                                        <label for="refrence_by" class="form-label">Refrence By*</label>
+                                        <select class="form-select" data-choices data-choices-search-false id="refrence_by"
+                                            name="refrence_by">
+                                            <option value="">-Select-</option>
+                                            <option value="facebook"
+                                                {{ old('refrence_by') == 'facebook' ? 'selected' : '' }}>
+                                                Facebook</option>
+
+                                            <option value="instagram"
+                                                {{ old('refrence_by') == 'instagram' ? 'selected' : '' }}>
+                                                Instagram</option>
+
+                                            <option value="google" {{ old('refrence_by') == 'google' ? 'selected' : '' }}>
+                                                Google</option>
+
+                                            <option value="youTube"
+                                                {{ old('refrence_by') == 'youTube' ? 'selected' : '' }}>
+                                                YouTube</option>
+
+                                        </select>
+
+                                        <span class="text-danger">
+                                            @error('refrence_by')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </span>
+
                                     </div>
 
                                     <div class="col-md-6 mt-2">
@@ -99,29 +138,51 @@
                         </div>
                         <!-- end card -->
 
+
                     </div>
 
-
-
-                    {{-- User Profile PHOTO --}}
-                    <div class="col-lg-5 mt-1">
+                    {{-- User Profile Status --}}
+                    {{-- <div class="col-lg-4 mt-1">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="card-title mb-0">User Photo</h5>
+                                <h5 class="card-title mb-0">User Profile Status</h5>
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <input type="file" name="photo" id="photo" class="form-control">
-                                </div>
-                                <div class="image_preview" style="display: none">
-                                    <img id="image" src="" alt="" width="180" height="250">
-                                    {{-- alt="Image to crop" --}}
+                                <div>
+                                    <label for="choices-privacy-status-input" class="form-label">Status</label>
+                                    <select class="form-select" data-choices data-choices-search-false
+                                        id="choices-privacy-status-input" name="profile_status">
+                                        <option value="pending" selected>Pending</option>
+                                        <option value="verified">Verified</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- end card body -->
                         </div>
                         <!-- end card -->
-                    </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">User Account Status</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-0">
+                                    <label for="choices-categories-input" class="form-label">Status</label>
+                                    <select class="form-select" data-choices data-choices-search-false
+                                        id="choices-privacy-status-input" name="account_status">
+                                        <option value="active" selected>Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+
+
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                        <!-- end card -->
+
+                    </div> --}}
 
                     {{-- User Personal Details Card --}}
                     <div class="col-lg-12">
@@ -133,14 +194,24 @@
 
                             <div class="card-body">
                                 <div class="row">
-
                                     <div class="col-md-6">
-                                        <x-form.select name="gender" label="Gender" :options="[
-                                            'male' => 'male',
-                                            'female' => 'female',
-                                            'other' => 'other',
-                                        ]" :required="true" />
+                                        <label for="gender" class="form-label">Gender*</label>
+                                        <select class="form-select" name="gender" class="form-control">
+                                            <option value="">-Select gender-</option>
 
+                                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>
+                                                Male</option>
+
+                                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>
+                                                Female</option>
+                                            <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>
+                                                Other</option>
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('gender')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </span>
                                     </div>
 
                                     <div class="col-md-6">
@@ -158,51 +229,41 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <x-form.input name="birth_time" type="time" label="Birth time" placeholder="" />
+                                        <x-form.input name="birth_time" type="time" label="Birth time"
+                                            placeholder="" />
                                     </div>
 
                                     <div class="col-md-5">
                                         <x-form.input name="birth_place" label="Birth Place" placeholder="" />
                                     </div>
 
-                                        <div class="col-md-4">
-                                            <label for="height" class="form-label">Height</label>
-                                            <select name="height" id="height" class="form-select">
-                                                <option value="">Select Height</option>
-                                                @for ($feet = 4; $feet <= 8; $feet++)
-                                                    @for ($inch = 0; $inch <= 9; $inch++)
-                                                        @php
-                                                            $height = $feet + ($inch / 10);
-                                                        @endphp
-                                                        <option value="{{ $height }}">{{ $height }}</option>
-                                                    @endfor
-                                                @endfor
-                                            </select>
-                                        </div>
 
                                     <div class="col-md-4">
-                                        <label for="weight" class="form-label">Weight</label>
-                                        <select name="weight" id="weight" class="form-select">
-                                            <option value="">Select Weight</option>
-                                            @for ($weight = 35; $weight <= 200; $weight++)
-                                                <option value="{{ $weight }}kg">{{ $weight }}kg</option>
-                                            @endfor
-                                        </select>
+                                        <x-form.input name="height" label="Height" placeholder="5.2 inch" />
                                     </div>
 
                                     <div class="col-md-4">
-                                        <x-form.select name="complexion" label="Complexion" :options="[
-                                            'extemely fair skin' => 'Extemely Fair Skin',
-                                            'fair skin' => 'Fair Skin',
-                                            'light skin' => 'Light Skin',
-                                            'medium skin' => 'Medium Skin',
-                                            'olive skin' => 'Olive Skin',
-                                            'tan skin' => 'Tan Skin',
-                                            'brown skin' => 'Brown Skin',
-                                            'dark skin' => 'Dark Skin',
-                                        ]"
-                                            :required="true" />
+                                        <x-form.input name="weight" label="Weight" placeholder="40Kg" />
+                                    </div>
 
+                                    <div class="col-md-4">
+                                        <label for="complexion" class="form-label">Complexion</label>
+                                        <select name="complexion" id="complexion" class="form-select">
+                                            <option value="">Select Complexion</option>
+                                            <option value="extemely fair skin">Extemely Fair Skin</option>
+                                            <option value="fair skin">Fair Skin</option>
+                                            <option value="light skin">Light Skin</option>
+                                            <option value="medium skin">Medium Skin</option>
+                                            <option value="olive skin">Olive Skin</option>
+                                            <option value="tan skin">Tan Skin</option>
+                                            <option value="brown skin">Brown Skin</option>
+                                            <option value="dark skin">Dark Skin</option>
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('complexion')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </span>
                                     </div>
 
                                     <div class="col-md-4">
@@ -211,10 +272,8 @@
                                             multiple="multiple">
                                             <option value="" disabled>Select Education</option>
                                             @foreach ($data['educations'] as $education)
-                                                <option value="{{ $education->education_name }}"
-                                                    {{ collect(old('education'))->contains($education->education_name) ? 'selected' : '' }}>
-                                                    {{ $education->education_name }}
-                                                </option>
+                                                <option value="{{ $education->education_name }}">
+                                                    {{ $education->education_name }}</option>
                                             @endforeach
                                         </select>
                                         <span class="text-danger">
@@ -229,8 +288,7 @@
                                         <select name="profession" id="profession" class="form-select">
                                             <option value="">Select Profession</option>
                                             @foreach ($data['professions'] as $profe)
-                                                <option value="{{ $profe->profession_name }}"
-                                                    {{ old('profession') == $profe->profession_name ? 'selected' : '' }}>
+                                                <option value="{{ $profe->profession_name }}">
                                                     {{ $profe->profession_name }}
                                                 </option>
                                             @endforeach
@@ -247,9 +305,7 @@
                                         <select name="occupation" id="occupation" class="form-select">
                                             <option value="">Select Occupation</option>
                                             @foreach ($data['occupations'] as $occu)
-                                                <option value="{{ $occu->occupation_name }}"
-                                                    {{ old('occupation') == $occu->occupation_name ? 'selected' : '' }}>
-                                                    {{ $occu->occupation_name }}
+                                                <option value="{{ $occu->occupation_name }}">{{ $occu->occupation_name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -262,80 +318,73 @@
 
 
                                     <div class="col-md-3 mt-2">
-                                        <x-form.select name="religion" label="Religion" :options="[
-                                            // '' => 'Select Religion',
-                                            'Christianity' => 'Christianity',
-                                            'Islam' => 'Islam',
-                                            'Hinduism' => 'Hinduism',
-                                            'Buddhism' => 'Buddhism',
-                                            'Judaism' => 'Judaism',
-                                            'Sikhism' => 'Sikhism',
-                                            'Jainism' => 'Jainism',
-                                            'Shinto' => 'Shinto',
-                                            'Taoism' => 'Taoism',
-                                            'Zoroastrianism' => 'Zoroastrianism',
-                                            'Bahá\'í Faith' => 'Bahá\'í Faith',
-                                            'Confucianism' => 'Confucianism',
-                                            'Atheism' => 'Atheism',
-                                            'Agnosticism' => 'Agnosticism',
-                                            'Other' => 'Other',
-                                        ]" />
+                                        <label for="religion" class="form-label">Religion</label>
+                                        <select name="religion" id="religion" class="form-select">
+                                            <option value="">Select Religion</option>
+                                            <option value="Christianity">Christianity</option>
+                                            <option value="Islam">Islam</option>
+                                            <option value="Hinduism">Hinduism</option>
+                                            <option value="Buddhism">Buddhism</option>
+                                            <option value="Judaism">Judaism</option>
+                                            <option value="Sikhism">Sikhism</option>
+                                            <option value="Jainism">Jainism</option>
+                                            <option value="Shinto">Shinto</option>
+                                            <option value="Taoism">Taoism</option>
+                                            <option value="Zoroastrianism">Zoroastrianism</option>
+                                            <option value="Bahá'í Faith">Bahá'í Faith</option>
+                                            <option value="Confucianism">Confucianism</option>
+                                            <option value="Atheism">Atheism</option>
+                                            <option value="Agnosticism">Agnosticism</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+
+                                        <span class="text-danger">
+                                            @error('religion')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </span>
                                     </div>
 
                                     <div class="col-md-3 mt-2">
-                                        <x-form.select name="candidate_community" label="Community" :options="[
-                                            '' => 'Select Community',
-                                            'swetamber' => 'Swetamber',
-                                            'digmber' => 'Digmber',
-                                            'agrawal' => 'Agrawal',
-                                            'khandalwal' => 'Khandalwal',
-                                            'vani' => 'Vani',
-                                            'other jain' => 'Other Jain',
-                                            'non jain' => 'Non Jain',
-                                        ]" />
+                                        <label for="candidate_community" class="form-label">Community</label>
+                                        <select name="candidate_community" id="Community" class="form-select">
+                                            <option value="">Select Community</option>
+                                            <option value="Swetamber">Swetamber</option>
+                                            <option value="Digmber">Digmber</option>
+                                            <option value="Agrawal">Agrawal</option>
+                                            <option value="Khandalwal">Khandalwal</option>
+                                            <option value="Vani">Vani</option>
+                                            <option value="Other Jain">Other Jain</option>
+                                            <option value="Non Jain">Non Jain</option>
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('candidate_community')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </span>
                                     </div>
 
 
                                     <div class="col-md-3 mt-2">
-                                        <x-form.select name="candidate_income" label="Candidate Income"
-                                            :options="[
-                                                '1 - 2 L' => '1 - 2 L',
-                                                '2 - 3 L' => '2 - 3 L',
-                                                '3 - 4 L' => '3 - 4 L',
-                                                '4 - 5 L' => '4 - 5 L',
-                                                '5 - 10 L' => '5 - 10 L',
-                                                '10 - 15 L' => '10 - 15 L',
-                                                '15 - 20 L' => '15 - 20 L',
-                                                '20 - 25 L' => '20 - 25 L',
-                                                '25 - 30 L' => '25 - 30 L',
-                                                '30 - 45 L' => '30 - 45 L',
-                                                '45 - 50 L' => '45 - 50 L',
-                                                '50 - 75 L' => '50 - 75 L',
-                                                '75 L - 1 Cr' => '75 L - 1 Cr',
-                                                '1 - 2 Cr' => '1 - 2 Cr',
-                                                '2 - 3 Cr' => '2 - 3 Cr',
-                                                '3 - 5 Cr' => '3 - 5 Cr',
-                                                '5 - 10 Cr' => '5 - 10 Cr',
-                                                '10 - 15 Cr' => '10 - 15 Cr',
-                                                '15 - 100 Cr' => '15 - 100 Cr',
-                                                '100 - 200 Cr' => '100 - 200 Cr',
-                                                '200 - 500 Cr' => '200 - 500 Cr',
-                                                '500 Cr - 1B' => '500 Cr - 1B',
-                                                '1B and above' => '1B and above',
-                                            ]" />
+                                        <x-form.input name="candidate_income" label="Candidate Income" placeholder="" />
                                     </div>
 
                                     <div class="col-md-3 mt-2">
-                                        <x-form.select name="blood_group" label="Blood Group" :options="[
-                                            'A+' => 'A+',
-                                            'A-' => 'A-',
-                                            'B+' => 'B+',
-                                            'B-' => 'B-',
-                                            'AB+' => 'AB+',
-                                            'AB-' => 'AB-',
-                                            'O+' => 'O+',
-                                            'O-' => 'O-',
-                                        ]" />
+                                        <label for="blood_group" class="form-label">Blood Group</label>
+                                        <select name="blood_group" id="blood_group" class="form-select">
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                        @error('blood_group')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div class="col-md-4 mt-2">
@@ -366,17 +415,20 @@
 
 
                                         <div class="col-md-4">
-                                            <x-form.select name="marital_status" label="Marital Status"
-                                                :options="[
-                                                    '' => 'Select Marital Status',
-                                                    'Single' => 'Single',
-                                                    'Married' => 'Married',
-                                                    'Divorced' => 'Divorced',
-                                                    'Widowed' => 'Widowed',
-                                                    'Separated' => 'Separated',
-                                                    'Engaged' => 'Engaged',
-                                                    'In a Relationship' => 'In a Relationship',
-                                                ]" />
+                                            <label for="marital_status" class="form-label">Marital Status</label>
+                                            <select name="marital_status" id="marital_status" class="form-select">
+                                                <option value="">Select Marital Status</option>
+                                                <option value="Single">Single</option>
+                                                <option value="Married">Married</option>
+                                                <option value="Divorced">Divorced</option>
+                                                <option value="Widowed">Widowed</option>
+                                                <option value="Separated">Separated</option>
+                                                <option value="Engaged">Engaged</option>
+                                                <option value="In a Relationship">In a Relationship</option>
+                                            </select>
+                                            @error('marital_status')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="col-md-4 mt-2 is_children_div" style="display: none">
@@ -611,24 +663,25 @@
                                         <select name="family_type" id="family_type" class="form-select">
                                             <option value="">-Select Type-</option>
                                             <option value="nuclear"
-                                                {{ old('family_type') == 'nuclear' ? 'selected' : '' }}>
+                                                {{ old('family_status') == 'nuclear' ? 'selected' : '' }}>
                                                 Nuclear</option>
 
-                                            <option value="joint" {{ old('family_type') == 'joint' ? 'selected' : '' }}>
+                                            <option value="joint"
+                                                {{ old('family_status') == 'joint' ? 'selected' : '' }}>
                                                 Joint
                                             </option>
 
                                             <option value="single parent"
-                                                {{ old('family_type') == 'single parent' ? 'selected' : '' }}>Single
+                                                {{ old('family_status') == 'single parent' ? 'selected' : '' }}>Single
                                                 Parent
                                             </option>
 
                                             <option value="step parent"
-                                                {{ old('family_type') == 'step parent' ? 'selected' : '' }}>Step Parent
+                                                {{ old('family_status') == 'step parent' ? 'selected' : '' }}>Step Parent
                                             </option>
 
                                             <option value="grandparent"
-                                                {{ old('family_type') == 'grandparent' ? 'selected' : '' }}>Grandparent
+                                                {{ old('family_status') == 'grandparent' ? 'selected' : '' }}>Grandparent
                                             </option>
 
                                         </select>
@@ -678,34 +731,41 @@
                                             'Khandalwal' => 'Khandalwal',
                                             'Vani' => 'Vani',
                                             'Other Jain' => 'Other Jain',
-                                            'Non Jain' => 'Non Jain',
-                                        ]" />
+                                            'Non Jain' => 'Non Jain']"
+                                             />
                                     </div>
 
                                     <div class="col-md-6 mt-2">
+                                        <label for="family_sub_community" class="form-label">Sub Community</label>
+                                        <select name="family_sub_community" id="family_sub_community"
+                                            class="form-select">
+                                            <option value="">Select Sub-Community</option>
+                                            <option value="Digmber-Murtipojak">Digmber-Murtipojak</option>
+                                            <option value="Digmber-Gumanapati">Digmber-Gumanapati</option>
+                                            <option value="Digmber-Taranapati">Digmber-Taranapati</option>
+                                            <option value="Digmber-Teranapati">Digmber-Teranapati</option>
+                                            <option value="Digmber-Terapanti">Digmber-Terapanti</option>
+                                            <option value="Digmber-Torapanti">Digmber-Torapanti</option>
+                                            <option value="Digmber-Pancham">Digmber-Pancham</option>
+                                            <option value="Digmber-Bisapanti">Digmber-Bisapanti</option>
+                                            <option value="Digmber">Digmber</option>
+                                            <option value="Swetamber">Swetamber</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Swetamber-Terapanti">Swetamber-Terapanti</option>
+                                            <option value="Swetamber-Murtipojak">Swetamber-Murtipojak</option>
+                                            <option value="Swetamber-Stanawasi">Swetamber-Stanawasi</option>
+                                            <option value="Swetamber-Derawasi">Swetamber-Derawasi</option>
+                                            <option value="Other Jain">Other Jain</option>
+                                            <option value="Vani">Vani</option>
+                                            <option value="Non Jain">Non Jain</option>
 
-                                        <x-form.select name="family_sub_community" label="Sub Community"
-                                            :options="[
-                                                '' => 'Select Sub-Community',
-                                                'Digmber-Murtipojak' => 'Digmber-Murtipojak',
-                                                'Digmber-Gumanapati' => 'Digmber-Gumanapati',
-                                                'Digmber-Taranapati' => 'Digmber-Taranapati',
-                                                'Digmber-Teranapati' => 'Digmber-Teranapati',
-                                                'Digmber-Terapanti' => 'Digmber-Terapanti',
-                                                'Digmber-Torapanti' => 'Digmber-Torapanti',
-                                                'Digmber-Pancham' => 'Digmber-Pancham',
-                                                'Digmber-Bisapanti' => 'Digmber-Bisapanti',
-                                                'Digmber' => 'Digmber',
-                                                'Swetamber' => 'Swetamber',
-                                                'Other' => 'Other',
-                                                'Swetamber-Terapanti' => 'Swetamber-Terapanti',
-                                                'Swetamber-Murtipojak' => 'Swetamber-Murtipojak',
-                                                'Swetamber-Stanawasi' => 'Swetamber-Stanawasi',
-                                                'Swetamber-Derawasi' => 'Swetamber-Derawasi',
-                                                'Other Jain' => 'Other Jain',
-                                                'Vani' => 'Vani',
-                                                'Non Jain' => 'Non Jain',
-                                            ]" />
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('family_sub_community')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </span>
+
 
                                     </div>
 
@@ -796,19 +856,11 @@
                                             <label for="id_proof">Id Proof</label>
                                             <input type="file" accept="image/*" name="id_proof" id="id_proof"
                                                 onchange="loadFile(event, 'output3')" class="form-control">
-
-                                            <span class="text-danger">
-                                                @error('id_proof')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
-                                            </span>
                                         </div>
                                         <div class="col-lg-3">
                                             <img id="output3" src="" alt=""
                                                 style="max-width: 50%; max-height: 100px;">
                                         </div>
-
-
                                     </div>
 
                                 </div>
@@ -831,41 +883,16 @@
 
                                     <strong>Age Group</strong>
                                     <div class="col-md-3">
-                                        <x-form.input name="partner_age_group_from" type="text" label="from"
+                                        <x-form.input name="partner_age_group_from" type="date" label="from"
                                             placeholder="" />
                                     </div>
                                     <div class="col-md-3">
-                                        <x-form.input name="partner_age_group_to" type="text" label="to"
+                                        <x-form.input name="partner_age_group_to" type="date" label="to"
                                             placeholder="" />
                                     </div>
 
                                     <div class="col-md-6">
-                                        <x-form.select name="partner_income" label="Income" :options="[
-                                            '1 - 2 L' => '1 - 2 L',
-                                            '2 - 3 L' => '2 - 3 L',
-                                            '3 - 4 L' => '3 - 4 L',
-                                            '4 - 5 L' => '4 - 5 L',
-                                            '5 - 10 L' => '5 - 10 L',
-                                            '10 - 15 L' => '10 - 15 L',
-                                            '15 - 20 L' => '15 - 20 L',
-                                            '20 - 25 L' => '20 - 25 L',
-                                            '25 - 30 L' => '25 - 30 L',
-                                            '30 - 45 L' => '30 - 45 L',
-                                            '45 - 50 L' => '45 - 50 L',
-                                            '50 - 75 L' => '50 - 75 L',
-                                            '75 L - 1 Cr' => '75 L - 1 Cr',
-                                            '1 - 2 Cr' => '1 - 2 Cr',
-                                            '2 - 3 Cr' => '2 - 3 Cr',
-                                            '3 - 5 Cr' => '3 - 5 Cr',
-                                            '5 - 10 Cr' => '5 - 10 Cr',
-                                            '10 - 15 Cr' => '10 - 15 Cr',
-                                            '15 - 100 Cr' => '15 - 100 Cr',
-                                            '100 - 200 Cr' => '100 - 200 Cr',
-                                            '200 - 500 Cr' => '200 - 500 Cr',
-                                            '500 Cr - 1B' => '500 Cr - 1B',
-                                            '1B and above' => '1B and above',
-                                        ]" />
-
+                                        <x-form.input name="partner_income" label="Income" placeholder="" />
                                     </div>
 
                                     <div class="col-md-4 mt-2">
@@ -917,8 +944,7 @@
                                             multiple="multiple">
                                             <option value="">Select Education</option>
                                             @foreach ($data['educations'] as $education)
-                                                <option value="{{ $education->education_name }}"
-                                                    {{ in_array($education->education_name, old('partner_education', [])) ? 'selected' : '' }}>
+                                                <option value="{{ $education->education_name }}">
                                                     {{ $education->education_name }}
                                                 </option>
                                             @endforeach
@@ -938,8 +964,7 @@
                                             multiple="multiple">
                                             <option value="">Select Occupation</option>
                                             @foreach ($data['occupations'] as $occupation)
-                                                <option value="{{ $occupation->occupation_name }}"
-                                                    {{ in_array($occupation->occupation_name, old('partner_occupation', [])) ? 'selected' : '' }}>
+                                                <option value="{{ $occupation->occupation_name }}">
                                                     {{ $occupation->occupation_name }}
                                                 </option>
                                             @endforeach
@@ -958,8 +983,7 @@
                                             multiple="multiple">
                                             <option value="">Select Profession</option>
                                             @foreach ($data['professions'] as $profession)
-                                                <option value="{{ $profession->profession_name }}"
-                                                    {{ in_array($profession->profession_name, old('partner_profession', [])) ? 'selected' : '' }}>
+                                                <option value="{{ $profession->profession_name }}">
                                                     {{ $profession->profession_name }}
                                                 </option>
                                             @endforeach
@@ -980,7 +1004,8 @@
                                                 {{ old('partner_manglik') == 'yes' ? 'selected' : '' }}>
                                                 Yes</option>
 
-                                            <option value="no" {{ old('partner_manglik') == 'no' ? 'selected' : '' }}>
+                                            <option value="no"
+                                                {{ old('partner_manglik') == 'no' ? 'selected' : '' }}>
                                                 No
                                             </option>
                                             <option value="don't know"
@@ -1080,14 +1105,10 @@
                     <!-- end card -->
                 </div>
 
-                <div id="cropedImage">
-
-                </div>
-
                 <!-- end row -->
                 <div class="text-end mb-4">
                     <button type="reset" class="btn btn-danger w-sm">Reset</button>
-                    <button type="button" id="userRegBtn" class="btn btn-success w-sm">Register</button>
+                    <button type="submit" class="btn btn-success w-sm">Register</button>
                 </div>
 
             </form>
@@ -1113,15 +1134,9 @@
             $('#occupation').select2();
             $('#profession').select2();
 
-            $('#weight').select2();
-            $('#height').select2();
-
             $('#partner_education').select2();
             $('#partner_occupation').select2();
             $('#partner_profession').select2();
-
-            $('#candidate_income').select2();
-            $('#partner_income').select2();
 
             $('#complexion').select2();
             $('#religion').select2();
@@ -1337,213 +1352,4 @@
             };
         }
     </script>
-
-    {{-- <script>
-    // Initialize Cropper.js
-    var cropper;
-
-    // Handle image selection
-    var inputImage = document.getElementById('photo');
-    inputImage.addEventListener('change', function(e) {
-        var file = e.target.files[0];
-        var reader = new FileReader();
-
-        reader.onload = function(event) {
-            var imageUrl = event.target.result;
-            var image = document.getElementById('image');
-            image.src = imageUrl;
-
-            // Destroy previous instance of Cropper.js if exists
-            if (cropper) {
-                cropper.destroy();
-            }
-
-            // Initialize Cropper.js
-            cropper = new Cropper(image, {
-                viewMode: 1, // Set to 1 to restrict the crop box to fit within the canvas
-                dragMode: 'move', // Allow users to freely crop
-                crop: function(event) {
-                    console.log(event.detail.x);
-                    console.log(event.detail.y);
-                    console.log(event.detail.width);
-                    console.log(event.detail.height);
-                    console.log(event.detail.rotate);
-                    console.log(event.detail.scaleX);
-                    console.log(event.detail.scaleY);
-                },
-            });
-        };
-
-        reader.readAsDataURL(file);
-    });
-
-    // Handle crop button click
-    var cropButton = document.getElementById('cropButton');
-    cropButton.addEventListener('click', function() {
-        if (cropper) {
-            // Get cropped canvas data
-            var canvas = cropper.getCroppedCanvas();
-
-            // Optionally, you can download the cropped image directly
-            // canvas.toBlob(function(blob) {
-            //     var url = URL.createObjectURL(blob);
-            //     var a = document.createElement('a');
-            //     a.href = url;
-            //     a.download = 'cropped_image.jpg';
-            //     a.click();
-            // });
-
-            // Display cropped image in a new window
-            var croppedImage = document.createElement('img');
-            croppedImage.src = canvas.toDataURL();
-            croppedImage.alt = 'Cropped Image';
-            document.body.appendChild(croppedImage);
-        }
-    });
-</script> --}}
-
-    <script>
-        // Initialize Cropper.js
-        var cropper;
-
-        // Handle image selection
-        var inputImage = document.getElementById('photo');
-        inputImage.addEventListener('change', function(e) {
-            var file = e.target.files[0];
-            var reader = new FileReader();
-
-            reader.onload = function(event) {
-                $(".image_preview").show()
-                var imageUrl = event.target.result;
-                var image = document.getElementById('image');
-                image.src = imageUrl;
-
-                // Destroy previous instance of Cropper.js if exists
-                if (cropper) {
-                    cropper.destroy();
-                }
-
-                // Initialize Cropper.js
-                cropper = new Cropper(image, {
-                    viewMode: 1, // Set to 1 to restrict the crop box to fit within the canvas
-                    dragMode: 'move', // Allow users to freely crop
-                    crop: function(event) {
-                        console.log(event.detail.x);
-                        console.log(event.detail.y);
-                        console.log(event.detail.width);
-                        console.log(event.detail.height);
-                        console.log(event.detail.rotate);
-                        console.log(event.detail.scaleX);
-                        console.log(event.detail.scaleY);
-                    },
-                });
-            };
-
-            reader.readAsDataURL(file);
-        });
-
-        // Handle crop button click
-        var cropButton = document.getElementById('userRegBtn');
-        cropButton.addEventListener('click', function() {
-            if (cropper) {
-                // Get cropped canvas data
-                var canvas = cropper.getCroppedCanvas();
-
-                // Convert canvas to base64 encoded image
-                var croppedImageBase64 = canvas.toDataURL('image/jpeg'); // Adjust format as needed
-
-                // Create a hidden input field to store the base64 image data
-                var hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'croppedImage';
-                hiddenInput.value = croppedImageBase64;
-                document.getElementById('cropedImage').append(hiddenInput);
-
-            }
-            // Submit the form
-            document.getElementById('userRegForm').submit();
-        });
-    </script>
-
-
-    {{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var croppers = [];
-
-        // Handle image selection
-        var inputImages = document.getElementById('photo');
-        inputImages.addEventListener('change', function(e) {
-            var files = e.target.files;
-
-            // Clear previous cropper instances and cropped images
-            croppers.forEach(function(cropper) {
-                cropper.destroy();
-            });
-            croppers = [];
-
-            var imagesContainer = document.getElementById('imagesContainer');
-            imagesContainer.innerHTML = '';
-
-            // Process each selected file
-            Array.from(files).forEach(function(file, index) {
-                var reader = new FileReader();
-
-                reader.onload = function(event) {
-                    var imageUrl = event.target.result;
-
-                    // Create image element
-                    var image = document.createElement('img');
-                    image.id = 'image_' + index;
-                    image.src = imageUrl;
-                    image.style.maxWidth = '300px'; // Adjust image size as needed
-                    imagesContainer.appendChild(image);
-
-                    // Initialize Cropper.js for each image
-                    var cropper = new Cropper(image, {
-                        viewMode: 1, // Set to 1 to restrict the crop box to fit within the canvas
-                        dragMode: 'move', // Allow users to freely crop
-                        crop: function(event) {
-                            console.log('Image ' + index + ' cropped:', event.detail);
-                        },
-                    });
-
-                    // Store cropper instance
-                    croppers.push(cropper);
-                };
-
-                reader.readAsDataURL(file);
-            });
-        });
-
-        // Handle form submission
-        var form = document.getElementById('userRegForm');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Prepare FormData to submit with other form data
-            var formData = new FormData(form);
-
-            // Iterate through croppers to get cropped images
-            croppers.forEach(function(cropper, index) {
-                var canvas = cropper.getCroppedCanvas();
-                var croppedImageBase64 = canvas.toDataURL('image/jpeg'); // Adjust format as needed
-
-                // Append cropped image data to FormData
-                formData.append('croppedImage_' + index, croppedImageBase64);
-            });
-
-            // Submit the form using fetch
-            fetch('your-backend-endpoint', {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                // Handle response
-                console.log('Form submitted successfully');
-            }).catch(error => {
-                // Handle error
-                console.error('Error submitting form', error);
-            });
-        });
-    });
-</script> --}}
 @endpush

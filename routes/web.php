@@ -82,3 +82,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::get('user-pdf-view', [UserController::class, 'userPdfView'])->name('admin.userPdfView');
 Route::get('user-generatePdf', [UserController::class, 'generatePdf'])->name('admin.generatePdf');
+

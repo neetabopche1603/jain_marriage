@@ -11,8 +11,8 @@ class input extends Component
     /**
      * Create a new component instance.
      */
-    public $name, $label, $value, $type,$disabled = false,$placeholder, $min,$required;
-    public function __construct($name, $label, $value=null, $type="text",$disabled = false,$placeholder=null ,$min=null,$required=false)
+    public $name, $label, $value, $type,$disabled = false,$placeholder, $min,$required, $id, $class;
+    public function __construct($name, $label, $value=null, $type="text",$disabled = false,$placeholder=null ,$min=null,$required=false, $id=null, $class=null)
     {
         $this->name = $name;
         $this->label = $label;
@@ -22,6 +22,8 @@ class input extends Component
         $this->placeholder = $placeholder;
         $this->min = $min;
         $this->required = $required;
+        $this->id = $id;
+        $this->class = $class;
     }
 
 

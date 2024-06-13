@@ -37,93 +37,110 @@ class UserReq extends FormRequest
             'gender' => ['required', 'string', 'in:male,female,other'],
             'dob' => ['required', 'date'],
             'age' => ['nullable', 'integer', 'min:0'],
-            'birth_place' => ['nullable', 'string', 'max:255'],
-            'birth_time' => ['nullable', 'string', 'max:255'],
-            'height' => ['nullable', 'numeric'],
-            'weight' => ['nullable', 'numeric'],
-            'complexion' => ['nullable', 'string', 'max:255'],
-            'education' => ['nullable', 'string', 'max:255'],
-            'profession' => ['nullable', 'string', 'max:255'],
-            'occupation' => ['nullable', 'string', 'max:255'],
+            'birth_place' => ['required', 'string', 'max:255'],
+            'birth_time' => ['required', 'string', 'max:255'],
+            'height' => ['required'],
+            'weight' => ['required'],
+            'complexion' => ['required', 'string', 'max:255'],
+
+            'education' => 'required|array',
+            'education.*' => 'exists:education,education_name',
+
+            'profession' => ['required', 'string', 'max:255'],
+            'occupation' => ['required', 'string', 'max:255'],
 
             'hobbies' => 'nullable|array',
             'hobbies.*' => 'exists:hobbies,id',
 
-            'religion' => ['nullable', 'string', 'max:255'],
-            'candidate_community' => ['nullable', 'string', 'max:255'],
-            'marital_status' => ['nullable', 'string', 'max:255'],
-            'physical_status' => ['nullable', 'string', 'max:255'],
-            'blood_group' => ['nullable', 'string', 'max:3'],
-            'candidate_income' => ['nullable',],
-            'candidates_address' => ['nullable', 'string', 'max:255'],
+            'religion' => ['required', 'string', 'max:255'],
+            'candidate_community' => ['required', 'string', 'max:255'],
+
+            'marital_status' => ['required', 'string', 'max:255'],
+            'is_children' => ['nullable', 'string', 'max:255'],
+            'son_details' => ['nullable'],
+            'daughter_details' => ['nullable'],
+
+            'physical_status' => ['required', 'string', 'max:255'],
+            'physical_status_desc' => ['required'],
+
+
+            'blood_group' => ['required', 'string', 'max:3'],
+            'candidate_income' => ['required',],
+            'candidates_address' => ['required', 'string', 'max:255'],
             'terms_and_conditions' => ['nullable', 'boolean'],
 
             //  If NRI-
 
-            'if_nri' => 'nullable|in:yes,no',
+            'if_nri' => 'required|in:yes,no',
             'candidate_visa' => ['nullable', 'string', 'max:255'],
             'address_nri_citizen' => ['nullable', 'string', 'max:255'],
 
             // Family Details -
-            'father_name' => ['nullable', 'string', 'max:255'],
-            'father_profession' => ['nullable', 'string', 'max:255'],
-            'mother_name' => ['nullable', 'string', 'max:255'],
-            'mother_profession' => ['nullable', 'string', 'max:255'],
-            'residence_type' => ['nullable', 'string', 'max:255'],
-            'gotra' => ['nullable', 'string', 'max:255'],
-            'family_community' => ['nullable', 'string', 'max:255'],
-            'family_sub_community' => ['nullable', 'string', 'max:255'],
-            'family_address' => ['nullable', 'string', 'max:255'],
+            'father_name' => ['required', 'string', 'max:255'],
+            'father_profession' => ['required', 'string', 'max:255'],
+            'mother_name' => ['required', 'string', 'max:255'],
+            'mother_profession' => ['required', 'string', 'max:255'],
+            'residence_type' => ['required', 'string', 'max:255'],
+            'gotra' => ['required', 'string', 'max:255'],
+            'family_community' => ['required', 'string', 'max:255'],
+            'family_sub_community' => ['required'],
+            'family_address' => ['required', 'string', 'max:255'],
 
             // Siblings Details -
-            'brother' => ['nullable', 'integer', 'min:0'],
-            'sister' => ['nullable', 'integer', 'min:0'],
-            'other_family_details' => ['nullable', 'string', 'max:500'],
-            'calling_no' => ['nullable', 'string', 'max:15'],
-            'are_you_manglik' => 'nullable',
+            'brother' => ['required'],
+            'sister' => ['required'],
+            'other_family_details' => ['required', 'string', 'max:500'],
+            'calling_no' => ['required', 'string', 'max:15'],
+            'are_you_manglik' => 'required',
 
 
             'photo.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
             'photo' => ['nullable', 'array', 'max:5'],
 
-            // 'photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
-            // 'photo_width' => 'required|integer',
-            // 'photo_height' => 'required|integer',
-            // 'photo_x' => 'required|integer',
-            // 'photo_y' => 'required|integer',
-
-            'id_proof' =>'nullable', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048',
-
-            // 'id_proof_width' => 'required|integer',
-            // 'id_proof_height' => 'required|integer',
-            // 'id_proof_x' => 'required|integer',
-            // 'id_proof_y' => 'required|integer',
+            'idProof_type' => 'required',
+            'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
 
             // Partner Preference -
-            'partner_age_group_from' => ['nullable', 'integer', 'min:18'],
-            'partner_age_group_to' => ['nullable', 'integer', 'gte:partner_age_group_from'],
-            'partner_income' => ['nullable'],
-            'partner_country' => ['nullable', 'string', 'max:255'],
-            'partner_state' => ['nullable', 'string', 'max:255'],
-            'partner_city' => ['nullable', 'string', 'max:255'],
-            'partner_education' => ['nullable', 'string', 'max:255'],
-            'partner_occupation' => ['nullable', 'string', 'max:255'],
-            'partner_profession' => ['nullable', 'string', 'max:255'],
+            'partner_age_group_from' => ['required'],
+            'partner_age_group_to' => ['required','gte:partner_age_group_from'],
+            'partner_income' => ['required'],
+
+            'partner_country' => 'required|array',
+            'partner_country.*' => 'exists:countries,id',
+
+            'partner_state' => 'required|array',
+            'partner_state.*' => 'exists:states,id',
+
+            'partner_city' => 'required|array',
+            'partner_city.*' => 'exists:cities,id',
+
+            'partner_education' => 'required|array',
+            'partner_education.*' => 'exists:education,education_name',
+
+            'partner_occupation' => 'required|array',
+            'partner_occupation.*' => 'exists:occupations,occupation_name',
+
+            'partner_profession' => 'required|array',
+            'partner_profession.*' => 'exists:professions,profession_name',
 
             'partner_hobbies' => 'nullable|array',
             'partner_hobbies.*' => 'exists:hobbies,id',
 
-            'partner_manglik' => 'nullable',
-            'partner_marital_status' => ['nullable', 'string', 'max:255'],
-            'astrology_matching' => ['nullable',],
-            'expectation_partner_details' => ['nullable', 'string', 'max:500'],
+            'partner_manglik' => 'required',
+
+            'partner_marital_status' => ['required', 'string', 'max:255'],
+            'partner_acccept_kid' => 'nullable',
+            'partner_kid_discription' => 'nullable',
+
+            'astrology_matching' => ['required',],
+            'expectation_partner_details' => ['required', 'string', 'max:500'],
 
             'profile_status' => 'nullable|in:pending,verified,rejected',
             'profile_rejected_reason' => 'nullable',
             'account_status' => 'nullable|in:active,inactive',
 
-            'family_status' => 'nullable',
-            'family_type' => 'nullable',
+            'family_status' => 'required',
+            'family_type' => 'required',
 
         ];
 

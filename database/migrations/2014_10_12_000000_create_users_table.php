@@ -31,20 +31,28 @@ return new class extends Migration
             $table->string('height')->nullable();
             $table->string('weight')->nullable();
             $table->string('complexion')->nullable();
-            $table->string('education')->nullable();
+            $table->longText('education')->nullable();
             $table->longText('education_desc')->nullable();
-            $table->string('profession')->nullable();
-            $table->string('occupation')->nullable();
+            $table->longText('profession')->nullable();
+            $table->longText('occupation')->nullable();
             $table->longText('hobbies')->nullable();
             $table->string('religion')->nullable();
             $table->longText('candidate_community')->nullable();
+
             $table->string('marital_status')->nullable();
-            $table->string('physical_status')->nullable();
+            $table->string('is_children')->nullable()->comment('Yes Or No');
+            $table->longText('son_details')->nullable();
+            $table->longText('daughter_details')->nullable();
+
+            $table->string('physical_status')->nullable()->comment('Yes Or No');
+            $table->longText('physical_status_desc')->nullable();
+
+
             $table->string('blood_group')->nullable();
             $table->string('drinking')->nullable();
             $table->string('smoking')->nullable();
-            $table->string('disability')->nullable();
-            $table->string('language')->nullable();
+
+
             $table->string('candidate_income')->nullable();
             $table->longText('candidates_about')->nullable();
             $table->longText('candidates_address')->nullable();

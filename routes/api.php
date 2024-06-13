@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\UserAuthController;
 use App\Http\Controllers\Api\UserProfileController;
 use App\Models\User;
@@ -48,3 +49,10 @@ Route::middleware('jwt:api')->group(function () {
     Route::post('user-profile-update', [UserProfileController::class, 'userProfileUpdate'])->name('user.profile');
     Route::post('user-profile-view', [UserProfileController::class, 'userProfileView']);
 });
+
+
+Route::post('new-register',[TestController::class,'userRegister']);
+
+Route::get('get-countries',[TestController::class,'getcountries']);
+Route::post('get-states',[TestController::class,'getStatesByCountry']);
+Route::post('get-cities',[TestController::class,'getCitiesByState']);
