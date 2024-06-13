@@ -158,7 +158,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <x-form.input name="birth_time" type="time" label="Birth time" placeholder="" />
+                                        <x-form.input name="birth_time" type="time" label="Birth Time" placeholder="" />
                                     </div>
 
                                     <div class="col-md-5">
