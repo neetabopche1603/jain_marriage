@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserProfile\UserPersonalRequest;
 use App\Http\Requests\UserReq;
 use App\Models\Education;
 use App\Models\Hobby;
@@ -15,6 +16,7 @@ use App\Traits\ImageUploadTrait;
 use PDF;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -53,7 +55,6 @@ class UserController extends Controller
     public function store(UserReq $request)
     {
         // dd($request->all());
-
         DB::beginTransaction();
         try {
 
@@ -94,7 +95,7 @@ class UserController extends Controller
                 UsersMedia::create([
                     'user_id' => $user->id,
                     'photo' => 'storage/userImage/' . $fileName,
-                    'status'=> 'front_img'
+                    'status' => 'front_img'
                 ]);
             }
 
@@ -114,9 +115,11 @@ class UserController extends Controller
 
     // User Edit Form
 
-    public function edit()
+    public function edit($id)
     {
-
+        $usersEdit = User::with('userDetail')->find($id);
+        $usersEdit->education = json_decode($usersEdit->education, true);
+        // dd($usersEdit->toArray());
         $data['educations'] = Education::where('status', 'active')->get();
         $data['occupations'] = Occupation::where('status', 'active')->get();
         $data['professions'] = Professions::where('status', 'active')->get();
@@ -124,7 +127,8 @@ class UserController extends Controller
         $data['countries'] = DB::table('countries')->get();
         $data['states'] = DB::table('states')->get();
         $data['cities'] = DB::table('cities')->get();
-        return view('adminPanel.user.edit', compact('data'));
+
+        return view('adminPanel.user.edit', compact('data','usersEdit'));
     }
 
 
@@ -355,5 +359,52 @@ class UserController extends Controller
                 'Content-Disposition' => 'attachment; filename="jain_E_Patrika.pdf"',
             ]
         );
+    }
+
+
+    // Basic & Personal Details
+
+    public function userBasicPersonalDetailUpdate(UserPersonalRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+
+            $userPersonalDetails = $request->only([
+                'name', 'email', 'whatsapp_no', 'refrence_by', 'profile_created_by_type',
+                'password', 'gender', 'dob', 'age', 'birth_place', 'birth_time', 'height', 'weight', 'complexion', 'education', 'profession', 'occupation', 'religion', 'candidate_community', 'marital_status', 'is_children', 'son_details', 'daughter_details', 'physical_status', 'physical_status_desc',
+                'blood_group', 'candidate_income', 'candidates_address',
+            ]);
+
+            //  If NRI-
+            $nriData = $request->only([
+                'if_nri', 'candidate_visa', 'address_nri_citizen'
+            ]);
+
+
+            if (!empty($userPersonalDetails['password'])) {
+                $userPersonalDetails['password'] = Hash::make($userPersonalDetails['password']);
+            } else {
+                $userPersonalDetails = Arr::except($userPersonalDetails, array('password'));
+            }
+
+            // Update Data Users table
+            $users = User::find($request->user_id);
+
+
+            dd("users",$users);
+
+            $users->update($userPersonalDetails);
+
+            // Update UserDetails Table
+            $userDetails = UserDetail::where('user_id', $request->user_id)->first();
+            $userDetails->update($nriData);
+
+            DB::commit();
+            return Redirect::back()->with('success', "User Basic and Personal Details update Successfully!");
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('User Basic and Personal update failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'User Basic and Personal update failed: ' . $e->getMessage());
+        }
     }
 }

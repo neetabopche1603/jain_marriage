@@ -69,17 +69,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('user-list', [UserController::class, 'usersList'])->name('admin.users');
         Route::post('user-store', [UserController::class, 'store'])->name('admin.userStore');
         Route::get('user-create', [UserController::class, 'create'])->name('admin.create');
-        Route::get('user-edit', [UserController::class, 'edit'])->name('admin.edit');
+        Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('admin.edit');
+
+        // User Personal Details update Route
+        Route::post('user-personal-details-update', [UserController::class, 'userBasicPersonalDetailUpdate'])->name('admin.userBasicPersonalDetailUpdate');
+
 
         Route::post('get-state', [UserController::class, 'getState'])->name('admin.getState');
         Route::post('get-city', [UserController::class, 'getCity'])->name('admin.getCity');
-
-
-
-
     });
 });
 
 Route::get('user-pdf-view', [UserController::class, 'userPdfView'])->name('admin.userPdfView');
 Route::get('user-generatePdf', [UserController::class, 'generatePdf'])->name('admin.generatePdf');
-

@@ -36,7 +36,7 @@ class UserReq extends FormRequest
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'gender' => ['required', 'string', 'in:male,female,other'],
             'dob' => ['required', 'date'],
-            'age' => ['nullable', 'integer', 'min:0'],
+            'age' => ['required', 'integer', 'min:0'],
             'birth_place' => ['required', 'string', 'max:255'],
             'birth_time' => ['required', 'string', 'max:255'],
             'height' => ['required'],
@@ -94,8 +94,10 @@ class UserReq extends FormRequest
             'are_you_manglik' => 'required',
 
 
-            'photo.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
-            'photo' => ['nullable', 'array', 'max:5'],
+            // 'photo.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+            // 'photo' => ['nullable', 'array', 'max:5'],
+
+            'photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
 
             'idProof_type' => 'required',
             'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],

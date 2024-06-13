@@ -42,6 +42,7 @@
             <form action="{{ route('admin.userStore') }}" method="post" id="userRegForm" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
+
                     <div class="col-lg-7">
                         {{-- Basic Details --}}
                         <div class="card">
@@ -102,7 +103,6 @@
                     </div>
 
 
-
                     {{-- User Profile PHOTO --}}
                     <div class="col-lg-5 mt-1">
                         <div class="card">
@@ -154,7 +154,7 @@
 
                                     <div class="col-md-2">
                                         <x-form.input name="age" type="number" label="Age" placeholder=""
-                                            id="user_age" disabled />
+                                            id="user_age" />
                                     </div>
 
                                     <div class="col-md-2">
@@ -1462,6 +1462,7 @@
             }
             // Submit the form
             document.getElementById('userRegForm').submit();
+            // console.log($("#user_age").val(),"User Age");
         });
     </script>
 

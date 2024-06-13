@@ -34,9 +34,9 @@
                             <div id="customerList">
                                 <div class="row g-4 mb-3">
                                     <div class="col-sm-auto">
-                                        <div>
+                                        {{-- <div>
                                             <a href="{{route('admin.generatePdf')}}" class="btn btn-success add-btn"><i class="fa fa-download"></i> </i>Download Pdf</a>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="col-sm">
                                         <div class="d-flex justify-content-sm-end">
@@ -74,15 +74,18 @@
                                                     <td scope="row">
                                                         {{ ($users->currentPage() - 1) * $users->perPage() + $loop->index + 1 }}
                                                     </td>
+
                                                     <td>
-                                                        @if (!empty($user->photo))
-                                                            <img src="{{ asset($user->photo) }}" class="rounded "
-                                                                alt="" width="50">
+                                                        @php
+                                                            $userMedia = App\Models\UsersMedia::where(['user_id' => $user->id, 'status' => 'front_img'])->first();
+                                                        @endphp
+
+                                                        @if (!empty($userMedia))
+                                                            <img src="{{ asset($userMedia->photo) }}" class="rounded" alt="" width="50">
                                                         @else
                                                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeqOkeOMcWfV70RX4UGcoyx3NjceMhLcDA6CG8-rbn2Im07JvMXBI0Xkh1YXNRIEri-0w&usqp=CAU"
-                                                                class="rounded " alt="" width="50">
+                                                                 class="rounded" alt="" width="50">
                                                         @endif
-
                                                     </td>
 
                                                     <td>{{ $user->name }}<br>({{ $user->userId }}) </td>
@@ -115,12 +118,13 @@
                                                     </td> --}}
 
                                                     <td>
-                                                        <a href="" class="btn btn-primary btn-sm"><i
+                                                        <a href="#" class="btn btn-primary btn-sm"><i
                                                                 class="fa fa-eye"></i></a>
-                                                        <a href="" class="btn btn-info btn-sm"><i
-                                                                class="fa fa-pencil-square-o"></i></a>
+
+                                                        {{-- <a href="{{route('admin.edit',$user->id)}}" class="btn btn-info btn-sm"><i class="fa fa-pencil-square-o"></i></a>
+
                                                         <a href="" class="btn btn-danger btn-sm"><i
-                                                                class="fa fa-trash"></i></a>
+                                                                class="fa fa-trash"></i></a> --}}
                                                     </td>
 
                                                     <td> {{ \Carbon\Carbon::parse($user->created_at)->format('d-M-Y') }}
