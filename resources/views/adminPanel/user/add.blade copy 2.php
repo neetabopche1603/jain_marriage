@@ -165,29 +165,13 @@
                                         <x-form.input name="birth_place" label="Birth Place" placeholder="" />
                                     </div>
 
-                                        <div class="col-md-4">
-                                            <label for="height" class="form-label">Height</label>
-                                            <select name="height" id="height" class="form-select">
-                                                <option value="">Select Height</option>
-                                                @for ($feet = 4; $feet <= 8; $feet++)
-                                                    @for ($inch = 0; $inch <= 9; $inch++)
-                                                        @php
-                                                            $height = $feet + ($inch / 10);
-                                                        @endphp
-                                                        <option value="{{ $height }}">{{ $height }}</option>
-                                                    @endfor
-                                                @endfor
-                                            </select>
-                                        </div>
 
                                     <div class="col-md-4">
-                                        <label for="weight" class="form-label">Weight</label>
-                                        <select name="weight" id="weight" class="form-select">
-                                            <option value="">Select Weight</option>
-                                            @for ($weight = 35; $weight <= 200; $weight++)
-                                                <option value="{{ $weight }}kg">{{ $weight }}kg</option>
-                                            @endfor
-                                        </select>
+                                        <x-form.input name="height" label="Height" placeholder="5.2 inch" />
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <x-form.input name="weight" label="Weight" placeholder="40Kg" />
                                     </div>
 
                                     <div class="col-md-4">
@@ -297,36 +281,11 @@
 
 
                                     <div class="col-md-3 mt-2">
-                                        <x-form.select name="candidate_income" label="Candidate Income"
-                                            :options="[
-                                                '1 - 2 L' => '1 - 2 L',
-                                                '2 - 3 L' => '2 - 3 L',
-                                                '3 - 4 L' => '3 - 4 L',
-                                                '4 - 5 L' => '4 - 5 L',
-                                                '5 - 10 L' => '5 - 10 L',
-                                                '10 - 15 L' => '10 - 15 L',
-                                                '15 - 20 L' => '15 - 20 L',
-                                                '20 - 25 L' => '20 - 25 L',
-                                                '25 - 30 L' => '25 - 30 L',
-                                                '30 - 45 L' => '30 - 45 L',
-                                                '45 - 50 L' => '45 - 50 L',
-                                                '50 - 75 L' => '50 - 75 L',
-                                                '75 L - 1 Cr' => '75 L - 1 Cr',
-                                                '1 - 2 Cr' => '1 - 2 Cr',
-                                                '2 - 3 Cr' => '2 - 3 Cr',
-                                                '3 - 5 Cr' => '3 - 5 Cr',
-                                                '5 - 10 Cr' => '5 - 10 Cr',
-                                                '10 - 15 Cr' => '10 - 15 Cr',
-                                                '15 - 100 Cr' => '15 - 100 Cr',
-                                                '100 - 200 Cr' => '100 - 200 Cr',
-                                                '200 - 500 Cr' => '200 - 500 Cr',
-                                                '500 Cr - 1B' => '500 Cr - 1B',
-                                                '1B and above' => '1B and above',
-                                            ]" />
+                                        <x-form.input name="candidate_income" label="Candidate Income" placeholder="" />
                                     </div>
 
                                     <div class="col-md-3 mt-2">
-                                        <x-form.select name="blood_group" label="Blood Group" :options="[
+                                        <x-select name="blood_group" label="Blood Group" :options="[
                                             'A+' => 'A+',
                                             'A-' => 'A-',
                                             'B+' => 'B+',
@@ -366,17 +325,16 @@
 
 
                                         <div class="col-md-4">
-                                            <x-form.select name="marital_status" label="Marital Status"
-                                                :options="[
-                                                    '' => 'Select Marital Status',
-                                                    'Single' => 'Single',
-                                                    'Married' => 'Married',
-                                                    'Divorced' => 'Divorced',
-                                                    'Widowed' => 'Widowed',
-                                                    'Separated' => 'Separated',
-                                                    'Engaged' => 'Engaged',
-                                                    'In a Relationship' => 'In a Relationship',
-                                                ]" />
+                                            <x-select name="marital_status" label="Marital Status" :options="[
+                                                '' => 'Select Marital Status',
+                                                'Single' => 'Single',
+                                                'Married' => 'Married',
+                                                'Divorced' => 'Divorced',
+                                                'Widowed' => 'Widowed',
+                                                'Separated' => 'Separated',
+                                                'Engaged' => 'Engaged',
+                                                'In a Relationship' => 'In a Relationship',
+                                            ]" />
                                         </div>
 
                                         <div class="col-md-4 mt-2 is_children_div" style="display: none">
@@ -831,41 +789,16 @@
 
                                     <strong>Age Group</strong>
                                     <div class="col-md-3">
-                                        <x-form.input name="partner_age_group_from" type="text" label="from"
+                                        <x-form.input name="partner_age_group_from" type="date" label="from"
                                             placeholder="" />
                                     </div>
                                     <div class="col-md-3">
-                                        <x-form.input name="partner_age_group_to" type="text" label="to"
+                                        <x-form.input name="partner_age_group_to" type="date" label="to"
                                             placeholder="" />
                                     </div>
 
                                     <div class="col-md-6">
-                                        <x-form.select name="partner_income" label="Income" :options="[
-                                            '1 - 2 L' => '1 - 2 L',
-                                            '2 - 3 L' => '2 - 3 L',
-                                            '3 - 4 L' => '3 - 4 L',
-                                            '4 - 5 L' => '4 - 5 L',
-                                            '5 - 10 L' => '5 - 10 L',
-                                            '10 - 15 L' => '10 - 15 L',
-                                            '15 - 20 L' => '15 - 20 L',
-                                            '20 - 25 L' => '20 - 25 L',
-                                            '25 - 30 L' => '25 - 30 L',
-                                            '30 - 45 L' => '30 - 45 L',
-                                            '45 - 50 L' => '45 - 50 L',
-                                            '50 - 75 L' => '50 - 75 L',
-                                            '75 L - 1 Cr' => '75 L - 1 Cr',
-                                            '1 - 2 Cr' => '1 - 2 Cr',
-                                            '2 - 3 Cr' => '2 - 3 Cr',
-                                            '3 - 5 Cr' => '3 - 5 Cr',
-                                            '5 - 10 Cr' => '5 - 10 Cr',
-                                            '10 - 15 Cr' => '10 - 15 Cr',
-                                            '15 - 100 Cr' => '15 - 100 Cr',
-                                            '100 - 200 Cr' => '100 - 200 Cr',
-                                            '200 - 500 Cr' => '200 - 500 Cr',
-                                            '500 Cr - 1B' => '500 Cr - 1B',
-                                            '1B and above' => '1B and above',
-                                        ]" />
-
+                                        <x-form.input name="partner_income" label="Income" placeholder="" />
                                     </div>
 
                                     <div class="col-md-4 mt-2">
@@ -917,8 +850,7 @@
                                             multiple="multiple">
                                             <option value="">Select Education</option>
                                             @foreach ($data['educations'] as $education)
-                                                <option value="{{ $education->education_name }}"
-                                                    {{ in_array($education->education_name, old('partner_education', [])) ? 'selected' : '' }}>
+                                                <option value="{{ $education->education_name }}">
                                                     {{ $education->education_name }}
                                                 </option>
                                             @endforeach
@@ -938,8 +870,7 @@
                                             multiple="multiple">
                                             <option value="">Select Occupation</option>
                                             @foreach ($data['occupations'] as $occupation)
-                                                <option value="{{ $occupation->occupation_name }}"
-                                                    {{ in_array($occupation->occupation_name, old('partner_occupation', [])) ? 'selected' : '' }}>
+                                                <option value="{{ $occupation->occupation_name }}">
                                                     {{ $occupation->occupation_name }}
                                                 </option>
                                             @endforeach
@@ -958,8 +889,7 @@
                                             multiple="multiple">
                                             <option value="">Select Profession</option>
                                             @foreach ($data['professions'] as $profession)
-                                                <option value="{{ $profession->profession_name }}"
-                                                    {{ in_array($profession->profession_name, old('partner_profession', [])) ? 'selected' : '' }}>
+                                                <option value="{{ $profession->profession_name }}">
                                                     {{ $profession->profession_name }}
                                                 </option>
                                             @endforeach
@@ -1113,15 +1043,9 @@
             $('#occupation').select2();
             $('#profession').select2();
 
-            $('#weight').select2();
-            $('#height').select2();
-
             $('#partner_education').select2();
             $('#partner_occupation').select2();
             $('#partner_profession').select2();
-
-            $('#candidate_income').select2();
-            $('#partner_income').select2();
 
             $('#complexion').select2();
             $('#religion').select2();

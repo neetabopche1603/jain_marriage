@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("user_id")->comment("belongs to users table");
 
             //  If NRI-
-            $table->enum('if_nri', ["yes", "no"])->nullable();
+            $table->string('if_nri')->nullable();
             $table->string('candidate_visa')->nullable();
             $table->string('address_nri_citizen')->nullable()->comment("NRI Citizen");
 
@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('mother_name')->nullable();
             $table->string('mother_profession')->nullable();
             $table->string('residence_type')->nullable();
-            $table->longText('gotra')->nullable();
             $table->string('family_status')->nullable();
             $table->string('family_type')->nullable();
             $table->longText('gotra')->nullable();
@@ -46,16 +45,20 @@ return new class extends Migration
             $table->string('partner_age_group_from')->nullable();
             $table->string('partner_age_group_to')->nullable();
             $table->string('partner_income')->nullable();
-            $table->string('partner_country')->nullable();
-            $table->string('partner_state')->nullable();
-            $table->string('partner_city')->nullable();
-            $table->string('partner_education')->nullable();
+            $table->longText('partner_country')->nullable();
+            $table->longText('partner_state')->nullable();
+            $table->longText('partner_city')->nullable();
+            $table->longText('partner_education')->nullable();
             $table->longText('partner_education_desc')->nullable();
-            $table->string('partner_occupation')->nullable();
-            $table->string('partner_profession')->nullable();
+            $table->longText('partner_occupation')->nullable();
+            $table->longText('partner_profession')->nullable();
             $table->longText('partner_hobbies')->nullable();
             $table->string('partner_manglik')->nullable();
+
             $table->string('partner_marital_status')->nullable();
+            $table->string('partner_acccept_kid')->nullable()->comment('wit kit,without kit,any');
+            $table->longText('partner_kid_discription')->nullable();
+
             $table->string('astrology_matching')->nullable();
             $table->longText('expectation_partner_details')->nullable();
 

@@ -21,6 +21,7 @@
                 </div>
             </div>
             <!-- end page title -->
+            @include('partial.flash-msg')
 
             <div class="row">
                 <div class="col-lg-12">
@@ -59,7 +60,7 @@
                                                 <th scope="col">{{ 'Whatsapp No' }}</th>
                                                 <th scope="col">{{ 'Calling No' }}</th>
                                                 <th scope="col">{{ 'DOB/Age' }}</th>
-                                                <th scope="col">{{ 'Photo' }}</th>
+                                                {{-- <th scope="col">{{ 'Photo' }}</th> --}}
                                                 {{-- <th scope="col">{{ 'Profile Status' }}</th>
                                                 <th scope="col">{{ 'Account Status' }}</th> --}}
                                                 <th scope="col">Action</th>
@@ -90,7 +91,7 @@
                                                     <td>{{ $user->userDetail->calling_no }}</td>
                                                     <td> {{ \Carbon\Carbon::parse($user->dob)->format('d-M-Y') }}<br>Age: {{ $user->age }}
                                                     </td>
-                                                    <td><a href="#" class="btn btn-secondary btn-sm">Upload Photo</a></td>
+                                                    {{-- <td><a href="#" class="btn btn-secondary btn-sm">Upload Photo</a></td> --}}
                                                     {{-- <td>
 
                                                         @if ($user->profile_status == 'verified')

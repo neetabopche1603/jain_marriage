@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Test;
 
+use App\Http\Requests\BaseRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends BaseRequest
+class TestRegisterReq extends BaseRequest
 {
 
     /**
@@ -12,7 +13,6 @@ class RegisterRequest extends BaseRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
 
     public function rules(): array
     {
@@ -36,7 +36,10 @@ class RegisterRequest extends BaseRequest
             'height' => ['required'],
             'weight' => ['required'],
             'complexion' => ['required', 'string', 'max:255'],
-            'education' => ['required', 'string', 'max:255'],
+
+            'education' => 'required|array',
+            'education.*' => 'exists:education,id',
+
             'profession' => ['required', 'string', 'max:255'],
             'occupation' => ['required', 'string', 'max:255'],
 
@@ -45,8 +48,16 @@ class RegisterRequest extends BaseRequest
 
             'religion' => ['required', 'string', 'max:255'],
             'candidate_community' => ['required', 'string', 'max:255'],
+
             'marital_status' => ['required', 'string', 'max:255'],
+            'is_children' => ['nullable', 'string', 'max:255'],
+            'son_details' => ['nullable'],
+            'daughter_details' => ['nullable'],
+
             'physical_status' => ['required', 'string', 'max:255'],
+            'physical_status_desc' => ['required'],
+
+
             'blood_group' => ['required', 'string', 'max:3'],
             'candidate_income' => ['required',],
             'candidates_address' => ['required', 'string', 'max:255'],
@@ -77,38 +88,44 @@ class RegisterRequest extends BaseRequest
             'are_you_manglik' => 'required',
 
 
-            // 'photo.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
-            // 'photo' => ['nullable', 'array', 'max:5'],
+            'photo.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+            'photo' => ['required', 'array', 'max:5'],
 
-            // 'photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
-            // 'photo_width' => 'required|integer',
-            // 'photo_height' => 'required|integer',
-            // 'photo_x' => 'required|integer',
-            // 'photo_y' => 'required|integer',
-
+            'idProof_type' => 'nullable',
             'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
-
-            // 'id_proof_width' => 'required|integer',
-            // 'id_proof_height' => 'required|integer',
-            // 'id_proof_x' => 'required|integer',
-            // 'id_proof_y' => 'required|integer',
 
             // Partner Preference -
             'partner_age_group_from' => ['required', 'integer', 'min:18'],
             'partner_age_group_to' => ['required', 'integer', 'gte:partner_age_group_from'],
             'partner_income' => ['required'],
-            'partner_country' => ['required', 'string', 'max:255'],
-            'partner_state' => ['required', 'string', 'max:255'],
-            'partner_city' => ['required', 'string', 'max:255'],
-            'partner_education' => ['required', 'string', 'max:255'],
-            'partner_occupation' => ['required', 'string', 'max:255'],
-            'partner_profession' => ['required', 'string', 'max:255'],
+
+            'partner_country' => 'required|array',
+            'partner_country.*' => 'exists:countries,id',
+
+            'partner_state' => 'required|array',
+            'partner_state.*' => 'exists:states,id',
+
+            'partner_city' => 'required|array',
+            'partner_city.*' => 'exists:cities,id',
+
+            'partner_education' => 'required|array',
+            'partner_education.*' => 'exists:education,id',
+
+            'partner_occupation' => 'required|array',
+            'partner_occupation.*' => 'exists:occupations,id',
+
+            'partner_profession' => 'required|array',
+            'partner_profession.*' => 'exists:professions,id',
 
             'partner_hobbies' => 'nullable|array',
             'partner_hobbies.*' => 'exists:hobbies,id',
 
             'partner_manglik' => 'required',
+
             'partner_marital_status' => ['required', 'string', 'max:255'],
+            'partner_acccept_kid' => 'nullable',
+            'partner_kid_discription' => 'nullable',
+
             'astrology_matching' => ['required',],
             'expectation_partner_details' => ['required', 'string', 'max:500'],
 
@@ -120,13 +137,5 @@ class RegisterRequest extends BaseRequest
             'family_type' => 'required',
 
         ];
-
-        // if ($this->method() === 'PUT' || $this->method() === 'PATCH') {
-        //     $rules['email'] = 'required|email';
-        //     $rules['whatsapp_no'] = 'required';
-        // }
-        // return $rules;
     }
-
-
 }
