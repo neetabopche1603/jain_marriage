@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // USER AUTH ROUTES
-Route::post('register', [UserAuthController::class, 'userRegister']);
+// Route::post('register', [UserAuthController::class, 'userRegister']);
 Route::post('login', [UserAuthController::class, 'userLogin']);
 Route::post('forgot-password', [UserAuthController::class, 'forgotPassword']);
 Route::post('reset-password', [UserAuthController::class, 'resetPassword']);
@@ -51,7 +51,7 @@ Route::middleware('jwt:api')->group(function () {
 });
 
 
-Route::post('new-register',[TestController::class,'userRegister']);
+Route::post('register',[TestController::class,'userRegister']);
 
 Route::get('get-countries',[TestController::class,'getcountries']);
 Route::post('get-states',[TestController::class,'getStatesByCountry']);
