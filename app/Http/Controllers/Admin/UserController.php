@@ -120,7 +120,7 @@ class UserController extends Controller
         $usersEdit = User::with('userDetail')->find($id);
         $usersEdit->education = json_decode($usersEdit->education, true);
         // dd($usersEdit->toArray());
-        $data['educations'] = Education::where('status', 'active')->get();
+        $data['educations'] = Education::where('status', 'active')->orderBy("education_name","asc")->get();
         $data['occupations'] = Occupation::where('status', 'active')->get();
         $data['professions'] = Professions::where('status', 'active')->get();
         $data['hobbies'] = Hobby::where('status', 'active')->get();
@@ -253,6 +253,7 @@ class UserController extends Controller
             $countryIds = $request->input('country_ids');
             $states = DB::table('states')->whereIn('country_id', $countryIds)->select('id', 'name', 'country_id')->get();
             $html = "<option value=''>Select State</option>";
+            $html .= "<option value='0'>Any</option>";
             foreach ($states as $state) {
                 $html .= "<option value='$state->id'>$state->name</option>";
             }
@@ -286,6 +287,7 @@ class UserController extends Controller
             $stateIds = $request->input('state_ids');
             $cities = DB::table('cities')->whereIn('state_id', $stateIds)->select('id', 'name', 'state_id', 'country_id')->get();
             $html = "<option value=''>Select City</option>";
+            $html .= "<option value='0'>Any</option>";
             foreach ($cities as $city) {
                 $html .= "<option value='$city->id'>$city->name</option>";
             }
