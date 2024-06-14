@@ -119,20 +119,24 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $usersEdit = User::with('userDetail')->find($id);
-        $usersEdit->education = json_decode($usersEdit->education, true);
+        try {
+            $usersEdit = User::with('userDetail')->find($id);
+            $usersEdit->education = json_decode($usersEdit->education, true);
 
-        $userMedias = UsersMedia::where('user_id',$id)->get();
+            $userMedias = UsersMedia::where('user_id', $id)->get();
 
-        $data['educations'] = Education::where('status', 'active')->orderBy("education_name", "asc")->get();
-        $data['occupations'] = Occupation::where('status', 'active')->get();
-        $data['professions'] = Professions::where('status', 'active')->get();
-        $data['hobbies'] = Hobby::where('status', 'active')->get();
-        $data['countries'] = DB::table('countries')->get();
-        $data['states'] = DB::table('states')->get();
-        $data['cities'] = DB::table('cities')->get();
+            $data['educations'] = Education::where('status', 'active')->orderBy("education_name", "asc")->get();
+            $data['occupations'] = Occupation::where('status', 'active')->get();
+            $data['professions'] = Professions::where('status', 'active')->get();
+            $data['hobbies'] = Hobby::where('status', 'active')->get();
+            $data['countries'] = DB::table('countries')->get();
+            $data['states'] = DB::table('states')->get();
+            $data['cities'] = DB::table('cities')->get();
 
-        return view('adminPanel.user.edit', compact('data', 'usersEdit','userMedias'));
+            return view('adminPanel.user.edit', compact('data', 'usersEdit', 'userMedias'));
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
     }
 
 
@@ -449,7 +453,7 @@ class UserController extends Controller
         try {
 
             $userPartnerPrefDetails = $request->only([
-                'partner_age_group_from', 'partner_age_group_to', 'partner_income', 'partner_country', 'partner_state','partner_city', 'partner_education', 'partner_occupation', 'partner_profession', 'partner_manglik', 'partner_marital_status', 'partner_acccept_kid', 'partner_kid_discription', 'astrology_matching', 'expectation_partner_details'
+                'partner_age_group_from', 'partner_age_group_to', 'partner_income', 'partner_country', 'partner_state', 'partner_city', 'partner_education', 'partner_occupation', 'partner_profession', 'partner_manglik', 'partner_marital_status', 'partner_acccept_kid', 'partner_kid_discription', 'astrology_matching', 'expectation_partner_details'
             ]);
 
             // Update UserDetails Table
@@ -469,8 +473,8 @@ class UserController extends Controller
     public function userDocumentAndStatusDetailsUpdate(PartnerPreferenceReq $request)
     {
         $this->validate($request, [
-           'idProof_type' => 'required',
-           'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+            'idProof_type' => 'required',
+            'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
 
         ]);
 
@@ -479,22 +483,22 @@ class UserController extends Controller
 
             $userDetails = User::where('user_id', $request->user_id)->first();
 
-              // USER UPLOAD ID-PROOF
-              $users_id_proof_link = "";
-              if ($request->hasFile('id_proof')) {
-                  if ($userDetails->id_proof) {
-                      // Delete old ID proof
-                      $this->deleteImage($userDetails->id_proof);
-                  }
-                  // Upload new ID proof
-                  $id_proofsave = $this->uploadImage($request->file('id_proof'), '/userIdProof');
-              }
+            // USER UPLOAD ID-PROOF
+            $users_id_proof_link = "";
+            if ($request->hasFile('id_proof')) {
+                if ($userDetails->id_proof) {
+                    // Delete old ID proof
+                    $this->deleteImage($userDetails->id_proof);
+                }
+                // Upload new ID proof
+                $id_proofsave = $this->uploadImage($request->file('id_proof'), '/userIdProof');
+            }
 
 
             // Update UserDetails Table
             $userDetails->update([
-                'idProof_type'=> $request->idProof_type,
-                'id_proof'=> $id_proofsave,
+                'idProof_type' => $request->idProof_type,
+                'id_proof' => $id_proofsave,
             ]);
 
             DB::commit();
@@ -509,19 +513,19 @@ class UserController extends Controller
 
     // Account status update
 
-     public function userAccountStatusUpdate($id)
-     {
-         $userAccStatus = User::find($id);
-         $userAccStatus->status = $userAccStatus->status == 'active' ? 'inactive' : 'active';
-         $userAccStatus->update();
-         return Redirect::back()->with('success',  $userAccStatus->name . ' User account status has been updated.');
-     }
+    public function userAccountStatusUpdate($id)
+    {
+        $userAccStatus = User::find($id);
+        $userAccStatus->status = $userAccStatus->status == 'active' ? 'inactive' : 'active';
+        $userAccStatus->update();
+        return Redirect::back()->with('success',  $userAccStatus->name . ' User account status has been updated.');
+    }
 
 
-     public function userVerificationStatusUpdate(Request $request, $id)
-     {
+    public function userVerificationStatusUpdate(Request $request, $id)
+    {
 
-         $this->validate($request, [
+        $this->validate($request, [
             'profile_status' => 'nullable|in:pending,verified,rejected',
             'profile_rejected_reason' => 'required_if:profile_status,rejected',
         ], [
@@ -529,26 +533,24 @@ class UserController extends Controller
         ]);
 
 
-         $userVerificationStatus = User::find($id);
+        $userVerificationStatus = User::find($id);
 
-         // Update the profile status and rejection reason if applicable
-         if ($request->has('profile_status')) {
-             $userVerificationStatus->profile_status = $request->profile_status;
-             if ($request->profile_status == 'rejected') {
-                 $userVerificationStatus->profile_rejected_reason = $request->profile_rejected_reason;
-             } else {
-                 $userVerificationStatus->profile_rejected_reason = null;
-             }
-         }
+        // Update the profile status and rejection reason if applicable
+        if ($request->has('profile_status')) {
+            $userVerificationStatus->profile_status = $request->profile_status;
+            if ($request->profile_status == 'rejected') {
+                $userVerificationStatus->profile_rejected_reason = $request->profile_rejected_reason;
+            } else {
+                $userVerificationStatus->profile_rejected_reason = null;
+            }
+        }
 
-         $userVerificationStatus->update([
-            'profile_status'=>$request->profile_status,
-            'profile_rejected_reason'=>$request->profile_rejected_reason ?? null,
-         ]);
-
-
-         return Redirect::back()->with('success', $userVerificationStatus->name . ' User account status has been updated.');
-     }
+        $userVerificationStatus->update([
+            'profile_status' => $request->profile_status,
+            'profile_rejected_reason' => $request->profile_rejected_reason ?? null,
+        ]);
 
 
+        return Redirect::back()->with('success', $userVerificationStatus->name . ' User account status has been updated.');
+    }
 }
