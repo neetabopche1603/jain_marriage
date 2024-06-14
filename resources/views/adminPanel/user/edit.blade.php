@@ -330,7 +330,7 @@
                                                                         <x-form.select name="complexion"
                                                                             label="Complexion" :options="[
                                                                                 'extemely fair skin' =>
-                                                                                    'Extemely Fair Skin',
+                                                                                'Extemely Fair Skin',
                                                                                 'fair skin' => 'Fair Skin',
                                                                                 'light skin' => 'Light Skin',
                                                                                 'medium skin' => 'Medium Skin',
@@ -348,7 +348,7 @@
                                                                         <label for="education" class="form-label">Education</label>
                                                                         <select name="education[]" id="education" class="form-select" multiple="multiple">
                                                                             <option value="" disabled>Select Education</option>
-                                                                          
+
                                                                             @foreach ($data['educations'] as $education)
                                                                                 <option value="{{ $education->education_name }}"
                                                                                     {{ (is_array(old('education')) && in_array($education->education_name, old('education'))) ||
@@ -446,6 +446,7 @@
                                                                     <div class="col-md-3 mt-2">
                                                                         <x-form.select name="candidate_income"
                                                                             label="Candidate Income" :options="[
+                                                                                'any' => 'Any',
                                                                                 '1 - 2 L' => '1 - 2 L',
                                                                                 '2 - 3 L' => '2 - 3 L',
                                                                                 '3 - 4 L' => '3 - 4 L',
@@ -521,7 +522,7 @@
                                                                             <x-form.select name="marital_status"
                                                                                 label="Marital Status"
                                                                                 :options="[
-                                                                                    '' => 'Select Marital Status',
+                                                                                    'any' => 'Any',
                                                                                     'single' => 'Single',
                                                                                     'married' => 'Married',
                                                                                     'divorced' => 'Divorced',
@@ -583,8 +584,7 @@
 
                                                 <div class="text-end mb-4">
                                                     <button type="reset" class="btn btn-danger w-sm">Reset</button>
-                                                    <button type="submit" class="btn btn-success w-sm">Update User
-                                                        Personal Details</button>
+                                                    <button type="submit" class="btn btn-success w-sm">Update User Personal Details</button>
                                                 </div>
                                             </form>
 
