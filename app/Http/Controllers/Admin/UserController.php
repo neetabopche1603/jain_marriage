@@ -509,46 +509,46 @@ class UserController extends Controller
 
     // Account status update
 
-     public function userAccountStatusUpdate($id)
-     {
-         $userAccStatus = User::find($id);
-         $userAccStatus->status = $userAccStatus->status == 'active' ? 'inactive' : 'active';
-         $userAccStatus->update();
-         return Redirect::back()->with('success',  $userAccStatus->name . ' User account status has been updated.');
-     }
+    //  public function userAccountStatusUpdate($id)
+    //  {
+    //      $userAccStatus = User::find($id);
+    //      $userAccStatus->status = $userAccStatus->status == 'active' ? 'inactive' : 'active';
+    //      $userAccStatus->update();
+    //      return Redirect::back()->with('success',  $userAccStatus->name . ' User account status has been updated.');
+    //  }
 
 
-     public function userVerificationStatusUpdate(Request $request, $id)
-     {
+    //  public function userVerificationStatusUpdate(Request $request, $id)
+    //  {
 
-         $this->validate($request, [
-            'profile_status' => 'nullable|in:pending,verified,rejected',
-            'profile_rejected_reason' => 'required_if:profile_status,rejected',
-        ], [
-            'profile_rejected_reason.required_if' => 'The rejection reason is required when the profile status is rejected.',
-        ]);
-
-
-         $userVerificationStatus = User::find($id);
-
-         // Update the profile status and rejection reason if applicable
-         if ($request->has('profile_status')) {
-             $userVerificationStatus->profile_status = $request->profile_status;
-             if ($request->profile_status == 'rejected') {
-                 $userVerificationStatus->profile_rejected_reason = $request->profile_rejected_reason;
-             } else {
-                 $userVerificationStatus->profile_rejected_reason = null;
-             }
-         }
-
-         $userVerificationStatus->update([
-            'profile_status'=>$request->profile_status,
-            'profile_rejected_reason'=>$request->profile_rejected_reason ?? null,
-         ]);
+    //      $this->validate($request, [
+    //         'profile_status' => 'nullable|in:pending,verified,rejected',
+    //         'profile_rejected_reason' => 'required_if:profile_status,rejected',
+    //     ], [
+    //         'profile_rejected_reason.required_if' => 'The rejection reason is required when the profile status is rejected.',
+    //     ]);
 
 
-         return Redirect::back()->with('success', $userVerificationStatus->name . ' User account status has been updated.');
-     }
+    //      $userVerificationStatus = User::find($id);
+
+    //      // Update the profile status and rejection reason if applicable
+    //      if ($request->has('profile_status')) {
+    //          $userVerificationStatus->profile_status = $request->profile_status;
+    //          if ($request->profile_status == 'rejected') {
+    //              $userVerificationStatus->profile_rejected_reason = $request->profile_rejected_reason;
+    //          } else {
+    //              $userVerificationStatus->profile_rejected_reason = null;
+    //          }
+    //      }
+
+    //      $userVerificationStatus->update([
+    //         'profile_status'=>$request->profile_status,
+    //         'profile_rejected_reason'=>$request->profile_rejected_reason ?? null,
+    //      ]);
+
+
+    //      return Redirect::back()->with('success', $userVerificationStatus->name . ' User account status has been updated.');
+    //  }
 
 
 }
