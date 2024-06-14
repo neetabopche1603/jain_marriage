@@ -32,7 +32,7 @@ class UserPersonalRequest extends FormRequest
 
             'refrence_by' => ['required', 'string', 'max:255'],
             'profile_created_by_type' => 'required|in:self,son,daughter,brother,sister,relative,other',
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'gender' => ['required', 'string', 'in:male,female,other'],
             'dob' => ['required', 'date'],
             'age' => ['required', 'integer', 'min:0'],

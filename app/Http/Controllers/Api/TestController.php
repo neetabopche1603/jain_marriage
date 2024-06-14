@@ -95,7 +95,7 @@ class TestController extends Controller
                 'partner_education', 'partner_occupation', 'partner_profession',
                 'partner_manglik', 'partner_marital_status', 'partner_acccept_kid', 'partner_kid_discription',
                 'astrology_matching',
-                'expectation_partner_details', 'partner_hobbies', 'photo',
+                'expectation_partner_details', 'partner_hobbies', 'photo','family_status','family_type'
 
             ]);
 

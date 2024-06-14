@@ -108,13 +108,13 @@ class UserReq extends FormRequest
             'partner_income' => ['required'],
 
             'partner_country' => 'required|array',
-            'partner_country.*' => 'exists:countries,id',
+            // 'partner_country.*' => 'exists:countries,id',
 
             'partner_state' => 'required|array',
-            'partner_state.*' => 'exists:states,id',
+            // 'partner_state.*' => 'exists:states,id',
 
             'partner_city' => 'required|array',
-            'partner_city.*' => 'exists:cities,id',
+            // 'partner_city.*' => 'exists:cities,id',
 
             'partner_education' => 'required|array',
             'partner_education.*' => 'exists:education,education_name',
