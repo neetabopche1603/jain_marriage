@@ -12,16 +12,18 @@ class select extends Component
     public $label;
     public $options;
     public $required;
+    public $selectClass;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($name, $label, $options, $required = false)
+    public function __construct($name, $label, $options, $required = false,$selectClass=null)
     {
         $this->name = $name;
         $this->label = $label;
         $this->options = $options;
         $this->required = $required;
+        $this->selectClass = $selectClass;
     }
 
     /**

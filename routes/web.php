@@ -74,11 +74,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // User Personal Details update Route
         Route::post('user-personal-details-update', [UserController::class, 'userBasicPersonalDetailUpdate'])->name('admin.userBasicPersonalDetailUpdate');
 
+        Route::post('user-family-details-update', [UserController::class, 'userFamilyDetailsUpdate'])->name('admin.userFamilyDetailsUpdate');
+
+        Route::post('user-Partner-preference-details-update', [UserController::class, 'userPartnerPreferenceDetailsUpdate'])->name('admin.userPartnerPreferenceDetailsUpdate');
 
         Route::post('get-state', [UserController::class, 'getState'])->name('admin.getState');
         Route::post('get-city', [UserController::class, 'getCity'])->name('admin.getCity');
+
     });
 });
 
 Route::get('user-pdf-view', [UserController::class, 'userPdfView'])->name('admin.userPdfView');
 Route::get('user-generatePdf', [UserController::class, 'generatePdf'])->name('admin.generatePdf');
+

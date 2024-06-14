@@ -29,7 +29,16 @@
             </div>
             <!-- end page title -->
 
+
             @include('partial.flash-msg')
+
+            @if ($errors->any())
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
 
             <div class="row">
                 <div class="col-xxl-12">
@@ -45,24 +54,14 @@
                                         Basic & Personal Details
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#nav-border-top-profile" role="tab"
-                                        aria-selected="false">
-                                        Profile Image
-                                    </a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="tab" href="#nav-border-top-familyDetails"
                                         role="tab" aria-selected="false">
                                         Family Details
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#nav-border-top-settings" role="tab"
-                                        aria-selected="true">
-                                        Other Details
-                                    </a>
-                                </li>
+
 
                                 <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="tab" href="#nav-border-top-partner-preference"
@@ -71,7 +70,19 @@
                                     </a>
                                 </li>
 
+                                {{-- <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#nav-border-top-profile-Img"
+                                        role="tab" aria-selected="false">
+                                        Profile Image
+                                    </a>
+                                </li> --}}
 
+                                {{-- <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#nav-border-top-document-upload"
+                                        role="tab" aria-selected="true">
+                                        Document Upload & Update status
+                                    </a>
+                                </li> --}}
 
                             </ul>
                             <div class="tab-content text-muted">
@@ -84,9 +95,9 @@
                                         <div class="flex-grow-1 ms-2">
 
                                             {{-- Basic & Personal Details Form --}}
-                                            <form action="{{ route('admin.userBasicPersonalDetailUpdate') }}" method="post"
-                                                enctype="multipart/form-data">
+                                            <form action="{{ url('admin/user-family-details-update') }}" method="post">
                                                 @csrf
+
                                                 <input type="hidden" name="user_id" value="{{ $usersEdit->id }}">
 
                                                 <div class="row">
@@ -264,47 +275,54 @@
                                                                                 'male' => 'male',
                                                                                 'female' => 'female',
                                                                                 'other' => 'other',
-                                                                            ]" :required="true" :selected="$usersEdit->gender" />
+                                                                            ]" :required="true"
+                                                                            :selected="$usersEdit->gender" />
 
                                                                     </div>
 
                                                                     <div class="col-md-6">
                                                                         <x-form.input name="name"
-                                                                            label="Candidate Name*" placeholder="" value="{{$usersEdit->name}}" />
+                                                                            label="Candidate Name*" placeholder=""
+                                                                            value="{{ $usersEdit->name }}" />
                                                                     </div>
 
                                                                     <div class="col-md-3">
                                                                         <x-form.input name="dob" type="date"
-                                                                            label="DOB*" placeholder=""
-                                                                            id="user_dob" value="{{$usersEdit->dob}}" />
+                                                                            label="DOB*" placeholder="" id="user_dob"
+                                                                            value="{{ $usersEdit->dob }}" />
                                                                     </div>
 
                                                                     <div class="col-md-2">
                                                                         <x-form.input name="age" type="number"
-                                                                            label="Age" placeholder="" id="user_age" value="{{$usersEdit->age}}"
-                                                                            disabled />
+                                                                            label="Age" placeholder="" id="user_age"
+                                                                            value="{{ $usersEdit->age }}" readonly />
                                                                     </div>
 
                                                                     <div class="col-md-2">
                                                                         <x-form.input name="birth_time" type="time"
-                                                                            label="Birth Time" placeholder="" value="{{ date('H:i', strtotime($usersEdit->birth_time)) }}" />
+                                                                            label="Birth Time" placeholder=""
+                                                                            value="{{ date('H:i', strtotime($usersEdit->birth_time)) }}" />
                                                                     </div>
 
                                                                     <div class="col-md-5">
                                                                         <x-form.input name="birth_place"
-                                                                            label="Birth Place" placeholder="" value="{{$usersEdit->birth_place}}" />
+                                                                            label="Birth Place" placeholder=""
+                                                                            value="{{ $usersEdit->birth_place }}" />
                                                                     </div>
 
                                                                     <div class="col-md-4">
-                                                                        <label for="height" class="form-label">Height</label>
-                                                                        <select name="height" id="height" class="form-select">
+                                                                        <label for="height"
+                                                                            class="form-label">Height</label>
+                                                                        <select name="height" id="height"
+                                                                            class="form-select js-example-basic-single">
                                                                             <option value="">Select Height</option>
                                                                             @for ($feet = 4; $feet <= 8; $feet++)
                                                                                 @for ($inch = 0; $inch <= 9; $inch++)
                                                                                     @php
                                                                                         $height = $feet + $inch / 10;
                                                                                     @endphp
-                                                                                    <option value="{{ $height }}" {{ $usersEdit->height == $height ? 'selected' : '' }}>
+                                                                                    <option value="{{ $height }}"
+                                                                                        {{ $usersEdit->height == $height ? 'selected' : '' }}>
                                                                                         {{ $height }}
                                                                                     </option>
                                                                                 @endfor
@@ -314,11 +332,14 @@
 
 
                                                                     <div class="col-md-4">
-                                                                        <label for="weight" class="form-label">Weight</label>
-                                                                        <select name="weight" id="weight" class="form-select">
+                                                                        <label for="weight"
+                                                                            class="form-label">Weight</label>
+                                                                        <select name="weight" id="weight"
+                                                                            class="form-select js-example-basic-single">
                                                                             <option value="">Select Weight</option>
                                                                             @for ($weight = 35; $weight <= 200; $weight++)
-                                                                                <option value="{{ $weight }}kg" {{ $usersEdit->weight == $weight ? 'selected' : '' }}>
+                                                                                <option value="{{ $weight }}kg"
+                                                                                    {{ intval($usersEdit->weight) == $weight ? 'selected' : '' }}>
                                                                                     {{ $weight }}kg
                                                                                 </option>
                                                                             @endfor
@@ -327,10 +348,10 @@
 
 
                                                                     <div class="col-md-4">
-                                                                        <x-form.select name="complexion"
+                                                                        <x-form.select name="complexion" :selectClass="'js-example-basic-single'"
                                                                             label="Complexion" :options="[
                                                                                 'extemely fair skin' =>
-                                                                                'Extemely Fair Skin',
+                                                                                    'Extemely Fair Skin',
                                                                                 'fair skin' => 'Fair Skin',
                                                                                 'light skin' => 'Light Skin',
                                                                                 'medium skin' => 'Medium Skin',
@@ -339,38 +360,49 @@
                                                                                 'brown skin' => 'Brown Skin',
                                                                                 'dark skin' => 'Dark Skin',
                                                                             ]"
-                                                                            :required="true"
-                                                                            :selected="$usersEdit->complexion" />
+                                                                            :required="true" :selected="$usersEdit->complexion" />
 
                                                                     </div>
 
                                                                     <div class="col-md-4">
-                                                                        <label for="education" class="form-label">Education</label>
-                                                                        <select name="education[]" id="education" class="form-select" multiple="multiple">
-                                                                            <option value="" disabled>Select Education</option>
+                                                                        <label for="education"
+                                                                            class="form-label">Education</label>
+                                                                        <select name="education[]" id="education"
+                                                                            class="form-select js-example-basic-single"
+                                                                            multiple="multiple">
+                                                                            <option value="" disabled>Select
+                                                                                Education</option>
 
                                                                             @foreach ($data['educations'] as $education)
-                                                                                <option value="{{ $education->education_name }}"
+                                                                                <option
+                                                                                    value="{{ $education->education_name }}"
                                                                                     {{ (is_array(old('education')) && in_array($education->education_name, old('education'))) ||
-                                                                                       (is_array($usersEdit->education) && in_array($education->education_name, $usersEdit->education)) ? 'selected' : '' }}>
+                                                                                    (is_array($usersEdit->education) && in_array($education->education_name, $usersEdit->education))
+                                                                                        ? 'selected'
+                                                                                        : '' }}>
                                                                                     {{ $education->education_name }}
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
                                                                         <span class="text-danger">
                                                                             @error('education')
-                                                                                <div class="text-danger">{{ $message }}</div>
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
                                                                             @enderror
                                                                         </span>
                                                                     </div>
 
 
                                                                     <div class="col-md-4">
-                                                                        <label for="profession" class="form-label">Profession</label>
-                                                                        <select name="profession" id="profession" class="form-select">
-                                                                            <option value="">Select Profession</option>
+                                                                        <label for="profession"
+                                                                            class="form-label">Profession</label>
+                                                                        <select name="profession" id="profession"
+                                                                            class="form-select js-example-basic-single">
+                                                                            <option value="">Select Profession
+                                                                            </option>
                                                                             @foreach ($data['professions'] as $profe)
-                                                                                <option value="{{ $profe->profession_name }}"
+                                                                                <option
+                                                                                    value="{{ $profe->profession_name }}"
                                                                                     {{ old('profession', $usersEdit->profession) == $profe->profession_name ? 'selected' : '' }}>
                                                                                     {{ $profe->profession_name }}
                                                                                 </option>
@@ -378,18 +410,23 @@
                                                                         </select>
                                                                         <span class="text-danger">
                                                                             @error('profession')
-                                                                                <div class="text-danger">{{ $message }}</div>
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
                                                                             @enderror
                                                                         </span>
                                                                     </div>
 
 
                                                                     <div class="col-md-4">
-                                                                        <label for="occupation" class="form-label">Occupation</label>
-                                                                        <select name="occupation" id="occupation" class="form-select">
-                                                                            <option value="">Select Occupation</option>
+                                                                        <label for="occupation"
+                                                                            class="form-label">Occupation</label>
+                                                                        <select name="occupation" id="occupation"
+                                                                            class="form-select js-example-basic-single">
+                                                                            <option value="">Select Occupation
+                                                                            </option>
                                                                             @foreach ($data['occupations'] as $occu)
-                                                                                <option value="{{ $occu->occupation_name }}"
+                                                                                <option
+                                                                                    value="{{ $occu->occupation_name }}"
                                                                                     {{ old('occupation', $usersEdit->occupation) == $occu->occupation_name ? 'selected' : '' }}>
                                                                                     {{ $occu->occupation_name }}
                                                                                 </option>
@@ -397,7 +434,8 @@
                                                                         </select>
                                                                         <span class="text-danger">
                                                                             @error('occupation')
-                                                                                <div class="text-danger">{{ $message }}</div>
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
                                                                             @enderror
                                                                         </span>
                                                                     </div>
@@ -406,7 +444,7 @@
 
                                                                     <div class="col-md-3 mt-2">
                                                                         <x-form.select name="religion" label="Religion"
-                                                                            :options="[
+                                                                            :selectClass="'js-example-basic-single'" :options="[
                                                                                 // '' => 'Select Religion',
                                                                                 'Christianity' => 'Christianity',
                                                                                 'Islam' => 'Islam',
@@ -423,13 +461,14 @@
                                                                                 'Atheism' => 'Atheism',
                                                                                 'Agnosticism' => 'Agnosticism',
                                                                                 'Other' => 'Other',
-                                                                            ]" :required="true"
-                                                                            :selected="$usersEdit->religion"  />
+                                                                            ]"
+                                                                            :required="true" :selected="$usersEdit->religion" />
                                                                     </div>
 
                                                                     <div class="col-md-3 mt-2">
                                                                         <x-form.select name="candidate_community"
-                                                                            label="Community" :options="[
+                                                                            :selectClass="'js-example-basic-single'" label="Community"
+                                                                            :options="[
                                                                                 '' => 'Select Community',
                                                                                 'swetamber' => 'Swetamber',
                                                                                 'digmber' => 'Digmber',
@@ -445,7 +484,8 @@
 
                                                                     <div class="col-md-3 mt-2">
                                                                         <x-form.select name="candidate_income"
-                                                                            label="Candidate Income" :options="[
+                                                                            :selectClass="'js-example-basic-single'" label="Candidate Income"
+                                                                            :options="[
                                                                                 'any' => 'Any',
                                                                                 '1 - 2 L' => '1 - 2 L',
                                                                                 '2 - 3 L' => '2 - 3 L',
@@ -471,12 +511,13 @@
                                                                                 '500 Cr - 1B' => '500 Cr - 1B',
                                                                                 '1B and above' => '1B and above',
                                                                             ]" :required="true"
-                                                                            :selected="$usersEdit->candidate_income"  />
+                                                                            :selected="$usersEdit->candidate_income" />
                                                                     </div>
 
                                                                     <div class="col-md-3 mt-2">
                                                                         <x-form.select name="blood_group"
-                                                                            label="Blood Group" :options="[
+                                                                            :selectClass="'js-example-basic-single'" label="Blood Group"
+                                                                            :options="[
                                                                                 'A+' => 'A+',
                                                                                 'A-' => 'A-',
                                                                                 'B+' => 'B+',
@@ -493,12 +534,17 @@
                                                                         <label for="physical_status"
                                                                             class="form-label">Physical Status</label>
                                                                         <select name="physical_status"
-                                                                            id="physical_status" class="form-select">
+                                                                            id="physical_status"
+                                                                            class="form-select physical_status">
                                                                             <option value="">-Select Type-</option>
-                                                                                <option value="yes" {{ old('physical_status', $usersEdit->physical_status) == 'yes' ? 'selected' : '' }}>Yes</option>
+                                                                            <option value="yes"
+                                                                                {{ old('physical_status', $usersEdit->physical_status) == 'yes' ? 'selected' : '' }}>
+                                                                                Yes</option>
 
 
-                                                                                <option value="no" {{ old('physical_status', $usersEdit->physical_status) == 'no' ? 'selected' : '' }}>No</option>
+                                                                            <option value="no"
+                                                                                {{ old('physical_status', $usersEdit->physical_status) == 'no' ? 'selected' : '' }}>
+                                                                                No</option>
 
                                                                         </select>
                                                                         @error('physical_status')
@@ -509,18 +555,17 @@
                                                                     <div class="col-md-8 mt-2 physical_status_desc_div"
                                                                         style="display: none">
                                                                         <x-form.textarea name="physical_status_desc"
-                                                                            label="Physical Status Desciption" value="{{$usersEdit->physical_status_desc}}"
+                                                                            label="Physical Status Desciption"
+                                                                            value="{{ $usersEdit->physical_status_desc }}"
                                                                             placeholder="" />
                                                                     </div>
 
 
                                                                     {{-- marital_status --}}
                                                                     <div class="row">
-
-
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-4 mt-2">
                                                                             <x-form.select name="marital_status"
-                                                                                label="Marital Status"
+                                                                                label="Marital Status" :selectClass="'js-example-basic-single'"
                                                                                 :options="[
                                                                                     'any' => 'Any',
                                                                                     'single' => 'Single',
@@ -532,42 +577,57 @@
                                                                                     'in a Relationship' =>
                                                                                         'In a Relationship',
                                                                                 ]" :required="true"
-                                                                            :selected="$usersEdit->marital_status" />
+                                                                                :selected="$usersEdit->marital_status" />
                                                                         </div>
 
-                                                                        <div class="col-md-4 mt-2 is_children_div" style="{{ old('is_children', $usersEdit->is_children == 'yes' ? 'display:block;' : 'display:none;') }}">
-                                                                            <label for="is_children" class="form-label">Do you have children?</label>
-                                                                            <select name="is_children" id="is_children" class="form-select">
-                                                                                <option value="">-Select Type-</option>
-                                                                                <option value="yes" {{ old('is_children', $usersEdit->is_children) == 'yes' ? 'selected' : '' }}>Yes</option>
-                                                                                <option value="no" {{ old('is_children', $usersEdit->is_children) == 'no' ? 'selected' : '' }}>No</option>
+
+                                                                        <div class="col-md-4 mt-2 is_children_div">
+                                                                            <label for="is_children" class="form-label">Do
+                                                                                you have children?</label>
+                                                                            <select name="is_children" id="is_children"
+                                                                                class="form-select is_children_sel">
+                                                                                <option value="">-Select Type-
+                                                                                </option>
+                                                                                <option value="yes"
+                                                                                    {{ old('is_children', $usersEdit->is_children) == 'yes' ? 'selected' : '' }}>
+                                                                                    Yes</option>
+                                                                                <option value="no"
+                                                                                    {{ old('is_children', $usersEdit->is_children) == 'no' ? 'selected' : '' }}>
+                                                                                    No</option>
                                                                             </select>
                                                                             @error('is_children')
-                                                                                <div class="text-danger">{{ $message }}</div>
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
                                                                             @enderror
                                                                         </div>
 
 
 
                                                                         <div class="row is_children_yes_div"
-                                                                            style="display: none;">
+                                                                            style="{{ old('is_children', $usersEdit->is_children) == 'yes' ? 'display:;' : 'display:none;' }}">
+
                                                                             <div class="col-md-6 mt-2">
                                                                                 <x-form.textarea name="son_details"
-                                                                                    label="Son Details" placeholder="" value="{{$usersEdit->son_details}}" />
+                                                                                    label="Son Details" placeholder=""
+                                                                                    value="{{ $usersEdit->son_details }}" />
                                                                             </div>
 
                                                                             <div class="col-md-6 mt-2">
                                                                                 <x-form.textarea name="daughter_details"
                                                                                     label="Daughter Details"
-                                                                                    placeholder="" value="{{$usersEdit->daughter_details}}" />
+                                                                                    placeholder=""
+                                                                                    value="{{ $usersEdit->daughter_details }}" />
                                                                             </div>
+
                                                                         </div>
+
 
                                                                     </div>
 
                                                                     <div class="col-md-12 mt-2">
                                                                         <x-form.textarea name="candidates_address"
-                                                                            label="Candidates Address" placeholder="" value="{{$usersEdit->candidates_address}}" />
+                                                                            label="Candidates Address" placeholder=""
+                                                                            value="{{ $usersEdit->candidates_address }}" />
                                                                     </div>
 
                                                                 </div>
@@ -584,42 +644,13 @@
 
                                                 <div class="text-end mb-4">
                                                     <button type="reset" class="btn btn-danger w-sm">Reset</button>
-                                                    <button type="submit" class="btn btn-success w-sm">Update User Personal Details</button>
+                                                    <button type="submit" class="btn btn-success w-sm">Update</button>
                                                 </div>
                                             </form>
 
                                         </div>
                                     </div>
                                 </div>
-
-
-
-                                <div class="tab-pane" id="nav-border-top-profile" role="tabpanel">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <i class="ri-checkbox-circle-line text-success"></i>
-                                        </div>
-                                        <div class="flex-grow-1 ms-2">
-                                            <form action="">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <x-form.input name="photo" type="file" label="photo" />
-                                                    </div>
-
-                                                    <div class="col-md-8">
-                                                        <x-form.input name="id_proof" type="file" label="Id Proof" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="text-end mb-4">
-                                                    <button type="reset" class="btn btn-danger w-sm">Reset</button>
-                                                    <button type="submit" class="btn btn-success w-sm">Upload</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
 
                                 {{-- Family Details --}}
                                 <div class="tab-pane" id="nav-border-top-familyDetails" role="tabpanel">
@@ -637,21 +668,34 @@
                                                     </div>
 
                                                     <div class="card-body">
-                                                        <form action="" method="post">
+
+                                                        <form method="POST"
+                                                            action="{{ route('admin.userFamilyDetailsUpdate') }}">
+                                                            @csrf
+
+                                                            <input type="hidden" name="user_id"
+                                                                value="{{ $usersEdit->userDetail->user_id }}">
+
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <x-form.input name="father_name" label="Father Name"
+                                                                        value="{{ $usersEdit->userDetail->father_name }}"
                                                                         placeholder="" />
                                                                 </div>
 
                                                                 <div class="col-md-6">
                                                                     <label for="father_profession"
-                                                                        class="form-label">Father
-                                                                        Profession</label>
+                                                                        class="form-label">Father Profession</label>
                                                                     <select name="father_profession"
-                                                                        id="father_profession" class="form-select">
-                                                                        <option value="">Select Profession</option>
-                                                                        <option value="">BS/w</option>
+                                                                        id="father_profession"
+                                                                        class="form-select js-example-basic-single">
+                                                                        <option value="">-Select Profession-</option>
+                                                                        @foreach ($data['professions'] as $profe)
+                                                                            <option value="{{ $profe->profession_name }}"
+                                                                                {{ old('father_profession', $usersEdit->userDetail->father_profession) == $profe->profession_name ? 'selected' : '' }}>
+                                                                                {{ strtoupper($profe->profession_name) }}
+                                                                            </option>
+                                                                        @endforeach
                                                                     </select>
                                                                     <span class="text-danger">
                                                                         @error('father_profession')
@@ -660,19 +704,26 @@
                                                                     </span>
                                                                 </div>
 
+
                                                                 <div class="col-md-6">
                                                                     <x-form.input name="mother_name" label="Mother Name"
+                                                                        value="{{ $usersEdit->userDetail->mother_name }}"
                                                                         placeholder="" />
                                                                 </div>
 
                                                                 <div class="col-md-6">
                                                                     <label for="mother_profession"
-                                                                        class="form-label">Mother
-                                                                        Profession</label>
+                                                                        class="form-label">Mother Profession</label>
                                                                     <select name="mother_profession"
-                                                                        id="mother_profession" class="form-select">
-                                                                        <option value="">Select Profession</option>
-                                                                        <option value="">BS/w</option>
+                                                                        id="mother_profession"
+                                                                        class="form-select js-example-basic-single">
+                                                                        <option value="">-Select Profession-</option>
+                                                                        @foreach ($data['professions'] as $profe)
+                                                                            <option value="{{ $profe->profession_name }}"
+                                                                                {{ old('mother_profession', $usersEdit->userDetail->mother_profession) == $profe->profession_name ? 'selected' : '' }}>
+                                                                                {{ strtoupper($profe->profession_name) }}
+                                                                            </option>
+                                                                        @endforeach
                                                                     </select>
                                                                     <span class="text-danger">
                                                                         @error('mother_profession')
@@ -681,69 +732,80 @@
                                                                     </span>
                                                                 </div>
 
+
                                                                 <div class="col-md-6">
                                                                     <label for="residence_type"
-                                                                        class="form-label">Residence
-                                                                        Type</label>
+                                                                        class="form-label">Residence Type</label>
                                                                     <select name="residence_type" id="residence_type"
-                                                                        class="form-select">
+                                                                        class="form-select js-example-basic-single">
                                                                         <option value="">-Select Residence Type-
                                                                         </option>
-                                                                        <option value="Apartment"
-                                                                            {{ old('residence_type') == 'Apartment' ? 'selected' : '' }}>
-                                                                            Apartment</option>
-                                                                        <option value="Condominium"
-                                                                            {{ old('residence_type') == 'Condominium' ? 'selected' : '' }}>
+                                                                        <option value="apartment"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'apartment' ? 'selected' : '' }}>
+                                                                            Apartment
+                                                                        </option>
+                                                                        <option value="condominium"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'condominium' ? 'selected' : '' }}>
                                                                             Condominium
                                                                         </option>
-                                                                        <option value="House"
-                                                                            {{ old('residence_type') == 'House' ? 'selected' : '' }}>
+                                                                        <option value="house"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'house' ? 'selected' : '' }}>
                                                                             House
                                                                         </option>
-                                                                        <option value="Townhouse"
-                                                                            {{ old('residence_type') == 'Townhouse' ? 'selected' : '' }}>
-                                                                            Townhouse</option>
-                                                                        <option value="Villa"
-                                                                            {{ old('residence_type') == 'Villa' ? 'selected' : '' }}>
+                                                                        <option value="townhouse"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'townhouse' ? 'selected' : '' }}>
+                                                                            Townhouse
+                                                                        </option>
+                                                                        <option value="villa"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'villa' ? 'selected' : '' }}>
                                                                             Villa
                                                                         </option>
-                                                                        <option value="Dormitory"
-                                                                            {{ old('residence_type') == 'Dormitory' ? 'selected' : '' }}>
-                                                                            Dormitory</option>
-                                                                        <option value="Hostel"
-                                                                            {{ old('residence_type') == 'Hostel' ? 'selected' : '' }}>
-                                                                            Hostel</option>
-                                                                        <option value="Cottage"
-                                                                            {{ old('residence_type') == 'Cottage' ? 'selected' : '' }}>
-                                                                            Cottage</option>
-                                                                        <option value="Bungalow"
-                                                                            {{ old('residence_type') == 'Bungalow' ? 'selected' : '' }}>
-                                                                            Bungalow</option>
-                                                                        <option value="Studio"
-                                                                            {{ old('residence_type') == 'Studio' ? 'selected' : '' }}>
-                                                                            Studio</option>
-                                                                        <option value="Mobile Home"
-                                                                            {{ old('residence_type') == 'Mobile Home' ? 'selected' : '' }}>
+                                                                        <option value="dormitory"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'dormitory' ? 'selected' : '' }}>
+                                                                            Dormitory
+                                                                        </option>
+                                                                        <option value="hostel"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'hostel' ? 'selected' : '' }}>
+                                                                            Hostel
+                                                                        </option>
+                                                                        <option value="cottage"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'cottage' ? 'selected' : '' }}>
+                                                                            Cottage
+                                                                        </option>
+                                                                        <option value="bungalow"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'bungalow' ? 'selected' : '' }}>
+                                                                            Bungalow
+                                                                        </option>
+                                                                        <option value="studio"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'studio' ? 'selected' : '' }}>
+                                                                            Studio
+                                                                        </option>
+                                                                        <option value="mobile home"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'mobile home' ? 'selected' : '' }}>
                                                                             Mobile Home
                                                                         </option>
-                                                                        <option value="Farmhouse"
-                                                                            {{ old('residence_type') == 'Farmhouse' ? 'selected' : '' }}>
-                                                                            Farmhouse</option>
-                                                                        <option value="Penthouse"
-                                                                            {{ old('residence_type') == 'Penthouse' ? 'selected' : '' }}>
-                                                                            Penthouse</option>
-                                                                        <option value="Mansion"
-                                                                            {{ old('residence_type') == 'Mansion' ? 'selected' : '' }}>
-                                                                            Mansion</option>
-                                                                        <option value="Duplex"
-                                                                            {{ old('residence_type') == 'Duplex' ? 'selected' : '' }}>
-                                                                            Duplex</option>
-                                                                        <option value="Shared Accommodation"
-                                                                            {{ old('residence_type') == 'Shared Accommodation' ? 'selected' : '' }}>
-                                                                            Shared
-                                                                            Accommodation</option>
-                                                                        <option value="Other"
-                                                                            {{ old('residence_type') == 'Other' ? 'selected' : '' }}>
+                                                                        <option value="farmhouse"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'farmhouse' ? 'selected' : '' }}>
+                                                                            Farmhouse
+                                                                        </option>
+                                                                        <option value="penthouse"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'penthouse' ? 'selected' : '' }}>
+                                                                            Penthouse
+                                                                        </option>
+                                                                        <option value="mansion"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'mansion' ? 'selected' : '' }}>
+                                                                            Mansion
+                                                                        </option>
+                                                                        <option value="duplex"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'duplex' ? 'selected' : '' }}>
+                                                                            Duplex
+                                                                        </option>
+                                                                        <option value="shared accommodation"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'shared accommodation' ? 'selected' : '' }}>
+                                                                            Shared Accommodation
+                                                                        </option>
+                                                                        <option value="other"
+                                                                            {{ strtolower(old('residence_type', $usersEdit->userDetail->residence_type)) == 'other' ? 'selected' : '' }}>
                                                                             Other
                                                                         </option>
                                                                     </select>
@@ -755,220 +817,145 @@
 
                                                                 <div class="col-md-6">
                                                                     <x-form.input name="gotra" label="Gotra"
-                                                                        placeholder="" />
+                                                                        placeholder=""
+                                                                        value="{{ $usersEdit->userDetail->gotra }}" />
                                                                 </div>
 
 
                                                                 <div class="col-md-6">
-                                                                    <label for="family_type" class="form-label">Family
-                                                                        Type</label>
-                                                                    <select name="family_type" id="family_type"
-                                                                        class="form-select">
-                                                                        <option value="">-Select Type-</option>
-                                                                        <option value="nuclear"
-                                                                            {{ old('family_status') == 'nuclear' ? 'selected' : '' }}>
-                                                                            Nuclear</option>
-
-                                                                        <option value="joint"
-                                                                            {{ old('family_status') == 'joint' ? 'selected' : '' }}>
-                                                                            Joint
-                                                                        </option>
-
-                                                                        <option value="single parent"
-                                                                            {{ old('family_status') == 'single parent' ? 'selected' : '' }}>
-                                                                            Single Parent
-                                                                        </option>
-
-                                                                        <option value="step parent"
-                                                                            {{ old('family_status') == 'step parent' ? 'selected' : '' }}>
-                                                                            Step Parent
-                                                                        </option>
-
-                                                                        <option value="grandparent"
-                                                                            {{ old('family_status') == 'grandparent' ? 'selected' : '' }}>
-                                                                            Grandparent
-                                                                        </option>
-
-                                                                    </select>
-
-                                                                    @error('family_type')
-                                                                        <div class="text-danger">{{ $message }}</div>
-                                                                    @enderror
-
+                                                                    <x-form.select name="family_type" label="Family Type"
+                                                                        :options="[
+                                                                            'nuclear' => 'Nuclear',
+                                                                            'joint' => 'Joint',
+                                                                            'single parent' => 'Single Parent',
+                                                                            'step parent' => 'Step Parent',
+                                                                            'grandparent' => 'Grandparent',
+                                                                        ]" :selected="$usersEdit->userDetail->family_type" />
                                                                 </div>
+
 
                                                                 <div class="col-md-6">
-                                                                    <div class="col-md-6">
-                                                                        <label for="family_status"
-                                                                            class="form-label">Family
-                                                                            Status</label>
-                                                                        <select name="family_status" id="family_status"
-                                                                            class="form-select">
-                                                                            <option value="">-Select Type-</option>
-                                                                            <option value="middle class"
-                                                                                {{ old('family_status') == 'middle class' ? 'selected' : '' }}>
-                                                                                Middle Class</option>
-
-                                                                            <option value="upper middle class"
-                                                                                {{ old('family_status') == 'upper middle class' ? 'selected' : '' }}>
-                                                                                Upper
-                                                                                Middle Class
-                                                                            </option>
-
-                                                                            <option value="upper class"
-                                                                                {{ old('family_status') == 'upper class' ? 'selected' : '' }}>
-                                                                                Upper Class
-                                                                            </option>
-
-                                                                            <option value="rich"
-                                                                                {{ old('family_status') == 'rich' ? 'selected' : '' }}>
-                                                                                Rich
-                                                                            </option>
-
-                                                                        </select>
-                                                                        @error('family_status')
-                                                                            <div class="text-danger">{{ $message }}</div>
-                                                                        @enderror
-                                                                    </div>
+                                                                    <x-form.select name="family_status"
+                                                                        label="Family Status" :options="[
+                                                                            'middle class' => 'Middle Class',
+                                                                            'upper middle class' =>
+                                                                                'Upper Middle Class',
+                                                                            'upper class' => 'Upper Class',
+                                                                            'rich' => 'Rich',
+                                                                        ]"
+                                                                        :selected="$usersEdit->userDetail
+                                                                            ->family_status" />
+                                                                </div>
 
 
+                                                                <div class="col-md-6 mt-2">
+                                                                    <x-form.select name="family_community"
+                                                                        :selectClass="'js-example-basic-single'" label="Community"
+                                                                        :options="[
+                                                                            'Swetamber' => 'Swetamber',
+                                                                            'Digmber' => 'Digmber',
+                                                                            'Agrawal' => 'Agrawal',
+                                                                            'Khandalwal' => 'Khandalwal',
+                                                                            'Vani' => 'Vani',
+                                                                            'Other Jain' => 'Other Jain',
+                                                                            'Non Jain' => 'Non Jain',
+                                                                        ]" :selected="$usersEdit->userDetail
+                                                                            ->family_community" required />
+                                                                </div>
+
+
+                                                                <div class="col-md-6 mt-2">
+
+                                                                    <x-form.select name="family_sub_community"
+                                                                        :selectClass="'js-example-basic-single'" label="Sub Community"
+                                                                        :options="[
+                                                                            'Digmber-Murtipojak' =>
+                                                                                'Digmber-Murtipojak',
+                                                                            'Digmber-Gumanapati' =>
+                                                                                'Digmber-Gumanapati',
+                                                                            'Digmber-Taranapati' =>
+                                                                                'Digmber-Taranapati',
+                                                                            'Digmber-Teranapati' =>
+                                                                                'Digmber-Teranapati',
+                                                                            'Digmber-Terapanti' => 'Digmber-Terapanti',
+                                                                            'Digmber-Torapanti' => 'Digmber-Torapanti',
+                                                                            'Digmber-Pancham' => 'Digmber-Pancham',
+                                                                            'Digmber-Bisapanti' => 'Digmber-Bisapanti',
+                                                                            'Digmber' => 'Digmber',
+                                                                            'Swetamber' => 'Swetamber',
+                                                                            'Other' => 'Other',
+                                                                            'Swetamber-Terapanti' =>
+                                                                                'Swetamber-Terapanti',
+                                                                            'Swetamber-Murtipojak' =>
+                                                                                'Swetamber-Murtipojak',
+                                                                            'Swetamber-Stanawasi' =>
+                                                                                'Swetamber-Stanawasi',
+                                                                            'Swetamber-Derawasi' =>
+                                                                                'Swetamber-Derawasi',
+                                                                            'Other Jain' => 'Other Jain',
+                                                                            'Vani' => 'Vani',
+                                                                            'Non Jain' => 'Non Jain',
+                                                                        ]" :selected="$usersEdit->userDetail
+                                                                            ->family_sub_community" required />
 
                                                                 </div>
 
-                                                                <div class="col-md-6">
-                                                                    <label for="family_community"
-                                                                        class="form-label">Community</label>
-                                                                    <select name="family_community" id="family_community"
-                                                                        class="form-select">
-                                                                        <option value="">Select Community</option>
-                                                                        <option value="Swetamber">Swetamber</option>
-                                                                        <option value="Digmber">Digmber</option>
-                                                                        <option value="Agrawal">Agrawal</option>
-                                                                        <option value="Khandalwal">Khandalwal</option>
-                                                                        <option value="Vani">Vani</option>
-                                                                        <option value="Other Jain">Other Jain</option>
-                                                                        <option value="Non Jain">Non Jain</option>
-                                                                    </select>
-                                                                    <span class="text-danger">
-                                                                        @error('family_community')
-                                                                            <div class="text-danger">{{ $message }}</div>
-                                                                        @enderror
-                                                                    </span>
-
-                                                                </div>
-
-                                                                <div class="col-md-6">
-                                                                    <label for="family_sub_community"
-                                                                        class="form-label">Sub
-                                                                        Community</label>
-                                                                    <select name="family_sub_community"
-                                                                        id="family_sub_community" class="form-select">
-                                                                        <option value="">Select Sub-Community
-                                                                        </option>
-                                                                        <option value="Digmber-Murtipojak">
-                                                                            Digmber-Murtipojak
-                                                                        </option>
-                                                                        <option value="Digmber-Gumanapati">
-                                                                            Digmber-Gumanapati
-                                                                        </option>
-                                                                        <option value="Digmber-Taranapati">
-                                                                            Digmber-Taranapati
-                                                                        </option>
-                                                                        <option value="Digmber-Teranapati">
-                                                                            Digmber-Teranapati
-                                                                        </option>
-                                                                        <option value="Digmber-Terapanti">Digmber-Terapanti
-                                                                        </option>
-                                                                        <option value="Digmber-Torapanti">Digmber-Torapanti
-                                                                        </option>
-                                                                        <option value="Digmber-Pancham">Digmber-Pancham
-                                                                        </option>
-                                                                        <option value="Digmber-Bisapanti">Digmber-Bisapanti
-                                                                        </option>
-                                                                        <option value="Digmber">Digmber</option>
-                                                                        <option value="Swetamber">Swetamber</option>
-                                                                        <option value="Other">Other</option>
-                                                                        <option value="Swetamber-Terapanti">
-                                                                            Swetamber-Terapanti
-                                                                        </option>
-                                                                        <option value="Swetamber-Murtipojak">
-                                                                            Swetamber-Murtipojak</option>
-                                                                        <option value="Swetamber-Stanawasi">
-                                                                            Swetamber-Stanawasi
-                                                                        </option>
-                                                                        <option value="Swetamber-Derawasi">
-                                                                            Swetamber-Derawasi
-                                                                        </option>
-                                                                        <option value="Other Jain">Other Jain</option>
-                                                                        <option value="Vani">Vani</option>
-                                                                        <option value="Non Jain">Non Jain</option>
-
-                                                                    </select>
-                                                                    <span class="text-danger">
-                                                                        @error('family_sub_community')
-                                                                            <div class="text-danger">{{ $message }}</div>
-                                                                        @enderror
-                                                                    </span>
-
-                                                                </div>
-
-                                                                <div class="col-md-12">
+                                                                <div class="col-md-12 mt-2">
                                                                     <x-form.textarea name="family_address"
-                                                                        label="Family Address" placeholder="" />
+                                                                        label="Family Address" placeholder=""
+                                                                        value="{{ $usersEdit->userDetail->family_address }}" />
                                                                 </div>
 
                                                                 <strong>
                                                                     <u>Siblings Details</u>
                                                                 </strong>
+
                                                                 <div class="col-md-6">
                                                                     <x-form.input name="brother" label="Brother"
-                                                                        placeholder="" />
+                                                                        placeholder=""
+                                                                        value="{{ $usersEdit->userDetail->brother }}" />
                                                                 </div>
 
                                                                 <div class="col-md-6">
                                                                     <x-form.input name="sister" label="Sister"
-                                                                        placeholder="" />
+                                                                        placeholder=""
+                                                                        value="{{ $usersEdit->userDetail->sister }}" />
                                                                 </div>
 
                                                                 <div class="col-md-12">
                                                                     <x-form.textarea name="other_family_details"
-                                                                        label="Other Family Details" placeholder="" />
+                                                                        label="Family Business Details" placeholder=""
+                                                                        value="{{ $usersEdit->userDetail->other_family_details }}" />
                                                                 </div>
 
                                                                 <div class="col-md-6">
                                                                     <x-form.input name="calling_no" type="number"
+                                                                        value="{{ $usersEdit->userDetail->calling_no }}"
                                                                         label="Calling No" placeholder="" />
                                                                 </div>
 
                                                                 <div class="col-md-6">
-                                                                    <label for="are_you_manglik" class="form-label">Are
-                                                                        You
-                                                                        Manglik</label>
-                                                                    <select name="are_you_manglik" id="are_you_manglik"
-                                                                        class="form-select">
-                                                                        <option value="">-Select Type-</option>
-                                                                        <option value="yes"
-                                                                            {{ old('are_you_manglik') == 'yes' ? 'selected' : '' }}>
-                                                                            Yes</option>
-
-                                                                        <option value="no"
-                                                                            {{ old('are_you_manglik') == 'no' ? 'selected' : '' }}>
-                                                                            No
-                                                                        </option>
-                                                                    </select>
-                                                                    @error('are_you_manglik')
-                                                                        <div class="text-danger">{{ $message }}</div>
-                                                                    @enderror
+                                                                    <x-form.select name="are_you_manglik"
+                                                                        label="Are You Manglik" :options="[
+                                                                            'any' => 'Any',
+                                                                            'yes' => 'Yes',
+                                                                            'no' => 'No',
+                                                                        ]"
+                                                                        :selected="$usersEdit->userDetail
+                                                                            ->are_you_manglik" required />
                                                                 </div>
 
+
                                                             </div>
+
 
                                                             <div class="text-end mb-4">
                                                                 <button type="reset"
                                                                     class="btn btn-danger w-sm">Reset</button>
-                                                                <button type="submit"
-                                                                    class="btn btn-success w-sm">Update</button>
+                                                                <button type="submit" class="btn btn-success w-sm">Update
+                                                                    Family Details</button>
                                                             </div>
+
                                                         </form>
                                                     </div>
                                                     <!-- end card body -->
@@ -979,24 +966,459 @@
                                     </div>
                                 </div>
 
-
-                                <div class="tab-pane" id="nav-border-top-settings" role="tabpanel">
+                                {{-- Partner Preference --}}
+                                <div class="tab-pane" id="nav-border-top-partner-preference" role="tabpanel">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
                                             <i class="ri-checkbox-circle-line text-success"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-2">
-                                            when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul
-                                            and absorb its power, like the form of a beloved mistress, then I often think
-                                            with longing, Oh, would I could describe these conceptions, could impress upon
-                                            paper all that is living so full and warm within me, that it might be the.
-                                            <div class="mt-2">
-                                                <a href="javascript:void(0);" class="btn btn-link">Read More <i
-                                                        class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                                            <form action="{{ route('admin.userPartnerPreferenceDetailsUpdate') }}"
+                                                method="post">
+                                                @csrf
+                                                <input type="hidden" name="user_id"
+                                                    value="{{ $usersEdit->userDetail->user_id }}">
+
+                                                <div class="row">
+
+                                                    <strong>Age Group</strong>
+
+                                                    <div class="col-md-3">
+                                                        <label for="partner_age_group_from"
+                                                            class="form-label">From</label>
+                                                        <select name="partner_age_group_from" id="partner_age_group_from"
+                                                            class="form-select js-example-basic-single">
+                                                            <option value="">Select Age</option>
+                                                            @for ($age = 18; $age <= 75; $age++)
+                                                                <option value="{{ $age }}"
+                                                                    {{ old('partner_age_group_from', $usersEdit->userDetail->partner_age_group_from) == $age ? 'selected' : '' }}>
+                                                                    {{ $age }}
+                                                                </option>
+                                                            @endfor
+                                                        </select>
+                                                        @error('partner_age_group_from')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label for="partner_age_group_to" class="form-label">To</label>
+                                                        <select name="partner_age_group_to" id="partner_age_group_to"
+                                                            class="form-select js-example-basic-single">
+                                                            <option value="">Select Age</option>
+                                                            @for ($age = 18; $age <= 75; $age++)
+                                                                <option value="{{ $age }}"
+                                                                    {{ old('partner_age_group_to', $usersEdit->userDetail->partner_age_group_to) == $age ? 'selected' : '' }}>
+                                                                    {{ $age }}
+                                                                </option>
+                                                            @endfor
+                                                        </select>
+                                                        @error('partner_age_group_to')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+
+                                                    <div class="col-md-6">
+                                                        <x-form.select name="partner_income" label="Income"
+                                                            :selectClass="'js-example-basic-single'" :options="[
+                                                                'any' => 'Any',
+                                                                '1 - 2 L' => '1 - 2 L',
+                                                                '2 - 3 L' => '2 - 3 L',
+                                                                '3 - 4 L' => '3 - 4 L',
+                                                                '4 - 5 L' => '4 - 5 L',
+                                                                '5 - 10 L' => '5 - 10 L',
+                                                                '10 - 15 L' => '10 - 15 L',
+                                                                '15 - 20 L' => '15 - 20 L',
+                                                                '20 - 25 L' => '20 - 25 L',
+                                                                '25 - 30 L' => '25 - 30 L',
+                                                                '30 - 45 L' => '30 - 45 L',
+                                                                '45 - 50 L' => '45 - 50 L',
+                                                                '50 - 75 L' => '50 - 75 L',
+                                                                '75 L - 1 Cr' => '75 L - 1 Cr',
+                                                                '1 - 2 Cr' => '1 - 2 Cr',
+                                                                '2 - 3 Cr' => '2 - 3 Cr',
+                                                                '3 - 5 Cr' => '3 - 5 Cr',
+                                                                '5 - 10 Cr' => '5 - 10 Cr',
+                                                                '10 - 15 Cr' => '10 - 15 Cr',
+                                                                '15 - 100 Cr' => '15 - 100 Cr',
+                                                                '100 - 200 Cr' => '100 - 200 Cr',
+                                                                '200 - 500 Cr' => '200 - 500 Cr',
+                                                                '500 Cr - 1B' => '500 Cr - 1B',
+                                                                '1B and above' => '1B and above',
+                                                            ]" :selected="$usersEdit->userDetail->partner_income ??
+                                                                old('partner_income')"
+                                                            required />
+
+                                                    </div>
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <label for="partner_country" class="form-label">Country</label>
+                                                        <select name="partner_country[]" id="partner_country"
+                                                            class="form-select js-example-basic-single"
+                                                            multiple="multiple">
+                                                            <option value="">Select Country</option>
+
+                                                            @php
+                                                                $selectedCountries = json_decode(
+                                                                    $usersEdit->userDetail->partner_country,
+                                                                    true,
+                                                                );
+                                                                $selectAny = in_array('0', $selectedCountries ?? []);
+                                                            @endphp
+
+                                                            <option value='0' {{ $selectAny ? 'selected' : '' }}>Any
+                                                            </option>
+
+                                                            @foreach ($data['countries'] as $country)
+                                                                <option value="{{ $country->id }}"
+                                                                    {{ in_array($country->id, old('partner_country', $selectedCountries ?? [])) ? 'selected' : '' }}>
+                                                                    {{ strtoupper($country->name) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_country')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <label for="partner_state" class="form-label">State</label>
+                                                        <select name="partner_state[]" id="partner_state"
+                                                            class="form-select js-example-basic-single"
+                                                            multiple="multiple">
+                                                            <option value="">Select State</option>
+
+                                                            @php
+                                                                $selectedStates = json_decode(
+                                                                    $usersEdit->userDetail->partner_state,
+                                                                    true,
+                                                                );
+                                                                $selectAnyState = in_array('0', $selectedStates ?? []);
+                                                            @endphp
+
+                                                            <option value="0"
+                                                                {{ $selectAnyState ? 'selected' : '' }}>Any</option>
+
+                                                            @foreach ($data['states'] as $state)
+                                                                <option value="{{ $state->id }}"
+                                                                    {{ in_array($state->id, old('partner_state', $selectedStates ?? [])) ? 'selected' : '' }}>
+                                                                    {{ strtoupper($state->name) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_state')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <label for="partner_city" class="form-label">City</label>
+                                                        <select name="partner_city[]" id="partner_city"
+                                                            class="form-select js-example-basic-single"
+                                                            multiple="multiple">
+                                                            <option value="">Select City</option>
+
+                                                            @php
+                                                                $selectedCities = json_decode(
+                                                                    $usersEdit->userDetail->partner_city,
+                                                                    true,
+                                                                );
+                                                                $selectAnyCity = in_array('0', $selectedCities ?? []);
+                                                            @endphp
+
+                                                            <option value="0"
+                                                                {{ $selectAnyCity ? 'selected' : '' }}>Any</option>
+
+                                                            @foreach ($data['cities'] as $city)
+                                                                <option value="{{ $city->id }}"
+                                                                    {{ in_array($city->id, old('partner_city', $selectedCities ?? [])) ? 'selected' : '' }}>
+                                                                    {{ strtoupper($city->name) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_city')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <label for="partner_education"
+                                                            class="form-label">Education</label>
+                                                        <select name="partner_education[]" id="partner_education"
+                                                            class="form-select js-example-basic-single" multiple>
+                                                            <option value="">Select Education</option>
+
+                                                            @php
+                                                                $selectedEducations = json_decode(
+                                                                    $usersEdit->userDetail->partner_education,
+                                                                    true,
+                                                                );
+                                                            @endphp
+
+                                                            @foreach ($data['educations'] as $education)
+                                                                <option value="{{ $education->partner_education }}"
+                                                                    {{ in_array($education->education_name, old('partner_profession', $selectedEducations ?? [])) ? 'selected' : '' }}>
+                                                                    {{ strtoupper($education->education_name) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_education')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <label for="partner_occupation"
+                                                            class="form-label">Occupation</label>
+                                                        <select name="partner_occupation[]" id="partner_occupation"
+                                                            class="form-select js-example-basic-single" multiple>
+                                                            <option value="">Select Occupation</option>
+
+                                                            @php
+                                                                $selectedOccupations = json_decode(
+                                                                    $usersEdit->userDetail->partner_occupation,
+                                                                    true,
+                                                                );
+                                                            @endphp
+
+                                                            @foreach ($data['occupations'] as $occupation)
+                                                                <option value="{{ $occupation->partner_occupation }}"
+                                                                    {{ in_array($occupation->occupation_name, old('partner_profession', $selectedOccupations ?? [])) ? 'selected' : '' }}>
+                                                                    {{ strtoupper($occupation->occupation_name) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_occupation')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <label for="partner_profession"
+                                                            class="form-label">Profession</label>
+                                                        <select name="partner_profession[]" id="partner_profession"
+                                                            class="form-select js-example-basic-single"
+                                                            multiple="multiple">
+                                                            <option value="">Select Profession</option>
+
+                                                            @php
+                                                                $selectedProfessions = json_decode(
+                                                                    $usersEdit->userDetail->partner_profession,
+                                                                    true,
+                                                                );
+                                                            @endphp
+
+                                                            @foreach ($data['professions'] as $profession)
+                                                                <option value="{{ $profession->profession_name }}"
+                                                                    {{ in_array($profession->profession_name, old('partner_profession', $selectedProfessions ?? [])) ? 'selected' : '' }}>
+                                                                    {{ strtoupper($profession->profession_name) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_profession')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <x-form.select name="partner_manglik" label="Manglik"
+                                                            :options="[
+                                                                'any' => 'Any',
+                                                                'yes' => 'Yes',
+                                                                'no' => 'No',
+                                                            ]" :selected="$usersEdit->userDetail->partner_manglik" required />
+                                                    </div>
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <x-form.select name="astrology_matching"
+                                                            label="Astrology Matching" :options="[
+                                                                '' => '-Select Type-',
+                                                                'any' => 'Any',
+                                                                'yes' => 'Yes',
+                                                                'no' => 'No',
+                                                            ]"
+                                                            :selected="$usersEdit->userDetail->astrology_matching ??
+                                                                old('astrology_matching')" required />
+                                                    </div>
+
+                                                    <div class="col-md-4 mt-2">
+                                                        <x-form.select name="partner_marital_status"
+                                                            label="Marital Status" :selectClass="'js-example-basic-single'" :options="[
+                                                                'any' => 'Any',
+                                                                'single' => 'Single',
+                                                                'married' => 'Married',
+                                                                'divorced' => 'Divorced',
+                                                                'widowed' => 'Widowed',
+                                                                'separated' => 'Separated',
+                                                                'engaged' => 'Engaged',
+                                                                'in a Relationship' => 'In a Relationship',
+                                                            ]"
+                                                            :selected="$usersEdit->userDetail->partner_marital_status ??
+                                                                old('partner_marital_status')" />
+
+
+                                                    </div>
+
+
+                                                    {{-- partner_marital_status hidden inputs  --}}
+                                                    <div class="row partner_marital_status_detail_div"
+                                                        style="display: none;">
+                                                        <div class="col-md-4 mt-2">
+                                                            <x-form.select name="partner_acccept_kid" label="Accept Kid"
+                                                                :options="[
+                                                                    'any' => 'Any',
+                                                                    'with kit' => 'With Kit',
+                                                                    'without kit' => 'Without Kit',
+                                                                ]" :selected="$usersEdit->userDetail
+                                                                    ->partner_acccept_kid ?? old('partner_acccept_kid')" selectClass=""
+                                                                required />
+                                                        </div>
+
+                                                        <div class="col-md-8 mt-2">
+                                                            <x-form.textarea name="partner_kid_discription"
+                                                                label="Kid Discription"
+                                                                value="{{ $usersEdit->userDetail->partner_kid_discription }}"
+                                                                placeholder="" />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-md-12 mt-4">
+                                                        <x-form.textarea name="expectation_partner_details"
+                                                            label="Expectation Partner Details"
+                                                            value="{{ $usersEdit->userDetail->expectation_partner_details }}"
+                                                            placeholder="" />
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <div class="text-end mb-4">
+                                                    <button type="reset" class="btn btn-danger w-sm">Reset</button>
+                                                    <button type="submit" class="btn btn-success w-sm">Update Partner
+                                                        Preference</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="nav-border-top-profile-Img" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="ri-checkbox-circle-line text-success"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <form action="">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <x-form.input name="photo" type="file" label="photo" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-end mb-4">
+                                                    <button type="reset" class="btn btn-danger w-sm">Reset</button>
+                                                    <button type="submit" class="btn btn-success w-sm">Upload</button>
+                                                </div>
+                                            </form>
+
+                                            <strong>User Profile Images</strong>
+                                            <div class="table-photo table-responsive table-card mt-3 mb-1">
+
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Image</th>
+                                                            {{-- <th>Status</th> --}}
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        @if ($userMedias->isEmpty())
+                                                            <tr>
+                                                                <td colspan="3">No data found</td>
+                                                            </tr>
+                                                        @else
+                                                            @foreach ($userMedias as $index => $media)
+                                                                <tr>
+                                                                    <td scope="row">{{ $index + 1 }}</td>
+                                                                    <td>
+                                                                        <img src="{{$media->photo}}" alt="" width="70" height="70">
+
+                                                                    </td>
+                                                                    {{-- <td>
+                                                                        <select name="status" id="userPhotoStatus" class="form-control">
+                                                                            <option value="front_img">Front Img</option>
+                                                                            <option value="cover_img">Cover Img</option>
+                                                                            <option value="family_img">family Img</option>
+                                                                        </select>
+                                                                    </td> --}}
+                                                                    <td>
+                                                                        <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                                                    </td>
+
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+
+
+                                                    </tbody>
+                                                </table>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+
+
+                                <div class="tab-pane" id="nav-border-top-document-upload" role="tabpanel">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="ri-checkbox-circle-line text-success"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+
+                                            <form action="">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <x-form.input name="id_proof" type="file" label="Id Proof" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-end mb-4">
+                                                    <button type="reset" class="btn btn-danger w-sm">Reset</button>
+                                                    <button type="submit" class="btn btn-success w-sm">Upload</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div><!-- end card-body -->
                     </div>
@@ -1023,36 +1445,7 @@
     <script>
         $(document).ready(function() {
 
-            $('#education').select2();
-            $('#occupation').select2();
-            $('#profession').select2();
-
-            $('#weight').select2();
-            $('#height').select2();
-
-            $('#partner_education').select2();
-            $('#partner_occupation').select2();
-            $('#partner_profession').select2();
-
-            $('#candidate_income').select2();
-            $('#partner_income').select2();
-
-            $('#complexion').select2();
-            $('#religion').select2();
-            $('#family_community').select2();
-            $('#marital_status').select2();
-            $('#blood_group').select2();
-            $('#father_profession').select2();
-            $('#mother_profession').select2();
-            $('#residence_type').select2();
-            //$('#family_type').select2();
-            $('#partner_community').select2();
-            $('#partner_sub_community').select2();
-            $('#partner_marital_status').select2();
-
-            $('#partner_country').select2();
-            $('#partner_state').select2();
-            $('#partner_city').select2();
+            $('.js-example-basic-single').select2();
 
             $.ajaxSetup({
                 headers: {
@@ -1149,7 +1542,7 @@
                 e.preventDefault();
                 let sel_val = $(this).val()
                 let div = $(".is_children_div")
-                if (sel_val == "Single" || sel_val == "unmarried" || sel_val == "") {
+                if (sel_val == "Single" || sel_val == "single" || sel_val == "unmarried" || sel_val == "") {
                     div.hide()
                     $("#is_children").val(null)
                 } else {
@@ -1276,6 +1669,34 @@
             }
             // Submit the form
             document.getElementById('userRegForm').submit();
+        });
+    </script>
+
+    {{-- Load Document & show hide divs --}}
+    <script>
+        $(document).ready(function() {
+            let if_nri_radio = $(".if_nri_radio:checked").val();
+            let div_nri = $(".nri_details_div")
+            if (if_nri_radio == "yes") {
+                div_nri.show()
+            } else {}
+
+            // is_children_yes_div
+
+            let is_children_select = $(".is_children_sel").val();
+            let is_children_yes = $(".is_children_yes_div");
+            if (is_children_select === "yes") {
+                is_children_yes.show();
+            }
+
+            let physical_status_select = $(".is_children_sel").val();
+            let physical_status_yes = $(".physical_status_desc_div");
+            if (physical_status_select === "yes") {
+                physical_status_yes.show();
+            }
+
+
+
         });
     </script>
 @endpush

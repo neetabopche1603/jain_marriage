@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserProfile\PartnerPreferenceReq;
+use App\Http\Requests\UserProfile\UserFamilyDetailReq;
 use App\Http\Requests\UserProfile\UserPersonalRequest;
 use App\Http\Requests\UserReq;
 use App\Models\Education;
@@ -119,8 +121,10 @@ class UserController extends Controller
     {
         $usersEdit = User::with('userDetail')->find($id);
         $usersEdit->education = json_decode($usersEdit->education, true);
-        // dd($usersEdit->toArray());
-        $data['educations'] = Education::where('status', 'active')->orderBy("education_name","asc")->get();
+
+        $userMedias = UsersMedia::where('user_id',$id)->get();
+
+        $data['educations'] = Education::where('status', 'active')->orderBy("education_name", "asc")->get();
         $data['occupations'] = Occupation::where('status', 'active')->get();
         $data['professions'] = Professions::where('status', 'active')->get();
         $data['hobbies'] = Hobby::where('status', 'active')->get();
@@ -128,7 +132,7 @@ class UserController extends Controller
         $data['states'] = DB::table('states')->get();
         $data['cities'] = DB::table('cities')->get();
 
-        return view('adminPanel.user.edit', compact('data','usersEdit'));
+        return view('adminPanel.user.edit', compact('data', 'usersEdit','userMedias'));
     }
 
 
@@ -195,7 +199,7 @@ class UserController extends Controller
             'father_profession' => $request->father_profession ?? null,
             'mother_name' => $request->mother_name ?? null,
             'mother_profession' => $request->mother_profession ?? null,
-            'residence_type' => $request->residence_type ?? null,
+            'residence_type' => strtolower($request->residence_type) ?? null,
             'gotra' => $request->gotra ?? null,
             'family_status' => $request->family_status ?? null,
             'family_type' => $request->family_type ?? null,
@@ -394,9 +398,6 @@ class UserController extends Controller
             // Update Data Users table
             $users = User::find($request->user_id);
 
-
-            dd("users",$users);
-
             $users->update($userPersonalDetails);
 
             // Update UserDetails Table
@@ -411,4 +412,143 @@ class UserController extends Controller
             return Redirect::back()->with('error', 'User Basic and Personal update failed: ' . $e->getMessage());
         }
     }
+
+
+    // Family Details
+    public function userFamilyDetailsUpdate(UserFamilyDetailReq $request)
+    {
+
+        DB::beginTransaction();
+        try {
+
+            $userFamilyDetails = $request->only([
+                'father_name', 'father_profession', 'mother_name', 'mother_profession', 'residence_type',
+                'gotra', 'family_status', 'family_type', 'family_community', 'family_sub_community', 'family_address', 'brother', 'sister', 'other_family_details', 'calling_no', 'are_you_manglik',
+            ]);
+
+
+
+            // Update UserDetails Table
+            $userDetails = UserDetail::where('user_id', $request->user_id)->first();
+            $userDetails->update($userFamilyDetails);
+
+            DB::commit();
+            return Redirect::back()->with('success', "User Family Details update Successfully!");
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('User Family update failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'User Family update failed: ' . $e->getMessage());
+        }
+    }
+
+    // Partner Preference
+    public function userPartnerPreferenceDetailsUpdate(PartnerPreferenceReq $request)
+    {
+
+        DB::beginTransaction();
+        try {
+
+            $userPartnerPrefDetails = $request->only([
+                'partner_age_group_from', 'partner_age_group_to', 'partner_income', 'partner_country', 'partner_state','partner_city', 'partner_education', 'partner_occupation', 'partner_profession', 'partner_manglik', 'partner_marital_status', 'partner_acccept_kid', 'partner_kid_discription', 'astrology_matching', 'expectation_partner_details'
+            ]);
+
+            // Update UserDetails Table
+            $userDetails = UserDetail::where('user_id', $request->user_id)->first();
+            $userDetails->update($userPartnerPrefDetails);
+
+            DB::commit();
+            return Redirect::back()->with('success', "User Partner Preference Details update Successfully!");
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('User Partner Preference update failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'User Partner Preference update failed: ' . $e->getMessage());
+        }
+    }
+
+
+    public function userDocumentAndStatusDetailsUpdate(PartnerPreferenceReq $request)
+    {
+        $this->validate($request, [
+           'idProof_type' => 'required',
+           'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $userDetails = User::where('user_id', $request->user_id)->first();
+
+              // USER UPLOAD ID-PROOF
+              $users_id_proof_link = "";
+              if ($request->hasFile('id_proof')) {
+                  if ($userDetails->id_proof) {
+                      // Delete old ID proof
+                      $this->deleteImage($userDetails->id_proof);
+                  }
+                  // Upload new ID proof
+                  $id_proofsave = $this->uploadImage($request->file('id_proof'), '/userIdProof');
+              }
+
+
+            // Update UserDetails Table
+            $userDetails->update([
+                'idProof_type'=> $request->idProof_type,
+                'id_proof'=> $id_proofsave,
+            ]);
+
+            DB::commit();
+            return Redirect::back()->with('success', "User Partner Document upload Successfully!");
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('User Document upload failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'User Document upload update failed: ' . $e->getMessage());
+        }
+    }
+
+
+    // Account status update
+
+     public function userAccountStatusUpdate($id)
+     {
+         $userAccStatus = User::find($id);
+         $userAccStatus->status = $userAccStatus->status == 'active' ? 'inactive' : 'active';
+         $userAccStatus->update();
+         return Redirect::back()->with('success',  $userAccStatus->name . ' User account status has been updated.');
+     }
+
+
+     public function userVerificationStatusUpdate(Request $request, $id)
+     {
+
+         $this->validate($request, [
+            'profile_status' => 'nullable|in:pending,verified,rejected',
+            'profile_rejected_reason' => 'required_if:profile_status,rejected',
+        ], [
+            'profile_rejected_reason.required_if' => 'The rejection reason is required when the profile status is rejected.',
+        ]);
+
+
+         $userVerificationStatus = User::find($id);
+
+         // Update the profile status and rejection reason if applicable
+         if ($request->has('profile_status')) {
+             $userVerificationStatus->profile_status = $request->profile_status;
+             if ($request->profile_status == 'rejected') {
+                 $userVerificationStatus->profile_rejected_reason = $request->profile_rejected_reason;
+             } else {
+                 $userVerificationStatus->profile_rejected_reason = null;
+             }
+         }
+
+         $userVerificationStatus->update([
+            'profile_status'=>$request->profile_status,
+            'profile_rejected_reason'=>$request->profile_rejected_reason ?? null,
+         ]);
+
+
+         return Redirect::back()->with('success', $userVerificationStatus->name . ' User account status has been updated.');
+     }
+
+
 }

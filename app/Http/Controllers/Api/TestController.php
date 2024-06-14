@@ -101,6 +101,7 @@ class TestController extends Controller
 
 
             $userOtherDetails["user_id"] = $userData->id;
+            $userOtherDetails["residence_type"] = strtolower($request->residence_type);
 
             // $userOtherDetails["partner_hobbies"] = json_encode($request->partner_hobbies);
             $userOtherDetails["partner_country"] = json_encode($request->partner_country, true);
