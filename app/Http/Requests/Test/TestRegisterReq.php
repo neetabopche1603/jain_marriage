@@ -55,7 +55,7 @@ class TestRegisterReq extends BaseRequest
             'daughter_details' => ['nullable'],
 
             'physical_status' => ['required', 'string', 'max:255'],
-            'physical_status_desc' => ['required'],
+            'physical_status_desc' => ['nullable'],
 
 
             'blood_group' => ['required', 'string', 'max:3'],
@@ -91,7 +91,7 @@ class TestRegisterReq extends BaseRequest
             'photo.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
             'photo' => ['required', 'array', 'max:5'],
 
-            'idProof_type' => 'nullable',
+            'idProof_type' => 'required',
             'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
 
             // Partner Preference -
