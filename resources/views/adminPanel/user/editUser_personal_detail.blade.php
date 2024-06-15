@@ -1,5 +1,5 @@
 @extends('partial.admin.app')
-@section('adminTitle', 'Edit User Details')
+@section('adminTitle', 'Edit User  Basic & Personal Details')
 
 @push('style')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -41,7 +41,7 @@
 
             <div class="row">
                 <div class="col-xxl-12">
-                    <h5 class="mb-3">User Derails</h5>
+                    <h5 class="mb-3">Update User Basic & Personal Derails</h5>
                     <div class="card">
                         <div class="card-body">
 
@@ -78,7 +78,6 @@
                                                                     <div class="col-md-6">
                                                                         <x-form.select name="profile_created_by_type"
                                                                             label="Profile For" :options="[
-                                                                                '' => '-Select Profile For-',
                                                                                 'self' => 'Self',
                                                                                 'son' => 'Son',
                                                                                 'daughter' => 'Daughter',
@@ -93,7 +92,6 @@
                                                                     <div class="col-md-6">
                                                                         <x-form.select name="refrence_by"
                                                                             label="Reference By*" :options="[
-                                                                                '' => '-Select-',
                                                                                 'facebook' => 'Facebook',
                                                                                 'instagram' => 'Instagram',
                                                                                 'google' => 'Google',
@@ -612,101 +610,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                {{-- <div class="tab-pane" id="nav-border-top-profile-Img" role="tabpanel">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <i class="ri-checkbox-circle-line text-success"></i>
-                                        </div>
-                                        <div class="flex-grow-1 ms-2">
-                                            <form action="">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <x-form.input name="photo" type="file" label="photo" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="text-end mb-4">
-                                                    <button type="reset" class="btn btn-danger w-sm">Reset</button>
-                                                    <button type="submit" class="btn btn-success w-sm">Upload</button>
-                                                </div>
-                                            </form>
-
-                                            <strong>User Profile Images</strong>
-                                            <div class="table-photo table-responsive table-card mt-3 mb-1">
-
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Id</th>
-                                                            <th>Image</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                        @if ($userMedias->isEmpty())
-                                                            <tr>
-                                                                <td colspan="3">No data found</td>
-                                                            </tr>
-                                                        @else
-                                                            @foreach ($userMedias as $index => $media)
-                                                                <tr>
-                                                                    <td scope="row">{{ $index + 1 }}</td>
-                                                                    <td>
-                                                                        <img src="{{ $media->photo }}" alt=""
-                                                                            width="70" height="70">
-
-                                                                    </td>
-                                                                    <td>
-                                                                        <select name="status" id="userPhotoStatus" class="form-control">
-                                                                            <option value="front_img">Front Img</option>
-                                                                            <option value="cover_img">Cover Img</option>
-                                                                            <option value="family_img">family Img</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a href="#" class="btn btn-danger btn-sm"><i
-                                                                                class="fa fa-trash"></i></a>
-                                                                    </td>
-
-                                                                </tr>
-                                                            @endforeach
-                                                        @endif
-
-
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
-
-                                {{-- <div class="tab-pane" id="nav-border-top-document-upload" role="tabpanel">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <i class="ri-checkbox-circle-line text-success"></i>
-                                        </div>
-                                        <div class="flex-grow-1 ms-2">
-
-                                            <form action="">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <x-form.input name="id_proof" type="file" label="Id Proof" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="text-end mb-4">
-                                                    <button type="reset" class="btn btn-danger w-sm">Reset</button>
-                                                    <button type="submit" class="btn btn-success w-sm">Upload</button>
-                                                </div>
-                                            </form>
-
-                                        </div>
-                                    </div>
-                                </div> --}}
 
                             </div>
                         </div><!-- end card-body -->

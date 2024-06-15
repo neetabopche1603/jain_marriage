@@ -14,6 +14,7 @@ class EducationSeeder extends Seeder
     public function run(): void
     {
         $educations = [
+            ['education_name' => 'Any'],
             ['education_name' => 'BA'],
             ['education_name' => 'B.Sc'],
             ['education_name' => 'B.Eng'],
@@ -41,7 +42,6 @@ class EducationSeeder extends Seeder
             ['education_name' => 'Trade Certification'],
             ['education_name' => 'High School Diploma'],
             ['education_name' => 'Associate Degree'],
-            ['education_name' => 'Any'],
         ];
 
         foreach($educations as $edu){

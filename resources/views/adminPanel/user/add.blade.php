@@ -1079,13 +1079,13 @@
                                                     {{ old('partner_acccept_kid') == 'any' ? 'selected' : '' }}>
                                                     Any
                                                 </option>
-                                                <option value="with kit"
-                                                    {{ old('partner_acccept_kid') == 'with kit' ? 'selected' : '' }}>
-                                                    With Kit</option>
+                                                <option value="with kid"
+                                                    {{ old('partner_acccept_kid') == 'with kid' ? 'selected' : '' }}>
+                                                    With kid</option>
 
-                                                <option value="without kit"
-                                                    {{ old('partner_acccept_kid') == 'without kit' ? 'selected' : '' }}>
-                                                    Without Kit
+                                                <option value="without kid"
+                                                    {{ old('partner_acccept_kid') == 'without kid' ? 'selected' : '' }}>
+                                                    Without kid
                                                 </option>
 
                                             </select>
