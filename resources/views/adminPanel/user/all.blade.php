@@ -133,7 +133,7 @@
                                                         <div
                                                             class="form-check form-switch form-switch-custom form-switch-success mb-3">
 
-                                                            <input class="form-check-input" type="checkbox"
+                                                            <input class="form-check-input accountStatusToggle" type="checkbox"
                                                                 id="accountStatusToggle"
                                                                 {{ $user->account_status == 'active' ? 'checked' : '' }}
                                                                 data-uid="{{ $user->id }}">
@@ -202,7 +202,7 @@
                 }
             });
 
-            $("#accountStatusToggle").on("click", function(e) {
+            $(".accountStatusToggle").on("click", function(e) {
                 // e.prevantDefault()
                 // if (confirm("Are you sure change account status this user")) {
                     let userId = $(this).attr("data-uid")
