@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -24,6 +25,7 @@ class AuthController extends Controller
     // Admin Login
     public function adminLogin(Request $request)
     {
+        // dd($request->all());
         // Validation
         $validator = Validator::make($request->all(), [
             'username' => 'required|string',
@@ -31,7 +33,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('admin.login')->withErrors($validator)->withInput();
+            return Redirect::route('admin.login')->withErrors($validator)->withInput();
         }
 
         try {
@@ -53,13 +55,13 @@ class AuthController extends Controller
                 Auth::attempt(['whatsapp_no' => $user->whatsapp_no, 'password' => $password], $remember) ||
                 Auth::attempt(['userId' => $user->userId, 'password' => $password], $remember)
             )) {
-                return redirect()->route('admin.dashboard')->with('success', $user->name . ' has successfully logged in...');
+                return  Redirect::route('admin.dashboard')->with('success', $user->name . ' has successfully logged in...');
             } else {
-                return redirect()->route('admin.login')->with('error', 'Invalid login credentials');
+                return  Redirect::route('admin.login')->with('error', 'Invalid login credentials');
             }
         } catch (Exception $e) {
             Log::error('Login Exception error: ' . $e->getMessage());
-            return redirect()->route('admin.login')->withErrors(['error' => 'An error occurred while trying to log in']);
+            return  Redirect::route('admin.login')->withErrors(['error' => 'An error occurred while trying to log in']);
         }
     }
 

@@ -43,6 +43,13 @@
                                     <p class="text-muted">Sign in to continue to VCT.</p>
 
                                     @include('partial.flash-msg')
+                                    @if ($errors->any())
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
 
                                 </div>
                                 <div class="p-2 mt-4">
