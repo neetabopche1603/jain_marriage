@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             EducationSeeder::class,
             OccupationsSeeder::class,
             ProfessionSeeder::class,
-            hobbiesSeeder::class
+            // hobbiesSeeder::class
 
         ]);
     }

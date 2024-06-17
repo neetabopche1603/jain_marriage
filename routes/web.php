@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -70,6 +71,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('user-store', [UserController::class, 'store'])->name('admin.userStore');
         Route::get('user-create', [UserController::class, 'create'])->name('admin.create');
         Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('admin.edit');
+        Route::get('user-family-edit/{id}', [UserController::class, 'editFamily'])->name('admin.editfamily');
+        Route::get('user-partner-edit/{id}', [UserController::class, 'editPartner'])->name('admin.editPartner');
+
+        Route::get('user-upload-photo-edit/{id}', [UserController::class, 'editUserPhotoUpload'])->name('admin.editUserPhotoUpload');
+
+        Route::get('user-document-edit/{id}', [UserController::class, 'editVerifyDocument'])->name('admin.editVerifyDocument');
+
+        Route::get('user-profile/{id}', [UserController::class, 'userViewProfilePage'])->name('admin.userViewProfilePage');
+
 
         // User Personal Details update Route
         Route::post('user-personal-details-update', [UserController::class, 'userBasicPersonalDetailUpdate'])->name('admin.userBasicPersonalDetailUpdate');
@@ -77,6 +87,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('user-family-details-update', [UserController::class, 'userFamilyDetailsUpdate'])->name('admin.userFamilyDetailsUpdate');
 
         Route::post('user-Partner-preference-details-update', [UserController::class, 'userPartnerPreferenceDetailsUpdate'])->name('admin.userPartnerPreferenceDetailsUpdate');
+
+        Route::post('user-document-update', [UserController::class, 'userDocumentUpdate'])->name('admin.userDocumentUpdate');
+
+        Route::get('user-account-status-update/{id}', [UserController::class, 'userAccountStatusUpdate'])->name('admin.userAccountStatusUpdate');
+
+        Route::post('user-document-verify-status-update', [UserController::class, 'userVerificationDocStatusUpdate'])->name('admin.userVerificationDocStatusUpdate');
+
+        Route::post('user-upload-photo-update', [UserController::class, 'uploadUserImageUpdate'])->name('admin.uploadUserImageUpdate');
+
+        Route::get('user-photo-delete/{id}', [UserController::class, 'userPhotoDelete'])->name('admin.userPhotoDelete');
+
+        Route::get('user-soft-delete/{id}', [UserController::class, 'userSoftDeleteData'])->name('admin.userSoftDeleteData');
+        Route::get('user-details-permanent-delete/{id}', [UserController::class, 'userHardDeleteData'])->name('admin.userHardDeleteData');
+
+        Route::get('user-deleted-list', [UserController::class, 'deletedUsersList'])->name('admin.deletedUsersList');
+
+
+        Route::get('profile-details', [ProfileController::class, 'editProfileView'])->name('admin.editProfileView');
+        Route::post('profile-update', [ProfileController::class, 'update_profile'])->name('admin.update_profile');
+
+        Route::post('update-password', [ProfileController::class, 'update_password'])->name('admin.update_password');
+
 
         Route::post('get-state', [UserController::class, 'getState'])->name('admin.getState');
         Route::post('get-city', [UserController::class, 'getCity'])->name('admin.getCity');

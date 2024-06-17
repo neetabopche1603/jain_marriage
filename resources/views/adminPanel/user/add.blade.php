@@ -66,7 +66,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <x-form.select name="refrence_by" label="Reference By*" :options="[
+                                        <x-form.select name="refrence_by" label="Reference By" :options="[
                                             'facebook' => 'Facebook',
                                             'instagram' => 'Instagram',
                                             'google' => 'Google',
@@ -1079,13 +1079,13 @@
                                                     {{ old('partner_acccept_kid') == 'any' ? 'selected' : '' }}>
                                                     Any
                                                 </option>
-                                                <option value="with kit"
-                                                    {{ old('partner_acccept_kid') == 'with kit' ? 'selected' : '' }}>
-                                                    With Kit</option>
+                                                <option value="with kid"
+                                                    {{ old('partner_acccept_kid') == 'with kid' ? 'selected' : '' }}>
+                                                    With kid</option>
 
-                                                <option value="without kit"
-                                                    {{ old('partner_acccept_kid') == 'without kit' ? 'selected' : '' }}>
-                                                    Without Kit
+                                                <option value="without kid"
+                                                    {{ old('partner_acccept_kid') == 'without kid' ? 'selected' : '' }}>
+                                                    Without kid
                                                 </option>
 
                                             </select>
@@ -1166,6 +1166,7 @@
             $('#complexion').select2();
             $('#religion').select2();
             $('#family_community').select2();
+            $('#family_sub_community').select2();
             $('#marital_status').select2();
             $('#blood_group').select2();
             $('#father_profession').select2();

@@ -38,6 +38,13 @@ class UserController extends Controller
         return view('adminPanel.user.all', compact('users'));
     }
 
+// Soft delete(List Of users)
+    public function deletedUsersList()
+    {
+        $users = User::where('role_type', 0)->onlyTrashed()->paginate(10);
+        return view('adminPanel.user.delete_userList', compact('users'));
+    }
+
 
     // User Create Form
     public function create()
@@ -114,31 +121,7 @@ class UserController extends Controller
         }
     }
 
-
-    // User Edit Form
-
-    public function edit($id)
-    {
-        try {
-            $usersEdit = User::with('userDetail')->find($id);
-            $usersEdit->education = json_decode($usersEdit->education, true);
-
-            $userMedias = UsersMedia::where('user_id', $id)->get();
-
-            $data['educations'] = Education::where('status', 'active')->get();
-            $data['occupations'] = Occupation::where('status', 'active')->get();
-            $data['professions'] = Professions::where('status', 'active')->get();
-            $countries = DB::table('countries')->get();
-            // $states = DB::table('states')->get();
-            // $cities = DB::table('cities')->get();
-
-            return view('adminPanel.user.edit', compact('data', 'usersEdit', 'userMedias','countries'));
-        } catch (Exception $e) {
-            dd($e->getMessage());
-        }
-    }
-
-
+    // userPersonalDetails Array
     public function userPersonalDetails(Request $request)
     {
         return [
@@ -191,7 +174,7 @@ class UserController extends Controller
         ];
     }
 
-
+    // userOtherDetails Array
     public function userOtherDetails(Request $request)
     {
         return [
@@ -225,13 +208,12 @@ class UserController extends Controller
             'partner_education_desc' => json_encode($request->partner_education_desc) ?? null,
             'partner_occupation' => json_encode($request->partner_occupation) ?? null,
             'partner_profession' => json_encode($request->partner_profession) ?? null,
-            'partner_hobbies' => json_encode($request->partner_hobbies) ?? null,
 
             'partner_manglik' => $request->partner_manglik ?? null,
 
             'partner_marital_status' => strtolower($request->partner_marital_status) ?? null,
             'partner_acccept_kid' => strtolower($request->partner_acccept_kid) ?? null,  //wit kit,without kit,any
-            'partner_manglik' => $request->partner_kid_discription ?? null,
+            'partner_kid_discription' => $request->partner_kid_discription ?? null,
 
 
             'astrology_matching' => $request->astrology_matching ?? null,
@@ -239,23 +221,8 @@ class UserController extends Controller
         ];
     }
 
-    // Get State
-    // public function getState(Request $request)
-    // {
-    //     try {
-    //         $country_id = $request->country_id;
-    //         $states = DB::table('states')->where("country_id", $country_id)->get();
-    //         $html = "<option value=''>Select State</option>";
-    //         foreach ($states as $state) {
-    //             $html .= "<option value='$state->id'>$state->name</option>";
-    //         }
 
-    //         return response()->json(["data" => $html, "status" => true]);
-    //     } catch (Exception $e) {
-    //         return response()->json(["data" => $e->getMessage(), "status" => false]);
-    //     }
-    // }
-
+    // Get States
     public function getState(Request $request)
     {
         try {
@@ -273,23 +240,8 @@ class UserController extends Controller
         }
     }
 
-    // Get City
-    // public function getCity(Request $request)
-    // {
-    //     try {
-    //         $state_id = $request->state_id;
-    //         $cities = DB::table('cities')->where("state_id", $state_id)->get();
-    //         $html = "<option value=''>Select City</option>";
-    //         foreach ($cities as $city) {
-    //             $html .= "<option value='$city->id'>$city->name</option>";
-    //         }
 
-    //         return response()->json(["data" => $html, "status" => true]);
-    //     } catch (Exception $e) {
-    //         return response()->json(["data" => $e->getMessage(), "status" => false]);
-    //     }
-    // }
-
+    // GetCity
     public function getCity(Request $request)
     {
         try {
@@ -308,78 +260,91 @@ class UserController extends Controller
     }
 
 
-    private function saveUserMedia($photos, $userId)
+    // User Personal Details Edit Form
+
+    public function edit($id)
     {
-        foreach ($photos as $photo) {
-            // Upload the image
-            $imagePath = Storage::disk('public')->put('userImage', $photo);
+        try {
+            $usersEdit = User::with('userDetail')->find($id);
+            $usersEdit->education = json_decode($usersEdit->education, true);
 
-            // Concatenate the storage directory path with the image path
-            $fullImagePath = 'storage/' . $imagePath;
+            $data['educations'] = Education::where('status', 'active')->orderBy("education_name", "asc")->get();
+            $data['occupations'] = Occupation::where('status', 'active')->get();
+            $data['professions'] = Professions::where('status', 'active')->get();
 
-            // Save the full image path to the user_media table
-            UsersMedia::create([
-                'user_id' => $userId,
-                'photo' => $fullImagePath,
-            ]);
+            return view('adminPanel.user.editUser_personal_detail', compact('data', 'usersEdit'));
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    // User Family Details Edit Form
+    public function editFamily($id)
+    {
+        try {
+            $usersEdit = User::with('userDetail')->find($id);
+            $data['professions'] = Professions::where('status', 'active')->get();
+
+            return view('adminPanel.user.editFamilyDetail', compact('data', 'usersEdit'));
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    // User Partner Preferance Details Edit Form
+    public function editPartner($id)
+    {
+        try {
+            $usersEdit = User::with('userDetail')->find($id);
+            $usersEdit->education = json_decode($usersEdit->education, true);
+
+            $data['educations'] = Education::where('status', 'active')->orderBy("education_name", "asc")->get();
+            $data['occupations'] = Occupation::where('status', 'active')->get();
+            $data['professions'] = Professions::where('status', 'active')->get();
+            $data['countries'] = DB::table('countries')->get();
+            $data['states'] = DB::table('states')->get();
+            $data['cities'] = DB::table('cities')->get();
+
+            $data['professions'] = Professions::where('status', 'active')->get();
+            return view('adminPanel.user.editPartnerPreference', compact('data', 'usersEdit'));
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    // User Partner Preferance Details Edit Form
+    public function editVerifyDocument($id)
+    {
+        try {
+            $usersEdit = User::with('userDetail')->find($id);
+            return view('adminPanel.user.editDocument', compact('usersEdit'));
+        } catch (Exception $e) {
+            dd($e->getMessage());
         }
     }
 
 
-    private function generateUniqueUserId($prefix = 'JEP', $length = 5)
+    // User Image Details Edit Form
+    public function editUserPhotoUpload($id)
     {
-        $numericPart = '';
-
-        // Generate a random numeric part
-        for ($i = 0; $i < $length; $i++) {
-            $numericPart .= mt_rand(0, 9);
+        try {
+            $usersEdit = User::find($id);
+            $usersMedia = UsersMedia::where('user_id', $id)->first();
+            $userMedias = UsersMedia::where('user_id', $id)->get();
+            return view('adminPanel.user.userPhoto', compact('usersEdit', 'usersMedia', 'userMedias'));
+        } catch (Exception $e) {
+            dd($e->getMessage());
         }
-        // Combine prefix with numeric part
-        return $prefix . $numericPart;
     }
 
 
-    // View user pdf
-    public function userPdfView()
-    {
-        return view('pdf.userPdf');
-    }
 
-    // Generate PDF
-    public function generatePdf()
-    {
-
-        $usersDetails = User::with('userDetail')->where('role_type', 0)->get();
-
-        $data = [
-            'usersDetails' => $usersDetails
-        ];
-
-        $pdf = PDF::loadView('pdf.userPdf', $data);
-
-        // Generate the PDF
-        $pdfFile = $pdf->output();
-
-        return response()->stream(
-            function () use ($pdfFile) {
-                echo $pdfFile;
-            },
-            200,
-            [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment; filename="jain_E_Patrika.pdf"',
-            ]
-        );
-    }
-
-
-    // Basic & Personal Details
+    // Basic & Personal Update Details
 
     public function userBasicPersonalDetailUpdate(UserPersonalRequest $request)
     {
         DB::beginTransaction();
         try {
-
             $userPersonalDetails = $request->only([
                 'name', 'email', 'whatsapp_no', 'refrence_by', 'profile_created_by_type',
                 'password', 'gender', 'dob', 'age', 'birth_place', 'birth_time', 'height', 'weight', 'complexion', 'education', 'profession', 'occupation', 'religion', 'candidate_community', 'marital_status', 'is_children', 'son_details', 'daughter_details', 'physical_status', 'physical_status_desc',
@@ -417,7 +382,7 @@ class UserController extends Controller
     }
 
 
-    // Family Details
+    // Family Details Update
     public function userFamilyDetailsUpdate(UserFamilyDetailReq $request)
     {
 
@@ -444,7 +409,7 @@ class UserController extends Controller
         }
     }
 
-    // Partner Preference
+    // Partner Preference Update
     public function userPartnerPreferenceDetailsUpdate(PartnerPreferenceReq $request)
     {
 
@@ -469,39 +434,40 @@ class UserController extends Controller
     }
 
 
-    public function userDocumentAndStatusDetailsUpdate(PartnerPreferenceReq $request)
+    // Update Document and verification status update
+    public function userDocumentUpdate(Request $request)
     {
         $this->validate($request, [
             'idProof_type' => 'required',
-            'id_proof' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
-
+            'id_proof' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
         ]);
 
         DB::beginTransaction();
         try {
+            $userDetails = User::find($request->user_id);
 
-            $userDetails = User::where('user_id', $request->user_id)->first();
-
-            // USER UPLOAD ID-PROOF
-            $users_id_proof_link = "";
-            if ($request->hasFile('id_proof')) {
-                if ($userDetails->id_proof) {
-                    // Delete old ID proof
-                    $this->deleteImage($userDetails->id_proof);
-                }
-                // Upload new ID proof
-                $id_proofsave = $this->uploadImage($request->file('id_proof'), '/userIdProof');
+            if (!$userDetails) {
+                return Redirect::back()->with('error', 'User not found.');
             }
 
+            //ID proof upload
+            if ($request->hasFile('id_proof')) {
+                // Delete old ID proof if exists
+                if ($userDetails->id_proof) {
+                    $this->deleteImage($userDetails->id_proof);
+                }
 
-            // Update UserDetails Table
-            $userDetails->update([
-                'idProof_type' => $request->idProof_type,
-                'id_proof' => $id_proofsave,
-            ]);
+                // Upload new ID proof
+                $id_proofsave = $this->uploadImage($request->file('id_proof'), '/userIdProof');
+                $userDetails->id_proof = $id_proofsave;
+            }
+
+            // Update user details
+            $userDetails->idProof_type = $request->idProof_type;
+            $userDetails->update();
 
             DB::commit();
-            return Redirect::back()->with('success', "User Partner Document upload Successfully!");
+            return Redirect::back()->with('success', "User Partner Document uploaded successfully!");
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('User Document upload failed: ' . $e->getMessage());
@@ -511,19 +477,17 @@ class UserController extends Controller
 
 
     // Account status update
-
     public function userAccountStatusUpdate($id)
     {
         $userAccStatus = User::find($id);
-        $userAccStatus->status = $userAccStatus->status == 'active' ? 'inactive' : 'active';
+        $userAccStatus->account_status = $userAccStatus->account_status == 'active' ? 'inactive' : 'active';
         $userAccStatus->update();
-        return Redirect::back()->with('success',  $userAccStatus->name . ' User account status has been updated.');
+        return Redirect::back()->with('success',  $userAccStatus->name . ' Account status has been updated.');
     }
 
 
-    public function userVerificationStatusUpdate(Request $request, $id)
+    public function userVerificationDocStatusUpdate(Request $request)
     {
-
         $this->validate($request, [
             'profile_status' => 'nullable|in:pending,verified,rejected',
             'profile_rejected_reason' => 'required_if:profile_status,rejected',
@@ -531,25 +495,252 @@ class UserController extends Controller
             'profile_rejected_reason.required_if' => 'The rejection reason is required when the profile status is rejected.',
         ]);
 
+        DB::beginTransaction();
+        try {
+            $userVerificationStatus = User::find($request->user_id);
 
-        $userVerificationStatus = User::find($id);
-
-        // Update the profile status and rejection reason if applicable
-        if ($request->has('profile_status')) {
-            $userVerificationStatus->profile_status = $request->profile_status;
-            if ($request->profile_status == 'rejected') {
-                $userVerificationStatus->profile_rejected_reason = $request->profile_rejected_reason;
-            } else {
-                $userVerificationStatus->profile_rejected_reason = null;
+            if (!$userVerificationStatus) {
+                return Redirect::back()->with('error', 'User not found.');
             }
-        }
 
-        $userVerificationStatus->update([
-            'profile_status' => $request->profile_status,
-            'profile_rejected_reason' => $request->profile_rejected_reason ?? null,
+            // Update the profile status and rejection reason if applicable
+            if ($request->has('profile_status')) {
+                $userVerificationStatus->profile_status = $request->profile_status;
+                if ($request->profile_status == 'rejected') {
+                    $userVerificationStatus->profile_rejected_reason = $request->profile_rejected_reason;
+                } else {
+                    $userVerificationStatus->profile_rejected_reason = null;
+                }
+            }
+
+            $userVerificationStatus->save();
+
+            DB::commit();
+            return Redirect::back()->with('success', 'Document verification status for ' . $userVerificationStatus->name . ' has been updated successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('User verification status update failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'User verification status update failed: ' . $e->getMessage());
+        }
+    }
+
+
+    // Upload Image Update
+    public function uploadUserImageUpdate(Request $request)
+    {
+        // Validate request inputs
+        $this->validate($request, [
+            'user_id' => 'required|exists:users,id',
+            'croppedImage' => 'required|string',
         ]);
 
+        DB::beginTransaction();
+        try {
+            $users = User::find($request->user_id);
 
-        return Redirect::back()->with('success', $userVerificationStatus->name . ' User account status has been updated.');
+            if (!$users) {
+                return Redirect::back()->with('error', 'User not found.');
+            }
+
+            // Check if the request has a photo
+            if ($request->has('croppedImage')) {
+                $base64Image = $request->croppedImage;
+                $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+
+                $fileName = uniqid('image_') . '.jpg';
+
+                // Storage directory
+                $storagePath = storage_path('app/public/userImage/');
+
+                // Ensure the directory exists
+                if (!is_dir($storagePath)) {
+                    mkdir($storagePath, 0755, true);
+                }
+
+                // Save image file to storage
+                file_put_contents($storagePath . $fileName, $image);
+
+                // Save image path to database
+                UsersMedia::create([
+                    'user_id' => $users->id,
+                    'photo' => 'storage/userImage/' . $fileName,
+                    'status' => 'front_img',
+                ]);
+            }
+
+            DB::commit();
+            return Redirect::back()->with('success', 'Photo uploaded successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Photo upload update failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'Photo upload update failed: ' . $e->getMessage());
+        }
+    }
+
+    // Delete Image
+    public function userPhotoDelete($id)
+    {
+        DB::beginTransaction();
+        try {
+
+
+            $userMediaDelete = UsersMedia::find($id);
+
+            if ($userMediaDelete) {
+
+               $imagePath = public_path($userMediaDelete->photo);
+
+                // Check if the file exists and delete it
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+                $userMediaDelete->delete();
+            } else {
+                return Redirect::back()->with('error', 'Photo not found.');
+            }
+
+            DB::commit();
+            return Redirect::back()->with('success', 'Photo deleted successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Photo delete failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'Photo delete failed: ' . $e->getMessage());
+        }
+    }
+
+
+    // View User Profile
+    public function userViewProfilePage($id)
+    {
+        try {
+            $data['userProfile'] = User::with('userDetail', 'userMedia')->find($id);
+            $data['countries'] = DB::table('countries')->get();
+            $data['states'] = DB::table('states')->get();
+            $data['cities'] = DB::table('cities')->get();
+
+            return view('adminPanel.user.userDetail_view', $data);
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+
+  // User SoftDelete data
+  public function userSoftDeleteData($id)
+  {
+      DB::beginTransaction();
+      try {
+          $userDelete = User::find($id);
+
+          if (!$userDelete) {
+              return Redirect::back()->with('error', 'User not found.');
+          }
+
+          $userDelete->delete();
+
+          DB::commit();
+          return Redirect::back()->with('success', 'User moved to trash successfully.');
+      } catch (\Exception $e) {
+          DB::rollBack();
+          Log::error('User soft delete failed: ' . $e->getMessage());
+          return Redirect::back()->with('error', 'User soft delete failed: ' . $e->getMessage());
+      }
+  }
+
+
+
+   // User HardDelete data (Permanently Delete)
+   public function userHardDeleteData($id)
+   {
+       DB::beginTransaction();
+       try {
+        $userDelete = User::onlyTrashed()->find($id);
+
+           if (!$userDelete) {
+               return Redirect::back()->with('error', 'User not found.');
+           }
+
+           $userDelete->forceDelete();
+
+           DB::commit();
+           return Redirect::back()->with('success', 'User Details Permantely Delete successfully.');
+       } catch (\Exception $e) {
+           DB::rollBack();
+           Log::error('User Hard delete failed: ' . $e->getMessage());
+           return Redirect::back()->with('error', 'User Hard delete failed: ' . $e->getMessage());
+       }
+   }
+
+
+
+    // View user pdf
+    public function userPdfView()
+    {
+        return view('pdf.userPdf');
+    }
+
+
+
+
+
+    // Generate PDF
+    public function generatePdf()
+    {
+
+        $usersDetails = User::with('userDetail')->where('role_type', 0)->get();
+
+        $data = [
+            'usersDetails' => $usersDetails
+        ];
+
+        $pdf = PDF::loadView('pdf.userPdf', $data);
+
+        // Generate the PDF
+        $pdfFile = $pdf->output();
+
+        return response()->stream(
+            function () use ($pdfFile) {
+                echo $pdfFile;
+            },
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="jain_E_Patrika.pdf"',
+            ]
+        );
+    }
+
+
+
+
+    // generateUniqueUserId
+    private function generateUniqueUserId($prefix = 'JEP', $length = 5)
+    {
+        $numericPart = '';
+
+        // Generate a random numeric part
+        for ($i = 0; $i < $length; $i++) {
+            $numericPart .= mt_rand(0, 9);
+        }
+        // Combine prefix with numeric part
+        return $prefix . $numericPart;
+    }
+
+    // User Media Private Function
+    private function saveUserMedia($photos, $userId)
+    {
+        foreach ($photos as $photo) {
+            // Upload the image
+            $imagePath = Storage::disk('public')->put('userImage', $photo);
+
+            // Concatenate the storage directory path with the image path
+            $fullImagePath = 'storage/' . $imagePath;
+
+            // Save the full image path to the user_media table
+            UsersMedia::create([
+                'user_id' => $userId,
+                'photo' => $fullImagePath,
+            ]);
+        }
     }
 }
