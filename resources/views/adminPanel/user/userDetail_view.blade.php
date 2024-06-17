@@ -315,7 +315,7 @@
                                     <p><strong>City:</strong>
                                         {{
                                             $userProfile->userDetail ?
-                                            collect(json_decode($userProfile->userDetail->partner_city, true))
+                                            collect(json_decode($userProfile->userDetail?->partner_city, true))
                                                 ->map(function ($item) {
                                                     return getCityNameUsingId($item);
                                                 })

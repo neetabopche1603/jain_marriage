@@ -298,12 +298,13 @@ class UserController extends Controller
             $usersEdit = User::with('userDetail')->find($id);
             $usersEdit->education = json_decode($usersEdit->education, true);
 
+            // dd(json_decode($usersEdit->userDetail->partner_city));
             $data['educations'] = Education::where('status', 'active')->orderBy("education_name", "asc")->get();
             $data['occupations'] = Occupation::where('status', 'active')->get();
             $data['professions'] = Professions::where('status', 'active')->get();
             $data['countries'] = DB::table('countries')->get();
             $data['states'] = DB::table('states')->get();
-            $data['cities'] = DB::table('cities')->get();
+            $data['cities'] = DB::table('cities')->select('id', 'name')->get();
 
             $data['professions'] = Professions::where('status', 'active')->get();
             return view('adminPanel.user.editPartnerPreference', compact('data', 'usersEdit'));
@@ -614,9 +615,10 @@ class UserController extends Controller
     {
         try {
             $data['userProfile'] = User::with('userDetail', 'userMedia')->find($id);
-            $data['countries'] = DB::table('countries')->get();
-            $data['states'] = DB::table('states')->get();
-            $data['cities'] = DB::table('cities')->get();
+            // $data['countries'] = DB::table('countries')->get();
+            // $data['states'] = DB::table('states')->get();
+            // $data['cities'] = DB::table('cities')->get();
+            // dd("test1");
 
             return view('adminPanel.user.userDetail_view', $data);
         } catch (Exception $e) {

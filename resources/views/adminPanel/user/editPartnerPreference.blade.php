@@ -144,7 +144,7 @@
 
                                                             @php
                                                                 $selectedCountries = json_decode(
-                                                                    $usersEdit->userDetail->partner_country,
+                                                                    $usersEdit->userDetail?->partner_country,
                                                                     true,
                                                                 );
                                                                 $selectAny = in_array('0', $selectedCountries ?? []);
@@ -177,7 +177,7 @@
 
                                                             @php
                                                                 $selectedStates = json_decode(
-                                                                    $usersEdit->userDetail->partner_state,
+                                                                    $usersEdit->userDetail?->partner_state,
                                                                     true,
                                                                 );
                                                                 $selectAnyState = in_array('0', $selectedStates ?? []);
@@ -210,7 +210,7 @@
 
                                                             @php
                                                                 $selectedCities = json_decode(
-                                                                    $usersEdit->userDetail->partner_city,
+                                                                    $usersEdit->userDetail?->partner_city,
                                                                     true,
                                                                 );
                                                                 $selectAnyCity = in_array('0', $selectedCities ?? []);
