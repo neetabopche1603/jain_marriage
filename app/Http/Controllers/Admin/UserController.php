@@ -38,6 +38,13 @@ class UserController extends Controller
         return view('adminPanel.user.all', compact('users'));
     }
 
+// Soft delete(List Of users)
+    public function deletedUsersList()
+    {
+        $users = User::where('role_type', 0)->onlyTrashed()->paginate(10);
+        return view('adminPanel.user.delete_userList', compact('users'));
+    }
+
 
     // User Create Form
     public function create()
@@ -201,13 +208,12 @@ class UserController extends Controller
             'partner_education_desc' => json_encode($request->partner_education_desc) ?? null,
             'partner_occupation' => json_encode($request->partner_occupation) ?? null,
             'partner_profession' => json_encode($request->partner_profession) ?? null,
-            'partner_hobbies' => json_encode($request->partner_hobbies) ?? null,
 
             'partner_manglik' => $request->partner_manglik ?? null,
 
             'partner_marital_status' => strtolower($request->partner_marital_status) ?? null,
             'partner_acccept_kid' => strtolower($request->partner_acccept_kid) ?? null,  //wit kit,without kit,any
-            'partner_manglik' => $request->partner_kid_discription ?? null,
+            'partner_kid_discription' => $request->partner_kid_discription ?? null,
 
 
             'astrology_matching' => $request->astrology_matching ?? null,
@@ -471,12 +477,12 @@ class UserController extends Controller
 
 
     // Account status update
-    public function userAccountStatusUpdate(Request $request)
+    public function userAccountStatusUpdate($id)
     {
-        $userAccStatus = User::find($request->user_id);
+        $userAccStatus = User::find($id);
         $userAccStatus->account_status = $userAccStatus->account_status == 'active' ? 'inactive' : 'active';
         $userAccStatus->update();
-        return Redirect::back()->with('success',  $userAccStatus->name . 'Account status has been updated.');
+        return Redirect::back()->with('success',  $userAccStatus->name . ' Account status has been updated.');
     }
 
 
@@ -603,25 +609,79 @@ class UserController extends Controller
     }
 
 
-
-
     // View User Profile
     public function userViewProfilePage($id)
     {
         try {
-            $userProfile = User::with('userDetail', 'userMedia')->find($id);
+            $data['userProfile'] = User::with('userDetail', 'userMedia')->find($id);
+            $data['countries'] = DB::table('countries')->get();
+            $data['states'] = DB::table('states')->get();
+            $data['cities'] = DB::table('cities')->get();
 
-            return view('adminPanel.user.userDetail_view', compact('userProfile'));
+            return view('adminPanel.user.userDetail_view', $data);
         } catch (Exception $e) {
             dd($e->getMessage());
         }
     }
+
+
+  // User SoftDelete data
+  public function userSoftDeleteData($id)
+  {
+      DB::beginTransaction();
+      try {
+          $userDelete = User::find($id);
+
+          if (!$userDelete) {
+              return Redirect::back()->with('error', 'User not found.');
+          }
+
+          $userDelete->delete();
+
+          DB::commit();
+          return Redirect::back()->with('success', 'User moved to trash successfully.');
+      } catch (\Exception $e) {
+          DB::rollBack();
+          Log::error('User soft delete failed: ' . $e->getMessage());
+          return Redirect::back()->with('error', 'User soft delete failed: ' . $e->getMessage());
+      }
+  }
+
+
+
+   // User HardDelete data (Permanently Delete)
+   public function userHardDeleteData($id)
+   {
+       DB::beginTransaction();
+       try {
+        $userDelete = User::onlyTrashed()->find($id);
+
+           if (!$userDelete) {
+               return Redirect::back()->with('error', 'User not found.');
+           }
+
+           $userDelete->forceDelete();
+
+           DB::commit();
+           return Redirect::back()->with('success', 'User Details Permantely Delete successfully.');
+       } catch (\Exception $e) {
+           DB::rollBack();
+           Log::error('User Hard delete failed: ' . $e->getMessage());
+           return Redirect::back()->with('error', 'User Hard delete failed: ' . $e->getMessage());
+       }
+   }
+
+
 
     // View user pdf
     public function userPdfView()
     {
         return view('pdf.userPdf');
     }
+
+
+
+
 
     // Generate PDF
     public function generatePdf()

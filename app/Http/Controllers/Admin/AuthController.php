@@ -62,4 +62,6 @@ class AuthController extends Controller
             return redirect()->route('admin.login')->withErrors(['error' => 'An error occurred while trying to log in']);
         }
     }
+
+
 }

@@ -66,7 +66,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <x-form.select name="refrence_by" label="Reference By*" :options="[
+                                        <x-form.select name="refrence_by" label="Reference By" :options="[
                                             'facebook' => 'Facebook',
                                             'instagram' => 'Instagram',
                                             'google' => 'Google',
@@ -1166,6 +1166,7 @@
             $('#complexion').select2();
             $('#religion').select2();
             $('#family_community').select2();
+            $('#family_sub_community').select2();
             $('#marital_status').select2();
             $('#blood_group').select2();
             $('#father_profession').select2();

@@ -195,13 +195,9 @@
                                                                     </div>
                                                                     <div class="card-body">
                                                                         <form
-                                                                            action="{{ route('admin.userAccountStatusUpdate') }}"
-                                                                            method="post">
+                                                                            action="{{ route('admin.userAccountStatusUpdate',$usersEdit->id) }}"
+                                                                            method="get">
                                                                             @csrf
-                                                                            <input type="hidden" name="user_id"
-                                                                                value="{{ $usersEdit->id }}">
-
-
                                                                             <div class="mb-0">
                                                                                 <div>
                                                                                     <x-form.select name="account_status"

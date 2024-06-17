@@ -37,6 +37,9 @@
 <!-- project-create init -->
 <script src="{{ asset('assets/js/pages/project-create.init.js') }}"></script>
 
+<!-- Image magnific-popup script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
 <!-- Ajax Setup -->
 <script>
     $.ajaxSetup({

@@ -167,6 +167,7 @@
                                                         </span>
                                                     </div>
 
+
                                                     <div class="col-md-4 mt-2">
                                                         <label for="partner_state" class="form-label">State</label>
                                                         <select name="partner_state[]" id="partner_state"
@@ -249,8 +250,8 @@
                                                             @endphp
 
                                                             @foreach ($data['educations'] as $education)
-                                                                <option value="{{ $education->partner_education }}"
-                                                                    {{ in_array($education->education_name, old('partner_profession', $selectedEducations ?? [])) ? 'selected' : '' }}>
+                                                                <option value="{{ $education->education_name }}"
+                                                                    {{ in_array($education->education_name, old('partner_education', $selectedEducations ?? [])) ? 'selected' : '' }}>
                                                                     {{ strtoupper($education->education_name) }}
                                                                 </option>
                                                             @endforeach
@@ -278,8 +279,8 @@
                                                             @endphp
 
                                                             @foreach ($data['occupations'] as $occupation)
-                                                                <option value="{{ $occupation->partner_occupation }}"
-                                                                    {{ in_array($occupation->occupation_name, old('partner_profession', $selectedOccupations ?? [])) ? 'selected' : '' }}>
+                                                                <option value="{{ $occupation->occupation_name }}"
+                                                                    {{ in_array($occupation->occupation_name, old('partner_occupation', $selectedOccupations ?? [])) ? 'selected' : '' }}>
                                                                     {{ strtoupper($occupation->occupation_name) }}
                                                                 </option>
                                                             @endforeach

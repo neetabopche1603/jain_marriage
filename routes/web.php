@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -89,13 +90,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('user-document-update', [UserController::class, 'userDocumentUpdate'])->name('admin.userDocumentUpdate');
 
-        Route::post('user-account-status-update', [UserController::class, 'userAccountStatusUpdate'])->name('admin.userAccountStatusUpdate');
+        Route::get('user-account-status-update/{id}', [UserController::class, 'userAccountStatusUpdate'])->name('admin.userAccountStatusUpdate');
 
         Route::post('user-document-verify-status-update', [UserController::class, 'userVerificationDocStatusUpdate'])->name('admin.userVerificationDocStatusUpdate');
 
         Route::post('user-upload-photo-update', [UserController::class, 'uploadUserImageUpdate'])->name('admin.uploadUserImageUpdate');
 
         Route::get('user-photo-delete/{id}', [UserController::class, 'userPhotoDelete'])->name('admin.userPhotoDelete');
+
+        Route::get('user-soft-delete/{id}', [UserController::class, 'userSoftDeleteData'])->name('admin.userSoftDeleteData');
+        Route::get('user-details-permanent-delete/{id}', [UserController::class, 'userHardDeleteData'])->name('admin.userHardDeleteData');
+
+        Route::get('user-deleted-list', [UserController::class, 'deletedUsersList'])->name('admin.deletedUsersList');
+
+
+        Route::get('profile-details', [ProfileController::class, 'editProfileView'])->name('admin.editProfileView');
+        Route::post('profile-update', [ProfileController::class, 'update_profile'])->name('admin.update_profile');
+
+        Route::post('update-password', [ProfileController::class, 'update_password'])->name('admin.update_password');
 
 
         Route::post('get-state', [UserController::class, 'getState'])->name('admin.getState');

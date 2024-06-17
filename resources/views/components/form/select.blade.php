@@ -26,7 +26,8 @@
         <option value="">-Select {{ strtolower($label) }}-</option>
         @foreach ($options as $value => $text)
             <option value="{{ $value }}" {{ (old($name) ?? $selected) == $value ? 'selected' : '' }}>
-                {{ $text }}
+                {{ucfirst($text)}}
+
             </option>
         @endforeach
     </select>

@@ -43,26 +43,31 @@
                     </a>
                 </li>
 
+                <li class="nav-item ">
+                    <a class="nav-link menu-link {{ Request::is('admin/user*') ? 'active' : '' }}" href="#sidebarTables" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarTables" data-bs-target="#sidebarTables">
+                        <i class="ri-map-pin-user-line"></i> <span data-key="t-tables">Users Information</span>
 
 
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarTables" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarTables">
-                        <i class="ri-layout-grid-line"></i> <span data-key="t-tables">Users Information</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarTables">
+                    <div class="collapse menu-dropdown {{ Request::is('admin/user*') ? 'show' : '' }}" id="sidebarTables">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('admin.users')}}" class="nav-link" data-key="t-basic-tables">Users List</a>
+                                <a href="{{ route('admin.users') }}" class="nav-link {{ Request::is('admin/user-list') ? 'active' : '' }}" data-key="t-basic-tables">Users List</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{route('admin.create')}}" class="nav-link" data-key="t-basic-tables">Add User</a>
+                                <a href="{{ route('admin.create') }}" class="nav-link {{ Request::is('admin/user-create') ? 'active' : '' }}" data-key="t-basic-tables">Add User</a>
                             </li>
 
+                            <li class="nav-item">
+                                <a href="{{ route('admin.deletedUsersList') }}" class="nav-link {{ Request::is('admin/user-deleted-list') ? 'active' : '' }}" data-key="t-basic-tables">Deleted User List</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
+
+
 
             </ul>
         </div>

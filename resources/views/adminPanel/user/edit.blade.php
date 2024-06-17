@@ -605,7 +605,7 @@
 
                                                 <div class="text-end mb-4">
                                                     <button type="reset" class="btn btn-danger w-sm">Reset</button>
-                                                    <button type="submit" class="btn btn-success w-sm">Update</button>
+                                                    <button type="submit" class="btn btn-success w-sm">Update Personal Detail</button>
                                                 </div>
                                             </form>
 
