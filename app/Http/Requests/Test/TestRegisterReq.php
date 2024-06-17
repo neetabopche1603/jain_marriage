@@ -38,7 +38,7 @@ class TestRegisterReq extends BaseRequest
             'complexion' => ['required', 'string', 'max:255'],
 
             'education' => 'required|array',
-            'education.*' => 'exists:education,id',
+            // 'education.*' => 'exists:education,id',
 
             'profession' => ['required', 'string', 'max:255'],
             'occupation' => ['required', 'string', 'max:255'],
@@ -109,16 +109,14 @@ class TestRegisterReq extends BaseRequest
             // 'partner_city.*' => 'exists:cities,id',
 
             'partner_education' => 'required|array',
-            'partner_education.*' => 'exists:education,id',
+            // 'partner_education.*' => 'exists:education,id',
 
             'partner_occupation' => 'required|array',
-            'partner_occupation.*' => 'exists:occupations,id',
+            // 'partner_occupation.*' => 'exists:occupations,id',
 
             'partner_profession' => 'required|array',
-            'partner_profession.*' => 'exists:professions,id',
+            // 'partner_profession.*' => 'exists:professions,id',
 
-            'partner_hobbies' => 'nullable|array',
-            'partner_hobbies.*' => 'exists:hobbies,id',
 
             'partner_manglik' => 'required',
 

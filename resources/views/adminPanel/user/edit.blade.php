@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
 @endpush
 
+
 @section('content')
 
     <div class="page-content">
         <div class="container-fluid">
+           
 
             <!-- start page title -->
             <div class="row">
@@ -63,12 +65,12 @@
                                 </li>
 
 
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="tab" href="#nav-border-top-partner-preference"
                                         role="tab" aria-selected="true">
                                         Partner Preference
                                     </a>
-                                </li>
+                                </li> --}}
 
                                 {{-- <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="tab" href="#nav-border-top-profile-Img"
@@ -95,7 +97,7 @@
                                         <div class="flex-grow-1 ms-2">
 
                                             {{-- Basic & Personal Details Form --}}
-                                            <form action="{{ url('admin/user-family-details-update') }}" method="post">
+                                            <form action="{{route('admin.userBasicPersonalDetailUpdate')}}" method="post">
                                                 @csrf
 
                                                 <input type="hidden" name="user_id" value="{{ $usersEdit->id }}">
@@ -991,7 +993,7 @@
                                                             <option value="">Select Age</option>
                                                             @for ($age = 18; $age <= 75; $age++)
                                                                 <option value="{{ $age }}"
-                                                                    {{ old('partner_age_group_from', $usersEdit->userDetail->partner_age_group_from) == $age ? 'selected' : '' }}>
+                                                                    {{ old('partner_age_group_from', $usersEdit->userDetail?->partner_age_group_from) == $age ? 'selected' : '' }}>
                                                                     {{ $age }}
                                                                 </option>
                                                             @endfor
@@ -1008,7 +1010,7 @@
                                                             <option value="">Select Age</option>
                                                             @for ($age = 18; $age <= 75; $age++)
                                                                 <option value="{{ $age }}"
-                                                                    {{ old('partner_age_group_to', $usersEdit->userDetail->partner_age_group_to) == $age ? 'selected' : '' }}>
+                                                                    {{ old('partner_age_group_to', $usersEdit->userDetail?->partner_age_group_to) == $age ? 'selected' : '' }}>
                                                                     {{ $age }}
                                                                 </option>
                                                             @endfor
@@ -1052,7 +1054,51 @@
 
                                                     </div>
 
+
                                                     <div class="col-md-4 mt-2">
+                                                        <label for="partner_country" class="form-label">Country</label>
+                                                        <select name="partner_country[]" id="partner_country" class="form-select"
+                                                            multiple="multiple">
+                                                            <option value="">Select Country</option>
+                                                            <option value='0'>Any</option>
+                                                            @foreach ($countries as $country)
+                                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_country')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+                
+                                                    <div class="col-md-4 mt-2">
+                                                        <label for="partner_state" class="form-label">State</label>
+                                                        <select name="partner_state[]" id="partner_state" class="form-select"
+                                                            multiple="multiple">
+                                                            <option value="">Select State</option>
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_state')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+                
+                                                    <div class="col-md-4 mt-2">
+                                                        <label for="partner_city" class="form-label">City</label>
+                                                        <select name="partner_city[]" id="partner_city" class="form-select"
+                                                            multiple="multiple">
+                                                            <option value="">Select city</option>
+                                                        </select>
+                                                        <span class="text-danger">
+                                                            @error('partner_city')
+                                                                <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </span>
+                                                    </div>
+
+                                                    {{-- <div class="col-md-4 mt-2">
                                                         <label for="partner_country" class="form-label">Country</label>
                                                         <select name="partner_country[]" id="partner_country"
                                                             class="form-select js-example-basic-single"
@@ -1061,8 +1107,7 @@
 
                                                             @php
                                                                 $selectedCountries = json_decode(
-                                                                    $usersEdit->userDetail->partner_country,
-                                                                    true,
+                                                                    $usersEdit->userDetail?->partner_country
                                                                 );
                                                                 $selectAny = in_array('0', $selectedCountries ?? []);
                                                             @endphp
@@ -1070,7 +1115,7 @@
                                                             <option value='0' {{ $selectAny ? 'selected' : '' }}>Any
                                                             </option>
 
-                                                            @foreach ($data['countries'] as $country)
+                                                            @foreach ($countries as $country)
                                                                 <option value="{{ $country->id }}"
                                                                     {{ in_array($country->id, old('partner_country', $selectedCountries ?? [])) ? 'selected' : '' }}>
                                                                     {{ strtoupper($country->name) }}
@@ -1093,8 +1138,7 @@
 
                                                             @php
                                                                 $selectedStates = json_decode(
-                                                                    $usersEdit->userDetail->partner_state,
-                                                                    true,
+                                                                    $usersEdit->userDetail?->partner_state
                                                                 );
                                                                 $selectAnyState = in_array('0', $selectedStates ?? []);
                                                             @endphp
@@ -1102,7 +1146,7 @@
                                                             <option value="0"
                                                                 {{ $selectAnyState ? 'selected' : '' }}>Any</option>
 
-                                                            @foreach ($data['states'] as $state)
+                                                            @foreach ($states as $state)
                                                                 <option value="{{ $state->id }}"
                                                                     {{ in_array($state->id, old('partner_state', $selectedStates ?? [])) ? 'selected' : '' }}>
                                                                     {{ strtoupper($state->name) }}
@@ -1126,8 +1170,7 @@
 
                                                             @php
                                                                 $selectedCities = json_decode(
-                                                                    $usersEdit->userDetail->partner_city,
-                                                                    true,
+                                                                    $usersEdit->userDetail?->partner_city
                                                                 );
                                                                 $selectAnyCity = in_array('0', $selectedCities ?? []);
                                                             @endphp
@@ -1135,7 +1178,7 @@
                                                             <option value="0"
                                                                 {{ $selectAnyCity ? 'selected' : '' }}>Any</option>
 
-                                                            @foreach ($data['cities'] as $city)
+                                                            @foreach ($cities as $city)
                                                                 <option value="{{ $city->id }}"
                                                                     {{ in_array($city->id, old('partner_city', $selectedCities ?? [])) ? 'selected' : '' }}>
                                                                     {{ strtoupper($city->name) }}
@@ -1147,7 +1190,7 @@
                                                                 <div class="text-danger">{{ $message }}</div>
                                                             @enderror
                                                         </span>
-                                                    </div>
+                                                    </div> --}}
 
 
 
@@ -1160,8 +1203,7 @@
 
                                                             @php
                                                                 $selectedEducations = json_decode(
-                                                                    $usersEdit->userDetail->partner_education,
-                                                                    true,
+                                                                    $usersEdit->userDetail->partner_education
                                                                 );
                                                             @endphp
 
@@ -1189,8 +1231,7 @@
 
                                                             @php
                                                                 $selectedOccupations = json_decode(
-                                                                    $usersEdit->userDetail->partner_occupation,
-                                                                    true,
+                                                                    $usersEdit->userDetail->partner_occupation
                                                                 );
                                                             @endphp
 
@@ -1218,8 +1259,7 @@
 
                                                             @php
                                                                 $selectedProfessions = json_decode(
-                                                                    $usersEdit->userDetail->partner_profession,
-                                                                    true,
+                                                                    $usersEdit->userDetail->partner_profession
                                                                 );
                                                             @endphp
 

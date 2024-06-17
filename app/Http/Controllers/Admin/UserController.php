@@ -125,15 +125,14 @@ class UserController extends Controller
 
             $userMedias = UsersMedia::where('user_id', $id)->get();
 
-            $data['educations'] = Education::where('status', 'active')->orderBy("education_name", "asc")->get();
+            $data['educations'] = Education::where('status', 'active')->get();
             $data['occupations'] = Occupation::where('status', 'active')->get();
             $data['professions'] = Professions::where('status', 'active')->get();
-            $data['hobbies'] = Hobby::where('status', 'active')->get();
-            $data['countries'] = DB::table('countries')->get();
-            $data['states'] = DB::table('states')->get();
-            $data['cities'] = DB::table('cities')->get();
+            $countries = DB::table('countries')->get();
+            // $states = DB::table('states')->get();
+            // $cities = DB::table('cities')->get();
 
-            return view('adminPanel.user.edit', compact('data', 'usersEdit', 'userMedias'));
+            return view('adminPanel.user.edit', compact('data', 'usersEdit', 'userMedias','countries'));
         } catch (Exception $e) {
             dd($e->getMessage());
         }
