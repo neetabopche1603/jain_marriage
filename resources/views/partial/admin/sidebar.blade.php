@@ -70,19 +70,19 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link  {{ Request::is('admin/education-list') ? 'active' : '' }}" href="{{route('admin.educations')}}">
-                        <i class="ri-side-bar-line"></i> <span data-key="t-ecommerce">Education</span>
+                        <i class="ri-side-bar-line"></i> <span data-key="t-ecommerce">Educations</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ Request::is('admin/profession-list') ? 'active' : '' }}" href="{{route('admin.professions')}}">
-                        <i class="ri-group-2-line"></i> <span data-key="t-ecommerce">Profession</span>
+                        <i class="ri-group-2-line"></i> <span data-key="t-ecommerce">Professions</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ Request::is('admin/occupation-list') ? 'active' : '' }}" href="{{route('admin.occupations')}}">
-                        <i class="ri-user-5-line"></i> <span data-key="t-ecommerce">Occupation</span>
+                        <i class="ri-user-5-line"></i> <span data-key="t-ecommerce">Occupations</span>
                     </a>
                 </li>
 
