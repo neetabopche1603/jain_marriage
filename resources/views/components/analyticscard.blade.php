@@ -1,10 +1,10 @@
 @php
-    $heading= $heading, ?? 'Heading';
+    $heading = $heading ?? 'Heading';
     $value = $value ?? '0';
     $icon = $icon ?? 'bx bx-user-circle';
-    $color= $color??"success";
-    $action= $action ??"#";
-
+    $color = $color ?? 'success';
+    $desc = $desc ?? '';
+    $action = $action ?? '#';
 @endphp
 
 <div class="col-xl-3 col-md-6">
