@@ -87,7 +87,7 @@
                                 desc="Total Pending User List" action="{{route('admin.users')}}" />
 
                                 <x-analyticscard  heading="Total Users profile rejected" value="{{ $data['total_profile_verify_rejected'] }}" icon="bx bxs-x-circle"  color="danger"
-                                desc="Total Trashed User List" action="{{route('admin.users')}}" />
+                                desc="Total Rejected User List" action="{{route('admin.users')}}" />
 
 
 
