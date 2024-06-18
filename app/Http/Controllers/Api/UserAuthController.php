@@ -107,7 +107,7 @@ class UserAuthController extends Controller
             //     $user->update($userPersonalDetails);
             //     $user = User::find($request->user_id);
             // } else {
-                $user = User::create($userPersonalDetails);
+            $user = User::create($userPersonalDetails);
             // }
 
             return $user;
@@ -218,6 +218,11 @@ class UserAuthController extends Controller
             // Check if the user is a superadmin
             if ($user->role_type == 1) {
                 return $this->getResponseCode(403, '', '', 'Access denied for this user.');
+            }
+
+            // Check if the account status is active
+            if ($user->account_status !== 'active') {
+                return $this->getResponseCode(403, '', '', 'Account is not active. Please contact support.');
             }
 
             if (!Hash::check($request->password, $user->password)) {
