@@ -2,8 +2,8 @@
     $heading= $heading, ?? 'Heading';
     $value = $value ?? '0';
     $icon = $icon ?? 'bx bx-user-circle';
-    $color= $color??"success",
-    $action= $action ??"#",
+    $color= $color??"success";
+    $action= $action ??"#";
 
 @endphp
 
