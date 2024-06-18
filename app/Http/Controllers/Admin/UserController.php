@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+
 
 
 class UserController extends Controller
@@ -32,16 +34,73 @@ class UserController extends Controller
     use ImageUploadTrait;
     // List Of Users
 
-    public function usersList()
+
+    public function usersList(Request $request)
     {
-        $users = User::where('role_type', 0)->paginate(10);
+        $users = User::with('userDetail')->where('role_type', 0);
+
+        $search = $request->search;
+        $searchQuery = '%' . $search . '%';
+
+        // Search
+        if (!empty($search)) {
+            $users->where(function ($subquery) use ($searchQuery, $search) {
+                $subquery->where('name', 'like', $searchQuery)
+                    ->orWhere('email', 'like', $searchQuery)
+                    ->orWhere('userId', 'like', $searchQuery)
+                    ->orWhere('whatsapp_no', 'like', $searchQuery)
+                    ->orWhere('age', 'like', $searchQuery)
+                    ->orWhere('profile_status', 'like', $searchQuery)
+                    ->orWhere('account_status', 'like', $searchQuery)
+                    ->orWhereHas('userDetail', function ($userDetailQuery) use ($searchQuery) {
+                        $userDetailQuery->where('calling_no', 'like', $searchQuery);
+                    });
+
+                if (\Carbon\Carbon::hasFormat($search, 'd-M-Y')) {
+                    $subquery->orWhereDate('created_at', \Carbon\Carbon::parse($search)->format('Y-m-d'));
+                    $subquery->orWhereDate('dob', \Carbon\Carbon::parse($search)->format('Y-m-d'));
+                }
+            });
+        }
+
+        $users = $users->orderBy('id', 'DESC')->paginate(10);
         return view('adminPanel.user.all', compact('users'));
     }
 
-// Soft delete(List Of users)
-    public function deletedUsersList()
+
+
+
+    // Soft delete(List Of users)
+    public function deletedUsersList(Request $request)
     {
-        $users = User::where('role_type', 0)->onlyTrashed()->paginate(10);
+        $users = User::with('userDetail')->where('role_type', 0)->onlyTrashed();
+
+        $search = $request->search;
+        $searchQuery = '%' . $search . '%';
+
+        // Search
+        if (!empty($search)) {
+            $users->where(function ($subquery) use ($searchQuery, $search) {
+                $subquery->where('name', 'like', $searchQuery)
+                    ->orWhere('email', 'like', $searchQuery)
+                    ->orWhere('userId', 'like', $searchQuery)
+                    ->orWhere('whatsapp_no', 'like', $searchQuery)
+                    ->orWhere('age', 'like', $searchQuery)
+                    ->orWhere('profile_status', 'like', $searchQuery)
+                    ->orWhere('account_status', 'like', $searchQuery)
+                    ->orWhereHas('userDetail', function ($userDetailQuery) use ($searchQuery) {
+                        $userDetailQuery->where('calling_no', 'like', $searchQuery);
+                    });
+
+                if (\Carbon\Carbon::hasFormat($search, 'd-M-Y')) {
+                    $subquery->orWhereDate('created_at', \Carbon\Carbon::parse($search)->format('Y-m-d'));
+                    $subquery->orWhereDate('dob', \Carbon\Carbon::parse($search)->format('Y-m-d'));
+                }
+            });
+        }
+
+        $users = $users->orderBy('id', 'DESC')->paginate(10);
+
         return view('adminPanel.user.delete_userList', compact('users'));
     }
 
@@ -589,7 +648,7 @@ class UserController extends Controller
 
             if ($userMediaDelete) {
 
-               $imagePath = public_path($userMediaDelete->photo);
+                $imagePath = public_path($userMediaDelete->photo);
 
                 // Check if the file exists and delete it
                 if (file_exists($imagePath)) {
@@ -627,51 +686,51 @@ class UserController extends Controller
     }
 
 
-  // User SoftDelete data
-  public function userSoftDeleteData($id)
-  {
-      DB::beginTransaction();
-      try {
-          $userDelete = User::find($id);
+    // User SoftDelete data
+    public function userSoftDeleteData($id)
+    {
+        DB::beginTransaction();
+        try {
+            $userDelete = User::find($id);
 
-          if (!$userDelete) {
-              return Redirect::back()->with('error', 'User not found.');
-          }
+            if (!$userDelete) {
+                return Redirect::back()->with('error', 'User not found.');
+            }
 
-          $userDelete->delete();
+            $userDelete->delete();
 
-          DB::commit();
-          return Redirect::back()->with('success', 'User moved to trash successfully.');
-      } catch (\Exception $e) {
-          DB::rollBack();
-          Log::error('User soft delete failed: ' . $e->getMessage());
-          return Redirect::back()->with('error', 'User soft delete failed: ' . $e->getMessage());
-      }
-  }
+            DB::commit();
+            return Redirect::back()->with('success', 'User moved to trash successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('User soft delete failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'User soft delete failed: ' . $e->getMessage());
+        }
+    }
 
 
 
-   // User HardDelete data (Permanently Delete)
-   public function userHardDeleteData($id)
-   {
-       DB::beginTransaction();
-       try {
-        $userDelete = User::onlyTrashed()->find($id);
+    // User HardDelete data (Permanently Delete)
+    public function userHardDeleteData($id)
+    {
+        DB::beginTransaction();
+        try {
+            $userDelete = User::onlyTrashed()->find($id);
 
-           if (!$userDelete) {
-               return Redirect::back()->with('error', 'User not found.');
-           }
+            if (!$userDelete) {
+                return Redirect::back()->with('error', 'User not found.');
+            }
 
-           $userDelete->forceDelete();
+            $userDelete->forceDelete();
 
-           DB::commit();
-           return Redirect::back()->with('success', 'User Details Permantely Delete successfully.');
-       } catch (\Exception $e) {
-           DB::rollBack();
-           Log::error('User Hard delete failed: ' . $e->getMessage());
-           return Redirect::back()->with('error', 'User Hard delete failed: ' . $e->getMessage());
-       }
-   }
+            DB::commit();
+            return Redirect::back()->with('success', 'User Details Permantely Delete successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('User Hard delete failed: ' . $e->getMessage());
+            return Redirect::back()->with('error', 'User Hard delete failed: ' . $e->getMessage());
+        }
+    }
 
 
 

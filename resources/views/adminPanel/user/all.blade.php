@@ -46,12 +46,14 @@
                                         </div>
                                     </div>
                                     <div class="col-sm">
-                                        <div class="d-flex justify-content-sm-end">
+                                         <div class="d-flex justify-content-sm-end">
                                             <div class="search-box ms-2">
-                                                <input type="text" class="form-control search" placeholder="Search...">
-                                                <i class="ri-search-line search-icon"></i>
+                                                <x-search.table-search-input action="{{route('admin.users')}}" method="get" name="search"
+                                                    value="{{ isset($_REQUEST['search']) ? $_REQUEST['search'] : '' }}" btnClass="search_btn"
+                                                 />
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -133,18 +135,13 @@
                                                         <div
                                                             class="form-check form-switch form-switch-custom form-switch-success mb-3">
 
-                                                            <input class="form-check-input accountStatusToggle" type="checkbox"
-                                                                id="accountStatusToggle"
+                                                            <input class="form-check-input accountStatusToggle"
+                                                                type="checkbox" id="accountStatusToggle"
                                                                 {{ $user->account_status == 'active' ? 'checked' : '' }}
                                                                 data-uid="{{ $user->id }}">
                                                             <label class="form-check-label"
                                                                 for="accountStatusToggle">{{ ucfirst($user->account_status) }}</label>
                                                         </div>
-
-
-
-
-
                                                     </td>
 
                                                     <td>
@@ -205,9 +202,9 @@
             $(".accountStatusToggle").on("click", function(e) {
                 // e.prevantDefault()
                 // if (confirm("Are you sure change account status this user")) {
-                    let userId = $(this).attr("data-uid")
-                    let url = `{{ url('/admin/user-account-status-update') }}/${userId}`
-                    location.href = url;
+                let userId = $(this).attr("data-uid")
+                let url = `{{ url('/admin/user-account-status-update') }}/${userId}`
+                location.href = url;
                 // }
             })
         });

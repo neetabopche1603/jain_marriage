@@ -43,7 +43,7 @@
                         <!--end row-->
 
                         <div class="row">
-                            <div class="col-xl-3 col-md-6">
+                            {{-- <div class="col-xl-3 col-md-6">
                                 <!-- card -->
                                 <div class="card card-animate">
                                     <div class="card-body">
@@ -69,7 +69,26 @@
                                         </div>
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
-                            </div><!-- end col -->
+                            </div><!-- end col --> --}}
+
+
+                            <x-analyticscard heading="Total Users" value="{{$data['total_users']}}" icon="bx bx-user-circle" desc="Users List" action="{{route('admin.users')}}" color="primary" />
+
+                            <x-analyticscard heading="Total Active Users" value="{{ $data['total_active_users'] }}" icon="bx bxs-user-check"  color="success"
+                                desc="Total Active User List" />
+
+                                <x-analyticscard  heading="Total Trashed Users" value="{{ $data['total_trashed_users'] }}" icon="bx bxs-trash"  color="danger"
+                                desc="Total Trashed User List" />
+
+                                <x-analyticscard  heading="Total Users profile verify" value="{{ $data['total_profile_verify_users'] }}" icon="bx bxs-user-check"  color="primary"
+                                desc="Total verify User List" />
+
+                                <x-analyticscard  heading="Total Users profile pending" value="{{ $data['total_profile_verify_pending'] }}" icon="bx bxs-user-rectangle"  color="warning"
+                                desc="Total Pending User List" />
+
+                                <x-analyticscard  heading="Total Users profile rejected" value="{{ $data['total_profile_verify_rejected'] }}" icon="bx bxs-x-circle"  color="danger"
+                                desc="Total Trashed User List" />
+
 
 
                         </div> <!-- end row-->

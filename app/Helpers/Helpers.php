@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 function hello()
@@ -36,5 +37,21 @@ if (!function_exists("getCityNameUsingId")) {
             $city = DB::table('cities')->where("id", $id)->first();
         }
         return $id == "0" ? "Any" : ucfirst($city->name);
+    }
+
+}
+
+
+
+if (!function_exists("validateAndParseDate")) {
+    function validateAndParseDate($dateString)
+    {
+        try {
+            $parsedDate = Carbon::parse($dateString);
+            return $parsedDate->isValid() ? $parsedDate : null;
+        } catch (\Exception $e) {
+            // dd("Catch any parsing exception and return null");
+            return null;
+        }
     }
 }

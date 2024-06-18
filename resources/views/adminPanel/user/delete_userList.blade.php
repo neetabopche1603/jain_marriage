@@ -38,15 +38,18 @@
                                         <div>
                                             {{-- <a href="{{route('admin.generatePdf')}}" class="btn btn-success add-btn"><i class="fa fa-download"></i> </i>Download Pdf</a> --}}
 
-                                            <a href="{{route('admin.create')}}" class="btn btn-success add-btn"><i class="fa fa-user"></i> </i>Add New User</a>
+                                            <a href="{{ route('admin.create') }}" class="btn btn-success add-btn"><i
+                                                    class="fa fa-user"></i> </i>Add New User</a>
 
                                         </div>
                                     </div>
                                     <div class="col-sm">
                                         <div class="d-flex justify-content-sm-end">
                                             <div class="search-box ms-2">
-                                                <input type="text" class="form-control search" placeholder="Search...">
-                                                <i class="ri-search-line search-icon"></i>
+                                                <x-search.table-search-input action="{{ route('admin.deletedUsersList') }}"
+                                                    method="get" name="search"
+                                                    value="{{ isset($_REQUEST['search']) ? $_REQUEST['search'] : '' }}"
+                                                    btnClass="search_btn" />
                                             </div>
                                         </div>
                                     </div>
@@ -80,17 +83,21 @@
 
                                                     <td>
                                                         @php
-                                                            $userMedia = App\Models\UsersMedia::where(['user_id' => $user->id, 'status' => 'front_img'])->first();
+                                                            $userMedia = App\Models\UsersMedia::where([
+                                                                'user_id' => $user->id,
+                                                                'status' => 'front_img',
+                                                            ])->first();
                                                         @endphp
 
                                                         @if (!empty($userMedia))
-                                                        <a href="{{ asset($userMedia->photo) }}" class="userImage-popup">
-                                                            <img src="{{ asset($userMedia->photo) }}" class="rounded" alt="" width="50">
-                                                        </a>
-
+                                                            <a href="{{ asset($userMedia->photo) }}"
+                                                                class="userImage-popup">
+                                                                <img src="{{ asset($userMedia->photo) }}" class="rounded"
+                                                                    alt="" width="50">
+                                                            </a>
                                                         @else
                                                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeqOkeOMcWfV70RX4UGcoyx3NjceMhLcDA6CG8-rbn2Im07JvMXBI0Xkh1YXNRIEri-0w&usqp=CAU"
-                                                                 class="rounded" alt="" width="50">
+                                                                class="rounded" alt="" width="50">
                                                         @endif
                                                     </td>
 
@@ -98,36 +105,49 @@
                                                     <td>{{ $user->email }}</td>
                                                     <td>{{ $user->whatsapp_no }}</td>
                                                     <td>{{ $user->userDetail->calling_no }}</td>
-                                                    <td> {{ \Carbon\Carbon::parse($user->dob)->format('d-M-Y') }}<br>Age: {{ $user->age }}
+                                                    <td> {{ \Carbon\Carbon::parse($user->dob)->format('d-M-Y') }}<br>Age:
+                                                        {{ $user->age }}
                                                     </td>
 
                                                     <td>
-
                                                         @if ($user->profile_status == 'verified')
-                                                            <a href="#" class="btn btn-primary btn-sm">Verified</a>
+                                                            <span class="badge rounded-pill bg-primary"><i
+                                                                class="mdi mdi-circle-medium"></i>
+                                                                Verified</span>
                                                         @elseif ($user->profile_status == 'pending')
-                                                            <a href="#" class="btn btn-warning btn-sm">Pending</a>
+                                                            <span class="badge rounded-pill  bg-warning"><i
+                                                                class="mdi mdi-circle-medium"></i>
+                                                                Pending</span>
                                                         @else
-                                                            <a href="#" class="btn btn-danger btn-sm">Rejected</a>
+                                                            <span class="badge rounded-pill  bg-danger"><i
+                                                                class="mdi mdi-circle-medium"></i>
+                                                                Rejected</span>
                                                         @endif
-
                                                     </td>
 
                                                     <td>
                                                         @if ($user->account_status == 'active')
-                                                            <span class="badge badge-success">Active</span>
+                                                            <span class="badge badge-label bg-success"><i
+                                                                class="mdi mdi-circle-medium"></i>
+                                                                Active</span>
                                                         @else
-                                                            <span class="badge badge-danger">Inactive</span>
+                                                            <span class="badge badge-label bg-danger"><i
+                                                                class="mdi mdi-circle-medium"></i>
+                                                                Inactive</span>
                                                         @endif
                                                     </td>
 
                                                     <td>
-                                                        <a href="{{route('admin.userViewProfilePage',$user->id)}}" class="btn btn-primary btn-sm"><i
-                                                                class="fa fa-eye"></i></a>
+                                                        <a href="{{ route('admin.userViewProfilePage', $user->id) }}"
+                                                            class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
 
-                                                         <a href="{{route('admin.edit',$user->id)}}" class="btn btn-info btn-sm"><i class="fa fa-pencil-square-o"></i></a>
+                                                        <a href="{{ route('admin.edit', $user->id) }}"
+                                                            class="btn btn-info btn-sm"><i
+                                                                class="fa fa-pencil-square-o"></i></a>
 
-                                                        <a href="{{route('admin.userHardDeleteData',$user->id)}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure permanently delete this user Details!')"><i
+                                                        <a href="{{ route('admin.userHardDeleteData', $user->id) }}"
+                                                            class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Are you sure permanently delete this user Details!')"><i
                                                                 class="fa fa-trash"></i></a>
                                                     </td>
 
@@ -155,20 +175,19 @@
 @endsection
 
 @push('script')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
 
-<script>
-    $(document).ready(function() {
-
-        // Image PopUP
-        $('.userImage-popup').magnificPopup({
-            type: 'image',
-            gallery: {
-                enabled: true
-            }
+            // Image PopUP
+            $('.userImage-popup').magnificPopup({
+                type: 'image',
+                gallery: {
+                    enabled: true
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush

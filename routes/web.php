@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -63,7 +64,7 @@ Route::get('/admin-logout', function (Request $request) {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'admin/'], function () {
-
+        
         // dashboard
         Route::get('/dashboard', DashboardController::class)->name('admin.dashboard');
         // Users Controller
@@ -103,7 +104,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('user-deleted-list', [UserController::class, 'deletedUsersList'])->name('admin.deletedUsersList');
 
-
+        // Profile Controller route
         Route::get('profile-details', [ProfileController::class, 'editProfileView'])->name('admin.editProfileView');
         Route::post('profile-update', [ProfileController::class, 'update_profile'])->name('admin.update_profile');
 
@@ -112,6 +113,36 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('get-state', [UserController::class, 'getState'])->name('admin.getState');
         Route::post('get-city', [UserController::class, 'getCity'])->name('admin.getCity');
+
+
+        // Education
+        Route::get('education-list',[HomeController::class,'educations'])->name('admin.educations');
+        Route::post('education-store',[HomeController::class,'educationStore'])->name('admin.educationStore');
+        Route::get('education-edit/{id?}',[HomeController::class,'editEducation'])->name('admin.editEducation');
+        Route::post('education-update/{id?}',[HomeController::class,'educationUpdate'])->name('admin.educationUpdate');
+
+        Route::get('education-status-update/{id?}',[HomeController::class,'educationStatusUpdate'])->name('admin.educationStatusUpdate');
+        Route::get('education-delete/{id?}',[HomeController::class,'educationDelete'])->name('admin.educationDelete');
+
+        // Professions
+        Route::get('profession-list',[HomeController::class,'professions'])->name('admin.professions');
+        Route::post('profession-store',[HomeController::class,'professionStore'])->name('admin.professionStore');
+        Route::get('profession-edit/{id?}',[HomeController::class,'editprofession'])->name('admin.editprofession');
+        Route::post('profession-update/{id?}',[HomeController::class,'professionUpdate'])->name('admin.professionUpdate');
+
+        Route::get('profession-status-update/{id?}',[HomeController::class,'professionStatusUpdate'])->name('admin.professionStatusUpdate');
+        Route::get('profession-delete/{id?}',[HomeController::class,'professionDelete'])->name('admin.professionDelete');
+
+        //Occupation
+        Route::get('occupation-list',[HomeController::class,'occupations'])->name('admin.occupations');
+
+        Route::post('occupation-store',[HomeController::class,'occupationStore'])->name('admin.occupationStore');
+        Route::get('occupation-edit/{id?}',[HomeController::class,'editOccupation'])->name('admin.editOccupation');
+        Route::post('occupation-update',[HomeController::class,'occupationUpdate'])->name('admin.occupationUpdate');
+
+        Route::get('occupation-status-update/{id?}',[HomeController::class,'occupationStatusUpdate'])->name('admin.occupationStatusUpdate');
+        Route::get('occupation-delete/{id?}',[HomeController::class,'occupationDelete'])->name('admin.occupationDelete');
+
 
     });
 });
