@@ -609,11 +609,12 @@
     <div class="main">
         <div class="main_1">
         <div class="first_one">
-            <div class="img_container"><img src="#" alt=""></div>
+            <div class="img_container"><img src="{{asset('image/logo.png')}}" alt=""></div>
+            
         </div>
         <div class="second_one">
             <h1>WELCOME</h1>
-            <img src="#" alt="">
+            <img src="{{asset('image/logo2.png')}}" alt="">
             <p class="main_slogan">👏 हमारा उद्देश्य जैन समुदा य की सेवा करना का है। 👏</p>
             <p class="sub_slogan">जैन का विवाह जैन से ही हो ।</p>
         </div>
@@ -627,7 +628,7 @@
             </div>
             <div  class="details_2">
                 <p>Share with your friends</p>
-                <img src="#" alt="">
+                <img src="{{asset('image/qr.png')}}" alt="">
             </div>
         </div>
         <div class="footer">
@@ -641,7 +642,7 @@
       <div class="main_1">
         <div class="main_2">
           <div class="container_1">
-            <div class="logo"><img src="#" alt="" /></div>
+            <div class="logo"><img src="{{asset('image/about.png')}}" alt="" /></div>
             <div class="des">
               <p>
                 Welcome to VCT E-Patrika, your trusted platform for finding the
@@ -760,10 +761,10 @@
               that the right connection can change your life forever.
             </p>
             <p class="share">Share with friends</p>
-            <div class="qr"><img src="#" alt=""></div>
+            <div class="qr"><img src="{{asset('image/qr.png')}}" alt=""></div>
           </div>
           <div class="right">
-            <img src="#" alt="">
+            <img src="{{asset('image/logo2.png')}}" alt="">
           </div>
         </div>
         <div class="footer">
@@ -824,7 +825,7 @@
               </div>
               <div class="main-2-right">
                 <div class="img-1">
-                  <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" alt="" />
+                  <img src="{{asset('image/girls.png')}}" alt="" />
                 </div>
                 <div class="family partner last_family">
                   <h1>Partner Details -</h1>
@@ -850,7 +851,7 @@
                   </p>
                 </div>
                 <div class="img-2">
-                  <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" alt="" />
+                  <img src="{{asset('/image/girls.png')}}" alt="" />
                 </div>
               </div>
             </div>
@@ -882,13 +883,13 @@
             </div>
           </div>
           <div class="right_logo">
-            <img src="#" alt="" />
+            <img src="{{asset('image/logo2.png')}}" alt="" />
           </div>
         </div>
 
         <div class="profile-card">
           <div class="profile-image">
-            <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" alt="Shikha Sherma" />
+            <img src="{{asset('/image/girls.png')}}" alt="Shikha Sherma" />
           </div>
           <div class="profile-details">
             <div class="details-left">
@@ -922,13 +923,13 @@
               </p>
             </div>
             <div class="bottom_logo">
-              <img src="#" alt="VCT Logo" />
+              <img src="{{asset('image/logo2.png')}}" alt="VCT Logo" />
             </div>
           </div>
         </div>
         <div class="profile-card">
           <div class="profile-image">
-            <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" alt="Shikha Sherma" />
+            <img src="{{asset('/image/girls.png')}}" alt="Shikha Sherma" />
           </div>
           <div class="profile-details">
             <div class="details-left">
@@ -962,13 +963,13 @@
               </p>
             </div>
             <div class="bottom_logo">
-              <img src="#" alt="VCT Logo" />
+              <img src="{{asset('image/logo2.png')}}" alt="VCT Logo" />
             </div>
           </div>
         </div>
         <div class="profile-card">
           <div class="profile-image">
-            <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" alt="Shikha Sherma" />
+            <img src="{{asset('/image/girls.png')}}" alt="Shikha Sherma" />
           </div>
           <div class="profile-details">
             <div class="details-left">
@@ -1002,13 +1003,13 @@
               </p>
             </div>
             <div class="bottom_logo">
-              <img src="#" alt="VCT Logo" />
+              <img src="{{asset('image/logo2.png')}}" alt="VCT Logo" />
             </div>
           </div>
         </div>
         <div class="profile-card">
           <div class="profile-image">
-            <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg" alt="Shikha Sherma" />
+            <img src="{{asset('/image/girls.png')}}" alt="Shikha Sherma" />
           </div>
           <div class="profile-details">
             <div class="details-left">
@@ -1042,7 +1043,7 @@
               </p>
             </div>
             <div class="bottom_logo">
-              <img src="#" alt="VCT Logo" />
+              <img src="{{asset('image/logo2.png')}}" alt="VCT Logo" />
             </div>
           </div>
         </div>
@@ -1058,7 +1059,7 @@
     <div class="main">
       <div class="main_1">
         <div class="header_img">
-          <img src="#" alt="" />
+          <img src="{{asset('image/logo2.png')}}" alt="" />
         </div>
         <div class="thanks">
           <h1>
@@ -1101,12 +1102,12 @@
             <h1>Powered By: <br>
              <span> Vardhaman Charitable Trust</span></h1>
              <div class="footer_image1">
-              <img src="#" alt="">
+              <img src="{{asset('image/logo2.png')}}" alt="">
              </div>
           </div>
           <div class="right_footer">
             <h1>Share with friends</h1>
-            <div><img src="#" alt=""></div>
+            <div><img src="{{asset('image/qr.png')}}" alt=""></div>
           </div>
         </div>
         <div class="footer">

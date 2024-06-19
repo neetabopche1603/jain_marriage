@@ -38,7 +38,7 @@
                                 <div class="row g-4 mb-3">
                                     <div class="col-sm-auto">
                                         <div>
-                                            <a href="{{route('admin.downloadPDF')}}" class="btn btn-success add-btn"><i class="fa fa-download"></i> </i>Download Pdf</a>
+                                            {{-- <a href="{{route('admin.downloadPDF')}}" class="btn btn-success add-btn"><i class="fa fa-download"></i> </i>Download Pdf</a> --}}
 
                                             <a href="{{ route('admin.create') }}" class="btn btn-success add-btn"><i
                                                     class="fa fa-user"></i> </i>Add New User</a>
