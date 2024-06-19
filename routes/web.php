@@ -64,7 +64,7 @@ Route::get('/admin-logout', function (Request $request) {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'admin/'], function () {
-        
+
         // dashboard
         Route::get('/dashboard', DashboardController::class)->name('admin.dashboard');
         // Users Controller
@@ -148,5 +148,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('user-pdf-view', [UserController::class, 'userPdfView'])->name('admin.userPdfView');
+
+Route::get('user-pdf-download', [UserController::class, 'downloadPDF'])->name('admin.downloadPDF');
+
 Route::get('user-generatePdf', [UserController::class, 'generatePdf'])->name('admin.generatePdf');
 

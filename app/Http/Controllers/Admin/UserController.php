@@ -15,7 +15,8 @@ use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\UsersMedia;
 use App\Traits\ImageUploadTrait;
-use PDF;
+// use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -741,13 +742,18 @@ class UserController extends Controller
     }
 
 
-
+    public function downloadPDF()
+    {
+        $pdf = Pdf::loadView('pdf.userPdf');
+        return $pdf->download('vct.pdf');
+    }
 
 
     // Generate PDF
     public function generatePdf()
     {
 
+       try{
         $usersDetails = User::with('userDetail')->where('role_type', 0)->get();
 
         $data = [
@@ -769,6 +775,9 @@ class UserController extends Controller
                 'Content-Disposition' => 'attachment; filename="jain_E_Patrika.pdf"',
             ]
         );
+       }catch(Exception $e){
+        dd("pdf download error",$e->getMessage());
+       }
     }
 
 
